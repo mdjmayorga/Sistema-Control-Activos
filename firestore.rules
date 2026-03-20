@@ -1,0 +1,42 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // AU003 - Solo correos institucionales del ITCR pueden acceder.
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function hasInstitutionalEmail() {
+      return request.auth.token.email.matches('.*@estudiantec\\.cr$')
+          || request.auth.token.email.matches('.*@itcr\\.ac\\.cr$');
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    // Perfiles de usuario
+    match /users/{userId} {
+      allow read:   if isAuthenticated() && isOwner(userId) && hasInstitutionalEmail();
+      allow create: if isAuthenticated() && isOwner(userId) && hasInstitutionalEmail();
+      allow update: if isAuthenticated() && isOwner(userId) && hasInstitutionalEmail();
+      allow delete: if false;
+    }
+
+    // Préstamos de equipos
+    match /prestamos/{prestamoId} {
+      allow read:   if isAuthenticated() && hasInstitutionalEmail();
+      allow create: if isAuthenticated() && hasInstitutionalEmail();
+      allow update: if isAuthenticated() && hasInstitutionalEmail();
+      allow delete: if false;
+    }
+
+    // Activos/equipos — solo lectura para usuarios institucionales
+    match /activos/{activoId} {
+      allow read:   if isAuthenticated() && hasInstitutionalEmail();
+      allow write:  if false; // Gestión reservada al Admin SDK
+    }
+  }
+}
