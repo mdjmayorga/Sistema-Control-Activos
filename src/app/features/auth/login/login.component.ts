@@ -18,6 +18,7 @@ export class LoginComponent {
 
   loading = signal(false);
   errorMessage = signal('');
+  loginSuccess = signal(false);
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email, institutionalEmailValidator()]],
@@ -43,7 +44,7 @@ export class LoginComponent {
 
     try {
       await this.authService.login(this.email.value!, this.password.value!);
-      this.router.navigate(['/dashboard']);
+      this.loginSuccess.set(true);
     } catch (err: any) {
       this.errorMessage.set(this.mapFirebaseError(err.code));
     } finally {

@@ -7,9 +7,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/auth/login/login.component').then((m) => m.LoginComponent),
   },
-  {
-    path: 'register',
-    loadComponent: () =>
-      import('./features/auth/register/register.component').then((m) => m.RegisterComponent),
-  },
+  // TODO: descomentar cuando se integre la rama de registro (AU001)
+  // {
+  //   path: 'register',
+  //   loadComponent: () =>
+  //     import('./features/auth/register/register.component').then((m) => m.RegisterComponent),
+  // },
 ];

@@ -40,6 +40,9 @@
         }
       </div>
 
+      @if (loginSuccess()) {
+        <p class="success-banner">Inicio de sesión exitoso. Bienvenido.</p>
+      }
       @if (errorMessage()) {
         <p class="error-banner">{{ errorMessage() }}</p>
       }
