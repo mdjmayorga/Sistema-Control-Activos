@@ -106,8 +106,12 @@
 .field small {
   display: block;
   margin-top: 8px;
-  color: #9A9A9A;
   font-size: 11px;
+  color: #9A9A9A;
+}
+
+.field small.error {
+  color: #D64545;
 }
 
 .optional {
@@ -147,4 +151,9 @@
 
 .btn-blue {
   background: var(--blue);
+}
+
+select.ng-invalid.ng-touched,
+input.ng-invalid.ng-touched {
+  border: 1px solid #D64545;
 }

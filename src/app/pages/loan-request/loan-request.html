@@ -1,5 +1,4 @@
 <div class="page">
-    
   <div class="wrapper">
     <nav class="topbar">
       <a class="active">Solicitar prestamo</a>
@@ -15,50 +14,70 @@
       </p>
     </section>
 
-    <section class="form-panel">
+    <form class="form-panel" [formGroup]="loanForm" (ngSubmit)="onSubmit()">
       <div class="row two-cols">
         <div class="field">
           <label>GRUPO DE TOPOGRAFÍA</label>
-          <select>
-            <option>seleccione</option>
-            <option>Grupo 01</option>
-            <option>Grupo 02</option>
-            <option>Grupo 03</option>
-            <option>Grupo 04</option>
+          <select formControlName="grupoTopografia">
+            <option value="">Seleccione</option>
+            <option value="Grupo 01">Grupo 01</option>
+            <option value="Grupo 02">Grupo 02</option>
+            <option value="Grupo 03">Grupo 03</option>
+            <option value="Grupo 04">Grupo 04</option>
           </select>
+
+          <small class="error"
+            *ngIf="loanForm.get('grupoTopografia')?.invalid && loanForm.get('grupoTopografia')?.touched">
+            Este campo es obligatorio
+          </small>
         </div>
 
         <div class="field">
           <label>CUADRILLA</label>
-          <select>
-            <option>seleccione</option>
-            <option>Cuadrilla 1</option>
-            <option>Cuadrilla 2</option>
-            <option>Cuadrilla 3</option>
+          <select formControlName="cuadrilla">
+            <option value="">Seleccione</option>
+            <option value="Cuadrilla 1">Cuadrilla 1</option>
+            <option value="Cuadrilla 2">Cuadrilla 2</option>
+            <option value="Cuadrilla 3">Cuadrilla 3</option>
           </select>
+
+          <small class="error"
+            *ngIf="loanForm.get('cuadrilla')?.invalid && loanForm.get('cuadrilla')?.touched">
+            Este campo es obligatorio
+          </small>
         </div>
       </div>
 
       <div class="field">
         <label>RAZÓN DEL PRÉSTAMO</label>
-        <select>
-          <option>seleccione</option>
-          <option>Docencia</option>
-          <option>Curso</option>
-          <option>TFG</option>
+        <select formControlName="razonPrestamo">
+          <option value="">Seleccione</option>
+          <option value="Docencia">Docencia</option>
+          <option value="Curso">Curso</option>
+          <option value="TFG">TFG</option>
         </select>
+
+        <small class="error"
+          *ngIf="loanForm.get('razonPrestamo')?.invalid && loanForm.get('razonPrestamo')?.touched">
+          Este campo es obligatorio
+        </small>
       </div>
 
       <div class="divider"></div>
 
       <div class="field">
         <label>ACTIVO</label>
-        <select>
-          <option>seleccione</option>
-          <option>Tripode de Aluminio</option>
-          <option>Nivel automatico</option>
-          <option>Estacion total</option>
+        <select formControlName="activo">
+          <option value="">Seleccione</option>
+          <option value="Tripode de Aluminio">Tripode de Aluminio</option>
+          <option value="Nivel automatico">Nivel automatico</option>
+          <option value="Estacion total">Estacion total</option>
         </select>
+
+        <small class="error"
+          *ngIf="loanForm.get('activo')?.invalid && loanForm.get('activo')?.touched">
+          Este campo es obligatorio
+        </small>
       </div>
 
       <div class="field">
@@ -66,14 +85,18 @@
           NÚMERO DE SERIE
           <span class="optional">Opcional</span>
         </label>
-        <input type="text" placeholder="Ejemplo: SRV-2021008-01" />
+        <input type="text" formControlName="numeroSerie" placeholder="Ejemplo: SRV-2021008-01" />
+        <small class="error"
+          *ngIf="loanForm.get('numeroSerie')?.invalid && loanForm.get('numeroSerie')?.touched">
+          El formato del número de serie no es válido
+        </small>
         <small>Si el activo no trae su respectivo número de serie omitirlo</small>
       </div>
-    </section>
 
-    <div class="actions">
-      <button class="btn btn-rose">Confirmar prestamo</button>
-      <button class="btn btn-blue">Cancelar</button>
-    </div>
+      <div class="actions">
+        <button class="btn btn-rose" type="submit">Confirmar prestamo</button>
+        <button class="btn btn-blue" type="button" (click)="onCancel()">Cancelar</button>
+      </div>
+    </form>
   </div>
 </div>
