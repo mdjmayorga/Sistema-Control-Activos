@@ -18,7 +18,6 @@ export class LoginComponent {
 
   loading = signal(false);
   errorMessage = signal('');
-  loginSuccess = signal(false);
 
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email, institutionalEmailValidator()]],
@@ -43,8 +42,9 @@ export class LoginComponent {
     this.errorMessage.set('');
 
     try {
-      await this.authService.login(this.email.value!, this.password.value!);
-      this.loginSuccess.set(true);
+      const credential = await this.authService.login(this.email.value!, this.password.value!);
+      const role = await this.authService.getUserRole(credential.user.uid);
+      this.router.navigate([role === 'admin' ? '/admin' : '/dashboard']);
     } catch (err: any) {
       this.errorMessage.set(this.mapFirebaseError(err.code));
     } finally {

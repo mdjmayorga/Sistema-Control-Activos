@@ -17,11 +17,19 @@ service cloud.firestore {
       return request.auth.uid == userId;
     }
 
+    // AU004 - Verifica si el usuario autenticado tiene rol de administrador.
+    function isAdmin() {
+      return isAuthenticated()
+          && hasInstitutionalEmail()
+          && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
     // Perfiles de usuario
     match /users/{userId} {
-      allow read:   if isAuthenticated() && isOwner(userId) && hasInstitutionalEmail();
+      // AU004 - El propietario puede leer/editar su propio perfil; el admin puede leer/editar cualquiera.
+      allow read:   if isAuthenticated() && hasInstitutionalEmail() && (isOwner(userId) || isAdmin());
       allow create: if isAuthenticated() && isOwner(userId) && hasInstitutionalEmail();
-      allow update: if isAuthenticated() && isOwner(userId) && hasInstitutionalEmail();
+      allow update: if isAuthenticated() && hasInstitutionalEmail() && (isOwner(userId) || isAdmin());
       allow delete: if false;
     }
 

@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "emulators": "cross-env JAVA_HOME=\"C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.9.10-hotspot\" PATH=\"C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.9.10-hotspot\\bin;$PATH\" firebase emulators:start --only auth,firestore --project demo-civco",
-    "seed": "curl -s -X POST \"http://localhost:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=fake-key\" -H \"Content-Type: application/json\" -d \"{\\\"email\\\":\\\"prueba@estudiantec.cr\\\",\\\"password\\\":\\\"12345678\\\"}\" && echo Usuario creado",
+    "seed": "node scripts/seed.js",
     "test:rules": "cross-env JAVA_HOME=\"C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.9.10-hotspot\" PATH=\"C:\\Program Files\\Eclipse Adoptium\\jdk-21.0.9.10-hotspot\\bin;$PATH\" firebase emulators:exec --only firestore --project demo-civco \"node --experimental-vm-modules node_modules/jest/bin/jest.js tests/firestore.rules.test.js\""
   },
   "prettier": {

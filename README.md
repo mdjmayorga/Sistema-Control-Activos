@@ -60,11 +60,7 @@ Espera a que los emuladores estén listos y luego ejecuta:
 npm run seed
 ```
 
-Crea el usuario de prueba en el emulador de Auth:
-- **Correo:** `prueba@estudiantec.cr`
-- **Contraseña:** `12345678`
-
-> Este usuario se borra cada vez que se reinician los emuladores. Vuelve a correr `npm run seed` si reinicias.
+Acá se crean los usuarios de prueba, se borran al reiniciar la terminal
 
 ### Terminal 3 — Angular
 
