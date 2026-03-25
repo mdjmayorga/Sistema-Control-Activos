@@ -1,1 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+  --background-color: #111317;
+  --font-family-base: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: var(--background-color);
+  font-family: var(--font-family-base);
+}
