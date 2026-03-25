@@ -1,0 +1,30 @@
+<aside class="sidebar" [class.is-collapsed]="collapsed()">
+  <button
+    class="sidebar__toggle"
+    type="button"
+    (click)="toggleRequested.emit()"
+    [attr.aria-label]="collapsed() ? 'Expandir navbar' : 'Ocultar navbar'"
+  >
+    {{ collapsed() ? '>>' : '<<' }}
+  </button>
+
+  <div class="sidebar__profile">
+    <span class="avatar"></span>
+    <span class="username">{{ username() }}</span>
+  </div>
+
+  <nav class="sidebar__nav">
+    <a routerLink="/prestamos-activos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Prestamos">
+      <span class="nav-label nav-label--full">Prestamos</span>
+      <span class="nav-label nav-label--short">P</span>
+    </a>
+    <a routerLink="/historial" routerLinkActive="active" aria-label="Historial">
+      <span class="nav-label nav-label--full">Historial</span>
+      <span class="nav-label nav-label--short">H</span>
+    </a>
+    <a routerLink="/configuraciones" routerLinkActive="active" aria-label="Configuraciones">
+      <span class="nav-label nav-label--full">Configuraciones</span>
+      <span class="nav-label nav-label--short">C</span>
+    </a>
+  </nav>
+</aside>

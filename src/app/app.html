@@ -1,18 +1,5 @@
-<div class="admin-layout">
-	<aside class="sidebar">
-		<div class="sidebar__profile">
-			<span class="avatar"></span>
-			<span class="username">Username_123</span>
-		</div>
-
-		<nav class="sidebar__nav">
-			<a routerLink="/prestamos-activos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-				Prestamos
-			</a>
-			<a routerLink="/historial" routerLinkActive="active">Historial</a>
-			<a routerLink="/configuraciones" routerLinkActive="active">Configuraciones</a>
-		</nav>
-	</aside>
+<div class="admin-layout" [class.nav-collapsed]="isNavbarCollapsed()">
+	<app-navbar [collapsed]="isNavbarCollapsed()" (toggleRequested)="toggleNavbar()"></app-navbar>
 
 	<main class="content-area">
 		<router-outlet></router-outlet>
