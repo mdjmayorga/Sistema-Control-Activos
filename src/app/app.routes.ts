@@ -14,12 +14,20 @@ export const routes: Routes = [
         component: PrestamosActivosAdminPage,
     },
     {
+        path: 'mis-prestamos',
+        component: PrestamosActivosAdminPage,
+    },
+    {
         path: 'prestamos-activos-admin-page',
         redirectTo: 'prestamos-activos',
         pathMatch: 'full',
     },
     {
         path: 'historial',
+        component: HistorialPage,
+    },
+    {
+        path: 'mi-historial',
         component: HistorialPage,
     },
     {
