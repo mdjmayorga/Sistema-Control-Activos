@@ -1,0 +1,53 @@
+<aside class="sidebar" [class.is-collapsed]="collapsed()">
+  <div class="sidebar__top">
+    <div class="sidebar__profile">
+      <span class="avatar"></span>
+      <span class="username">{{ username() }}</span>
+    </div>
+
+    <button
+      class="sidebar__toggle"
+      type="button"
+      (click)="toggleRequested.emit()"
+      [attr.aria-label]="collapsed() ? 'Expandir navbar' : 'Ocultar navbar'"
+    >
+      {{ collapsed() ? '>' : '<' }}
+    </button>
+  </div>
+
+  <a
+    class="sidebar__action"
+    routerLink="/prestamos-activos"
+    aria-label="Solicitar Prestamo"
+  >
+    <span class="action-label action-label--full">Solicitar Prestamo</span>
+    <span class="action-label action-label--short">+</span>
+  </a>
+
+  <nav class="sidebar__nav">
+    <a routerLink="/mis-prestamos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Mis prestamos">
+      <span class="nav-label nav-label--full">Mis prestamos</span>
+      <span class="nav-label nav-label--short">M</span>
+    </a>
+    <a routerLink="/mi-historial" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Mi historial">
+      <span class="nav-label nav-label--full">Mi historial</span>
+      <span class="nav-label nav-label--short">MH</span>
+    </a>
+
+    <div class="sidebar__divider" role="separator" aria-hidden="true"></div>
+
+    <a routerLink="/prestamos-activos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Prestamos">
+      <span class="nav-label nav-label--full">Prestamos</span>
+      <span class="nav-label nav-label--short">P</span>
+    </a>
+    <a routerLink="/historial" routerLinkActive="active" aria-label="Historial">
+      <span class="nav-label nav-label--full">Historial</span>
+      <span class="nav-label nav-label--short">H</span>
+    </a>
+  </nav>
+
+  <a class="sidebar__settings" routerLink="/configuraciones" routerLinkActive="active" aria-label="Configuraciones">
+    <span class="nav-label nav-label--full">Configuraciones</span>
+    <span class="nav-label nav-label--short">C</span>
+  </a>
+</aside>

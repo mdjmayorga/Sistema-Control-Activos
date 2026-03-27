@@ -1,0 +1,18 @@
+.prestamos-list-container {
+  width: 100%;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 28px 16px;
+  color: var(--background-color);
+  font-size: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.prestamos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 10px;
+}

@@ -1,0 +1,15 @@
+<div class="prestamos-list-container">
+  @if (prestamos.length === 0) {
+    <div class="empty-state">
+      <p>No hay préstamos registrados</p>
+    </div>
+  }
+  
+  @if (prestamos.length > 0) {
+    <div class="prestamos-list">
+      @for (prestamo of prestamos; track prestamo.id) {
+        <app-prestamo-item [prestamo]="prestamo"></app-prestamo-item>
+      }
+    </div>
+  }
+</div>
