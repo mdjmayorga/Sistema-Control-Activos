@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "emulators": "firebase emulators:start",
+    "emulators:export": "firebase emulators:start --export-on-exit=./emulator-data --import=./emulator-data"
   },
   "prettier": {
     "printWidth": 100,
