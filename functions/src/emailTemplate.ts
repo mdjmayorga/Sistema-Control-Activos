@@ -1,5 +1,7 @@
+/* eslint-disable */
+
 export const getDamageEmailTemplate = (estudiante: string, activo: string) => {
-    return `
+  return `
 <!-- ══ EMAIL: Notificación de Daño en Activo - CIVCO/TEC ══ -->
 <div style="margin:0;padding:32px 16px;background-color:#f0f2f5;font-family:Arial,Helvetica,sans-serif;">
   <div style="max-width:600px;margin:0 auto;">
@@ -59,15 +61,7 @@ export const getDamageEmailTemplate = (estudiante: string, activo: string) => {
             <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;color:#4a5568;"> &nbsp;Nombre del Activo</span>
           </td>
           <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
-            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">{{NOMBRE_ACTIVO}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td width="42%" style="padding:11px 14px;background-color:#eef1fb;border-right:1px solid #e8edf7;">
-            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;color:#4a5568;"># &nbsp;Número de Serie</span>
-          </td>
-          <td style="padding:11px 14px;background-color:#ffffff;">
-            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">{{NUMERO_SERIE}}</span>
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">${activo}</span>
           </td>
         </tr>
       </table>
@@ -82,72 +76,10 @@ export const getDamageEmailTemplate = (estudiante: string, activo: string) => {
             <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;color:#4a5568;"> &nbsp;Usuario Responsable</span>
           </td>
           <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
-            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">{{NOMBRE_USUARIO}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td width="42%" style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
-            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;color:#4a5568;"> &nbsp;Correo Institucional</span>
-          </td>
-          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
-            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">{{CORREO_INSTITUCIONAL}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td width="42%" style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
-            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;color:#4a5568;"> &nbsp;Grupo y Cuadrilla</span>
-          </td>
-          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
-            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">{{GRUPO}} — Cuadrilla {{NUMERO_CUADRILLA}}</span>
-          </td>
-        </tr>
-        <tr>
-          <td width="42%" style="padding:11px 14px;background-color:#eef1fb;border-right:1px solid #e8edf7;">
-            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;color:#4a5568;"> &nbsp;Razón del Préstamo</span>
-          </td>
-          <td style="padding:11px 14px;background-color:#ffffff;">
-            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">{{RAZON_PRESTAMO}}</span>
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">${estudiante}</span>
           </td>
         </tr>
       </table>
-
-      <!-- ── Estado del Evento ── -->
-      <div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;font-weight:700;color:#00205b;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;border-bottom:1px solid #d0d8ee;padding-bottom:6px;">
-         &nbsp;Estado del Evento
-      </div>
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:28px;">
-        <tr>
-          <td style="padding:13px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
-            <table cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td>
-                  <div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;font-weight:700;color:#718096;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;">Fecha de Devolución</div>
-                  <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;color:#a0aec0;font-style:italic;">{{FECHA_DEVOLUCION}}</div>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:13px 14px;background-color:#ffffff;">
-            <table cellpadding="0" cellspacing="0" border="0">
-              <tr>
-                <td>
-                  <div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;font-weight:700;color:#718096;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px;">Confirmación de Daño</div>
-                  <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;color:#10b981;"> Reportado por el usuario al finalizar el préstamo</div>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-
-      <!-- CTA -->
-      <div style="text-align:center;">
-        <a href="{{URL_PANEL_ADMIN}}" style="display:inline-block;background-color:#00205b;color:#ffffff;text-decoration:none;padding:14px 36px;border-radius:8px;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;letter-spacing:0.3px;">
-          Ver Detalle en Panel de Administrador &nbsp;→
-        </a>
-      </div>
 
     </div>
 
@@ -158,12 +90,9 @@ export const getDamageEmailTemplate = (estudiante: string, activo: string) => {
         <strong style="color:#aac0d8;">Sistema de Control de Activos CIVCO</strong>.<br>
         Por favor no responda a este correo directamente.
       </p>
-      <p style="font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#3d5070;letter-spacing:1px;margin:0;">
-        CIVCO · Tecnológico de Costa Rica
-      </p>
     </div>
 
   </div>
 </div>
-    `;
-}
+  `;
+};
