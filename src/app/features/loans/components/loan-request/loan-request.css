@@ -1,97 +1,77 @@
-.page {
+.layout {
+  display: flex;
   min-height: 100vh;
-  background: var(--bg);
-  color: var(--white);
-  padding: 14px 10px;
+  background: #111317;
+  font-family: 'Roboto', sans-serif;
 }
 
-.page-title {
-  color: var(--gray);
-  font-size: 16px;
-  margin: 0 0 10px 6px;
+.content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 34px 30px 40px 30px;
+  color: #FFFFFF;
 }
 
-.wrapper {
-  min-height: calc(100vh - 40px);
-  border: 1px solid var(--line);
-}
-
-.topbar {
-  height: 64px;
-  border-bottom: 1px solid var(--line);
+.loan-header {
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 64px;
+  margin-top: 12px;
+  margin-bottom: 44px;
 }
 
-.topbar a {
-  color: var(--white);
-  font-size: 15px;
-}
-
-.topbar a.active {
-  background: var(--rose);
-  color: var(--white);
-  padding: 8px 14px;
-  border-radius: 6px;
-}
-
-.header {
-  text-align: center;
-  margin-top: 30px;
-}
-
-.header h1 {
-  font-size: 24px;
+.loan-header h1 {
+  font-size: 31px;
   font-weight: 400;
-  margin-bottom: 18px;
+  color: #FFFFFF;
+  margin: 0;
 }
 
-.header p {
-  width: 430px;
-  margin: 0 auto;
-  line-height: 1.35;
-  font-size: 14px;
-  color: var(--white);
+.loan-form-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .form-panel {
-  width: 680px;
-  background: var(--panel);
-  margin: 26px auto 18px auto;
-  border-radius: 14px;
-  padding: 34px 58px 34px 58px;
+  width: 910px;
+  background: #F3F3F3;
+  border-radius: 16px;
+  padding: 46px 96px 34px 96px;
+  box-sizing: border-box;
 }
 
 .two-cols {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 34px;
+  gap: 56px;
 }
 
 .field {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .field label {
   display: block;
-  color: #2D2D2D;
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 8px;
+  color: #202020;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 10px;
 }
 
 .field select,
 .field input {
   width: 100%;
-  height: 38px;
-  border: 1px solid #D9D9D9;
+  height: 36px;
+  border: 1px solid #D4D4D4;
   border-radius: 6px;
   padding: 0 14px;
+  box-sizing: border-box;
+  background: #F7F7F7;
+  color: #555555;
   font-size: 14px;
-  color: #4A4A4A;
-  background: #F8F8F8;
   outline: none;
 }
 
@@ -100,60 +80,66 @@
 }
 
 .field input::placeholder {
-  color: var(--soft);
-}
-
-.field small {
-  display: block;
-  margin-top: 8px;
-  font-size: 11px;
   color: #9A9A9A;
 }
 
-.field small.error {
-  color: #D64545;
+.divider {
+  border-top: 1px solid #D8D8D8;
+  margin: 8px 0 18px 0;
 }
 
 .optional {
   display: inline-block;
   margin-left: 10px;
-  background: var(--rose);
-  color: var(--white);
+  background: #A58989;
+  color: #FFFFFF;
   font-size: 10px;
   padding: 2px 8px;
   border-radius: 6px;
   vertical-align: middle;
 }
 
-.divider {
-  border-top: 1px solid #D9D9D9;
-  margin: 10px 0 14px 0;
+.help-text {
+  display: block;
+  margin-top: 10px;
+  color: #8A8A8A;
+  font-size: 11px;
 }
 
-.actions {
-  display: flex;
-  justify-content: center;
-  gap: 90px;
+.field small.error {
+  display: block;
   margin-top: 8px;
-}
-
-.btn {
-  width: 180px;
-  height: 40px;
-  border-radius: 6px;
-  font-size: 16px;
-  color: var(--white);
-}
-
-.btn-rose {
-  background: var(--rose);
-}
-
-.btn-blue {
-  background: var(--blue);
+  color: #D64545;
+  font-size: 11px;
 }
 
 select.ng-invalid.ng-touched,
 input.ng-invalid.ng-touched {
   border: 1px solid #D64545;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  margin-top: 34px;
+}
+
+.btn {
+  width: 165px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.btn-rose {
+  background: #A58989;
+}
+
+.btn-blue {
+  background: #0B9DFF;
 }

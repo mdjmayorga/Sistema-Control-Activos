@@ -1,48 +1,27 @@
-<div class="page">
-  
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="profile">
-        <div class="avatar"></div>
-        <span>Username_123</span>
+<div class="layout">
+  <app-user-navigation></app-user-navigation>
+
+  <div class="content-area">
+    <div class="dashboard-header">
+      <h1>Mis prestamos</h1>
+
+      <div class="search-wrapper">
+        <span class="search-icon">⌕</span>
+        <input type="text" placeholder="Buscar producto prestado..." />
       </div>
+    </div>
 
-      <div class="logout-box">
-        <p>CERRAR SESION</p>
-        <button class="logout-btn">
-        <span>SALIR</span> 
-        <img src= "assets/icons/icon-logout.png" alt="logout" class="icon" /> 
-        </button>
+    <div class="loans-list">
+      <p class="status-message" *ngIf="cargando">Cargando préstamos...</p>
+
+      <p class="status-message" *ngIf="!cargando && prestamosActivos.length === 0">
+        No hay préstamos activos
+      </p>
+
+      <div class="loan-item" *ngFor="let prestamo of prestamosActivos">
+        <h3>{{ prestamo.activo }}</h3>
+        <p>Fecha del prestamo: {{ prestamo.fechaPrestamo | date:'dd/MM/yyyy' }}</p>
       </div>
-
-      <div class="settings">⚙ Configuraciones</div>
-    </aside>
-
-    <main class="content">
-      <nav class="topbar">
-        <a routerLink="/solicitar-prestamo">Solicitar préstamo</a>
-        <a href="#">Devolución</a>
-        <a href="#">Historial</a>
-      </nav>
-
-      <section class="welcome">
-        <h1>Bienvenido(@)</h1>
-        <span>Username_123</span>
-      </section>
-
-      <section class="loans-section">
-        <h2>Prestamos activos</h2>
-
-        <div class="loan-card">
-          <h3>Tripode de Aluminio</h3>
-          <p>Fecha del prestamo: XX/XX/XXXX</p>
-        </div>
-
-        <div class="loan-card">
-          <h3>Nivel automatico</h3>
-          <p>Fecha del prestamo: XX/XX/XXXX</p>
-        </div>
-      </section>
-    </main>
+    </div>
   </div>
 </div>

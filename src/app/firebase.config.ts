@@ -1,10 +1,10 @@
-import { FirebaseOptions } from '@angular/fire/app';
 
-export const firebaseConfig: FirebaseOptions = {
-  apiKey: 'YOUR_API_KEY',
-  authDomain: 'YOUR_PROJECT_ID.firebaseapp.com',
-  projectId: 'YOUR_PROJECT_ID',
-  storageBucket: 'YOUR_PROJECT_ID.firebasestorage.app',
-  messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
-  appId: 'YOUR_APP_ID',
+export const firebaseConfig = {
+  apiKey: "AIzaSyCXTQkpHnnqPx3R7DaBZFcmYarMn2UWV-M",
+  authDomain: "sistema-ctrl-activos-pruebas.firebaseapp.com",
+  projectId: "sistema-ctrl-activos-pruebas",
+  storageBucket: "sistema-ctrl-activos-pruebas.firebasestorage.app",
+  messagingSenderId: "837181694998",
+  appId: "1:837181694998:web:be19a321f00e9bc09bc137"
 };
+

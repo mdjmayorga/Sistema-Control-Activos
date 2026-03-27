@@ -1,0 +1,93 @@
+.sidebar {
+  width: 220px;
+  min-height: 100vh;
+  background: #111317;
+  border-right: 1px solid rgba(160, 174, 192, 0.14);
+  display: flex;
+  flex-direction: column;
+  padding: 18px 18px 14px 18px;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0 18px 0;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #d9d9d9;
+  flex-shrink: 0;
+}
+
+.username {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(160, 174, 192, 0.14);
+  margin-bottom: 20px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.menu-button {
+  width: 170px;
+  height: 38px;
+  border-radius: 8px;
+  background: #214e9c;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 400;
+  padding-left: 2px;
+}
+
+.menu-icon {
+  width: 16px;
+  display: inline-flex;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.settings {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 400;
+  padding-bottom: 8px;
+}
+
+.settings-icon {
+  font-size: 14px;
+}
