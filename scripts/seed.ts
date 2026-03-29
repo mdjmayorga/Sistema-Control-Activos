@@ -14,13 +14,14 @@ import { initializeApp } from 'firebase-admin/app';
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 import { getAuth } from 'firebase-admin/auth';
 
-process.env['FIRESTORE_EMULATOR_HOST'] = 'localhost:8080';
+process.env['FIRESTORE_EMULATOR_HOST'] = 'localhost:8081';
 process.env['FIREBASE_AUTH_EMULATOR_HOST'] = 'localhost:9099';
 
 const app = initializeApp({ projectId: 'civco-a947d' });
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+// ─── Seed Data ───────────────────────────────────────────────────────────────
 
 interface SeedUser {
   uid: string;
@@ -28,9 +29,9 @@ interface SeedUser {
   password: string;
   displayName: string;
   firestoreData: {
-    nombre: string;
-    carnet: string;
-    correo: string;
+    fullName: string;
+    studentId: string;
+    email: string;
     role: 'admin' | 'user';
     createdAt: Timestamp;
   };
@@ -43,9 +44,9 @@ const users: SeedUser[] = [
     password: 'Admin123!',
     displayName: 'Juan Carlos Coto',
     firestoreData: {
-      nombre: 'Juan Carlos Coto',
-      carnet: 'N/A',
-      correo: 'jccoto@itcr.ac.cr',
+      fullName: 'Juan Carlos Coto',
+      studentId: 'N/A',
+      email: 'jccoto@itcr.ac.cr',
       role: 'admin',
       createdAt: Timestamp.now(),
     },
@@ -56,9 +57,9 @@ const users: SeedUser[] = [
     password: 'User123!',
     displayName: 'Maria Lopez',
     firestoreData: {
-      nombre: 'Maria Lopez',
-      carnet: '2021456789',
-      correo: 'estudiante1@estudiantec.cr',
+      fullName: 'Maria Lopez',
+      studentId: '2021456789',
+      email: 'estudiante1@estudiantec.cr',
       role: 'user',
       createdAt: Timestamp.now(),
     },
@@ -69,9 +70,9 @@ const users: SeedUser[] = [
     password: 'User123!',
     displayName: 'Carlos Ramirez',
     firestoreData: {
-      nombre: 'Carlos Ramirez',
-      carnet: '2022123456',
-      correo: 'estudiante2@estudiantec.cr',
+      fullName: 'Carlos Ramirez',
+      studentId: '2022123456',
+      email: 'estudiante2@estudiantec.cr',
       role: 'user',
       createdAt: Timestamp.now(),
     },
@@ -82,9 +83,9 @@ const users: SeedUser[] = [
     password: 'User123!',
     displayName: 'Ana Martinez',
     firestoreData: {
-      nombre: 'Ana Martinez',
-      carnet: 'N/A',
-      correo: 'docente1@itcr.ac.cr',
+      fullName: 'Ana Martinez',
+      studentId: 'N/A',
+      email: 'docente1@itcr.ac.cr',
       role: 'user',
       createdAt: Timestamp.now(),
     },
@@ -93,61 +94,61 @@ const users: SeedUser[] = [
 
 interface SeedActivo {
   id: string;
-  nombre: string;
-  numeroSerie: string;
-  estado: 'disponible' | 'prestado' | 'danado';
-  descripcion: string;
+  name: string;
+  serialNumber: string;
+  status: 'available' | 'loaned' | 'damaged';
+  description: string;
 }
 
 const activos: SeedActivo[] = [
   {
     id: 'activo-001',
-    nombre: 'Estacion Total Topcon ES-105',
-    numeroSerie: 'ET-2024-001',
-    estado: 'disponible',
-    descripcion: 'Estacion total con precision angular de 5 segundos, alcance de 500m sin prisma.',
+    name: 'Estacion Total Topcon ES-105',
+    serialNumber: 'ET-2024-001',
+    status: 'available',
+    description: 'Estacion total con precision angular de 5 segundos, alcance de 500m sin prisma.',
   },
   {
     id: 'activo-002',
-    nombre: 'Estacion Total Topcon ES-105',
-    numeroSerie: 'ET-2024-002',
-    estado: 'prestado',
-    descripcion: 'Estacion total con precision angular de 5 segundos, alcance de 500m sin prisma.',
+    name: 'Estacion Total Topcon ES-105',
+    serialNumber: 'ET-2024-002',
+    status: 'loaned',
+    description: 'Estacion total con precision angular de 5 segundos, alcance de 500m sin prisma.',
   },
   {
     id: 'activo-003',
-    nombre: 'Nivel Automatico Sokkia B40A',
-    numeroSerie: 'NA-2024-001',
-    estado: 'disponible',
-    descripcion: 'Nivel automatico con precision de 1mm por km, aumento de 24x.',
+    name: 'Nivel Automatico Sokkia B40A',
+    serialNumber: 'NA-2024-001',
+    status: 'available',
+    description: 'Nivel automatico con precision de 1mm por km, aumento de 24x.',
   },
   {
     id: 'activo-004',
-    nombre: 'GPS Diferencial Trimble R2',
-    numeroSerie: 'GPS-2024-001',
-    estado: 'disponible',
-    descripcion: 'Receptor GNSS con precision centimetrica en modo RTK.',
+    name: 'GPS Diferencial Trimble R2',
+    serialNumber: 'GPS-2024-001',
+    status: 'available',
+    description: 'Receptor GNSS con precision centimetrica en modo RTK.',
   },
   {
     id: 'activo-005',
-    nombre: 'Prisma con Baston Topcon',
-    numeroSerie: 'PB-2024-001',
-    estado: 'disponible',
-    descripcion: 'Prisma circular con baston telescopico de 2.5m.',
+    name: 'Prisma con Baston Topcon',
+    serialNumber: 'PB-2024-001',
+    status: 'available',
+    description: 'Prisma circular con baston telescopico de 2.5m.',
   },
 ];
 
 interface SeedPrestamo {
   id: string;
   userId: string;
-  activoId: string;
-  grupo: string;
-  cuadrilla: string;
-  razon: string;
-  estado: 'activo' | 'devuelto';
-  fechaPrestamo: Timestamp;
-  fechaDevolucion: Timestamp | null;
-  reporteDano: boolean;
+  assetId: string;
+  group: string;
+  crew: string;
+  reason: string;
+  status: 'active' | 'returned';
+  loanDate: Timestamp;
+  returnDate: Timestamp | null;
+  damageReported: boolean;
   createdAt: Timestamp;
 }
 
@@ -159,57 +160,58 @@ const prestamos: SeedPrestamo[] = [
   {
     id: 'prestamo-001',
     userId: 'user-001',
-    activoId: 'activo-002',
-    grupo: 'Grupo 3',
-    cuadrilla: 'Cuadrilla A',
-    razon: 'Practica de levantamiento topografico - Curso CI-3201',
-    estado: 'activo',
-    fechaPrestamo: twoDaysAgo,
-    fechaDevolucion: null,
-    reporteDano: false,
+    assetId: 'activo-002',
+    group: 'Grupo 3',
+    crew: 'Cuadrilla A',
+    reason: 'Practica de levantamiento topografico - Curso CI-3201',
+    status: 'active',
+    loanDate: twoDaysAgo,
+    returnDate: null,
+    damageReported: false,
     createdAt: twoDaysAgo,
   },
   {
     id: 'prestamo-002',
     userId: 'user-001',
-    activoId: 'activo-006',
-    grupo: 'Grupo 3',
-    cuadrilla: 'Cuadrilla A',
-    razon: 'Practica de levantamiento topografico - Curso CI-3201',
-    estado: 'activo',
-    fechaPrestamo: twoDaysAgo,
-    fechaDevolucion: null,
-    reporteDano: false,
+    assetId: 'activo-006',
+    group: 'Grupo 3',
+    crew: 'Cuadrilla A',
+    reason: 'Practica de levantamiento topografico - Curso CI-3201',
+    status: 'active',
+    loanDate: twoDaysAgo,
+    returnDate: null,
+    damageReported: false,
     createdAt: twoDaysAgo,
   },
   {
     id: 'prestamo-003',
     userId: 'user-002',
-    activoId: 'activo-009',
-    grupo: 'Grupo 1',
-    cuadrilla: 'Cuadrilla B',
-    razon: 'Trabajo Final de Graduacion - Levantamiento catastral',
-    estado: 'activo',
-    fechaPrestamo: fiveDaysAgo,
-    fechaDevolucion: null,
-    reporteDano: false,
+    assetId: 'activo-009',
+    group: 'Grupo 1',
+    crew: 'Cuadrilla B',
+    reason: 'Trabajo Final de Graduacion - Levantamiento catastral',
+    status: 'active',
+    loanDate: fiveDaysAgo,
+    returnDate: null,
+    damageReported: false,
     createdAt: fiveDaysAgo,
   },
   {
     id: 'prestamo-004',
     userId: 'user-003',
-    activoId: 'activo-010',
-    grupo: 'Docencia',
-    cuadrilla: 'N/A',
-    razon: 'Demostracion en clase de Topografia II',
-    estado: 'devuelto',
-    fechaPrestamo: tenDaysAgo,
-    fechaDevolucion: fiveDaysAgo,
-    reporteDano: true,
+    assetId: 'activo-010',
+    group: 'Docencia',
+    crew: 'N/A',
+    reason: 'Demostracion en clase de Topografia II',
+    status: 'returned',
+    loanDate: tenDaysAgo,
+    returnDate: fiveDaysAgo,
+    damageReported: true,
     createdAt: tenDaysAgo,
   },
 ];
 
+// ─── Seed Functions ──────────────────────────────────────────────────────────
 
 async function clearCollections() {
   const collections = ['users', 'activos', 'prestamos'];
@@ -266,6 +268,8 @@ async function seedPrestamos() {
   console.log(`  Seeded ${prestamos.length} prestamos`);
 }
 
+// ─── Main ────────────────────────────────────────────────────────────────────
+
 async function main() {
   console.log('\nSeeding Firestore emulator...\n');
 
@@ -274,6 +278,7 @@ async function main() {
   await seedActivos();
   await seedPrestamos();
 
+  console.log('\nDone! Emulator data is ready.\n');
   console.log('Test credentials:');
   console.log('  Admin:  jccoto@itcr.ac.cr / Admin123!');
   console.log('  User 1: estudiante1@estudiantec.cr / User123!');
