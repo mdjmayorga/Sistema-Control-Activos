@@ -8,7 +8,7 @@
 
 	<main class="prestamos-page__content">
 		<div class="prestamos-page__panel">
-			<app-prestamos-list [prestamos]="prestamos"></app-prestamos-list>
+			<app-prestamos-list [prestamos]="prestamos" [mostrarBotonDevolver]="mostrarBotonDevolver" (devolver)="onDevolverPrestamo($event)"></app-prestamos-list>
 		</div>
 	</main>
 </section>

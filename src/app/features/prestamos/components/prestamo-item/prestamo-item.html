@@ -10,5 +10,15 @@
 			Fecha de devolución:
 			{{ prestamo.fecha_devolucion ? (prestamo.fecha_devolucion | date:'dd/MM/yyyy') : 'Pendiente' }}
 		</p>
+
+		@if (mostrarBotonDevolver) {
+			<app-devolver-button (devolverClick)="abrirModal()"></app-devolver-button>
+		}
 	</div>
 </article>
+
+<app-devolucion-modal
+	[abierto]="modalAbierto"
+	(cerrar)="cerrarModal()"
+	(confirmar)="confirmarDevolucion($event)">
+</app-devolucion-modal>

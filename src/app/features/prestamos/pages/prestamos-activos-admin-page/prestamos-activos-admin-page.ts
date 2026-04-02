@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { DevolucionPrestamoPayload } from '../../components/prestamo-item/prestamo-item';
 import { PrestamosList } from '../../components/prestamos-list/prestamos-list';
 import { Prestamo } from '../../models/prestamo';
 
@@ -11,8 +13,11 @@ import { Prestamo } from '../../models/prestamo';
   styleUrl: './prestamos-activos-admin-page.css',
 })
 export class PrestamosActivosAdminPage {
+  private readonly route = inject(ActivatedRoute);
+
   titulo = 'Prestamos activos';
   descripcion = 'Consulte los prestamos actualmente registrados en el sistema';
+  mostrarBotonDevolver = false;
 
   prestamos: Prestamo[] = [
     {
@@ -37,4 +42,20 @@ export class PrestamosActivosAdminPage {
       fecha_devolucion: null,
     },
   ];
+
+  constructor() {
+    this.route.data.subscribe((data) => {
+      this.mostrarBotonDevolver = data['mostrarBotonDevolver'] === true;
+    });
+  }
+
+  onDevolverPrestamo(payload: DevolucionPrestamoPayload): void {
+    const fechaActual = new Date().toISOString();
+
+    this.prestamos = this.prestamos.map((prestamo) =>
+      prestamo.id === payload.prestamoId
+        ? { ...prestamo, fecha_devolucion: fechaActual }
+        : prestamo
+    );
+  }
 }

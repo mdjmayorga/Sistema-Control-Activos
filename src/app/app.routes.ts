@@ -12,10 +12,12 @@ export const routes: Routes = [
     {
         path: 'prestamos-activos',
         component: PrestamosActivosAdminPage,
+        data: { mostrarBotonDevolver: true },
     },
     {
         path: 'mis-prestamos',
         component: PrestamosActivosAdminPage,
+        data: { mostrarBotonDevolver: true },
     },
     {
         path: 'prestamos-activos-admin-page',

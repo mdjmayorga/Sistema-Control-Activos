@@ -1,0 +1,14 @@
+.devolver-button {
+	margin-top: 10px;
+	padding: 8px 14px;
+	border: 2px solid #2859bb;
+	background: transparent;
+	color: #ffffff;
+	border-radius: 8px;
+	cursor: pointer;
+	font-size: 14px;
+}
+    
+.devolver-button:hover {
+	background: rgba(63, 110, 239, 0.298);
+}

@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Prestamo } from '../../models/prestamo';
-import { PrestamoItem } from '../prestamo-item/prestamo-item';
+import { DevolucionPrestamoPayload, PrestamoItem } from '../prestamo-item/prestamo-item';
 
 @Component({
   selector: 'app-prestamos-list',
@@ -12,5 +12,11 @@ import { PrestamoItem } from '../prestamo-item/prestamo-item';
 })
 export class PrestamosList {
   @Input() prestamos: Prestamo[] = [];
+  @Input() mostrarBotonDevolver = false;
+  @Output() devolver = new EventEmitter<DevolucionPrestamoPayload>();
+
+  onDevolver(payload: DevolucionPrestamoPayload): void {
+    this.devolver.emit(payload);
+  }
 
 }
