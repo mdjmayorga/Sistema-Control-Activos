@@ -1,18 +1,13 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Navbar } from './components/navbar/navbar';
+import { CommonModule } from '@angular/common';
+import { UserNavigationComponent } from './layout/components/sidebar/user-navigation/user-navigation';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar],
+  standalone: true,
+  imports: [CommonModule, RouterOutlet, UserNavigationComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App {
-  protected readonly title = signal('sistema-control-activos');
-  protected readonly isNavbarCollapsed = signal(false);
-
-  protected toggleNavbar(): void {
-    this.isNavbarCollapsed.update((collapsed) => !collapsed);
-  }
-}
+export class App {}

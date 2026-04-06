@@ -1,23 +1,40 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PrestamosList } from '../../components/prestamos-list/prestamos-list';
+import { Prestamo } from '../../models/prestamo';
 
-import { PrestamosActivosAdminPage } from './prestamos-activos-admin-page';
+@Component({
+  selector: 'app-prestamos-activos-admin-page',
+  standalone: true,
+  imports: [CommonModule, PrestamosList],
+  templateUrl: './prestamos-activos-admin-page.html',
+  styleUrl: './prestamos-activos-admin-page.css',
+})
+export class PrestamosActivosAdminPage {
+  titulo = 'Prestamos activos';
+  descripcion = 'Consulte los prestamos actualmente registrados en el sistema';
 
-describe('PrestamosActivosAdminPage', () => {
-  let component: PrestamosActivosAdminPage;
-  let fixture: ComponentFixture<PrestamosActivosAdminPage>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [PrestamosActivosAdminPage]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(PrestamosActivosAdminPage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  prestamos: Prestamo[] = [
+    {
+      id: '1',
+      nombre_articulo: 'Articulo prestado 1',
+      nombre_persona: 'Nombre del usuario',
+      fecha_prestamos: '2026-03-12T09:00:00',
+      
+    },
+    {
+      id: '2',
+      nombre_articulo: 'Articulo prestado 2',
+      nombre_persona: 'Nombre del usuario',
+      fecha_prestamos: '2026-03-13T10:30:00',
+      
+    },
+    {
+      id: '3',
+      nombre_articulo: 'Articulo prestado 3',
+      nombre_persona: 'Nombre del usuario',
+      fecha_prestamos: '2026-03-15T08:15:00',
+   
+    },
+  ];
+}

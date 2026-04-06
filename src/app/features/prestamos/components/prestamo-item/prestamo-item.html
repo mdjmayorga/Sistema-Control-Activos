@@ -6,9 +6,5 @@
 
 	<div class="prestamo-item__right">
 		<p>Fecha del préstamo: {{ prestamo.fecha_prestamos | date:'dd/MM/yyyy' }}</p>
-		<p>
-			Fecha de devolución:
-			{{ prestamo.fecha_devolucion ? (prestamo.fecha_devolucion | date:'dd/MM/yyyy') : 'Pendiente' }}
-		</p>
 	</div>
 </article>
