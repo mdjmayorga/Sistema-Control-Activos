@@ -1,40 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PrestamosList } from '../../components/prestamos-list/prestamos-list';
-import { Prestamo } from '../../models/prestamo';
+import { LoanService } from '../../../loans/services/loan.service';
+import { Loan } from '../../../../core/models/loan.model';
 
 @Component({
   selector: 'app-prestamos-activos-admin-page',
   standalone: true,
-  imports: [CommonModule, PrestamosList],
+  imports: [CommonModule],
   templateUrl: './prestamos-activos-admin-page.html',
-  styleUrl: './prestamos-activos-admin-page.css',
+  styleUrl: './prestamos-activos-admin-page.css'
 })
-export class PrestamosActivosAdminPage {
-  titulo = 'Prestamos activos';
-  descripcion = 'Consulte los prestamos actualmente registrados en el sistema';
+export class PrestamosActivosAdminPage implements OnInit {
+  prestamosActivos: Loan[] = [];
+  cargando = true;
 
-  prestamos: Prestamo[] = [
-    {
-      id: '1',
-      nombre_articulo: 'Articulo prestado 1',
-      nombre_persona: 'Nombre del usuario',
-      fecha_prestamos: '2026-03-12T09:00:00',
-      fecha_devolucion: '2026-03-19T09:00:00',
-    },
-    {
-      id: '2',
-      nombre_articulo: 'Articulo prestado 2',
-      nombre_persona: 'Nombre del usuario',
-      fecha_prestamos: '2026-03-13T10:30:00',
-      fecha_devolucion: null,
-    },
-    {
-      id: '3',
-      nombre_articulo: 'Articulo prestado 3',
-      nombre_persona: 'Nombre del usuario',
-      fecha_prestamos: '2026-03-15T08:15:00',
-      fecha_devolucion: null,
-    },
-  ];
+  constructor(private loanService: LoanService) {}
+
+  ngOnInit(): void {
+    this.loanService.obtenerPrestamosActivos().subscribe({
+      next: (data) => {
+        this.prestamosActivos = data;
+        this.cargando = false;
+      },
+      error: (error) => {
+        console.error('Error al obtener préstamos activos:', error);
+        this.cargando = false;
+      }
+    });
+  }
 }

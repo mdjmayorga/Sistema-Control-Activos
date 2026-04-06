@@ -1,5 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, addDoc, collectionData, query, where } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  collectionData,
+  query,
+  where,
+  orderBy
+} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Loan } from '../../../core/models/loan.model';
 
@@ -16,7 +24,11 @@ export class LoanService {
 
   obtenerPrestamosActivos(): Observable<Loan[]> {
     const prestamosRef = collection(this.firestore, 'prestamos');
-    const prestamosActivosQuery = query(prestamosRef, where('estado', '==', 'activo'));
+    const prestamosActivosQuery = query(
+      prestamosRef,
+      where('estado', '==', 'activo'),
+      orderBy('fechaPrestamo', 'desc')
+    );
 
     return collectionData(prestamosActivosQuery, { idField: 'id' }) as Observable<Loan[]>;
   }
