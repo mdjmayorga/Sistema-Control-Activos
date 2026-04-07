@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Prestamo } from '../../../core/models/prestamo';
+import { Loan } from '../../../core/models/loan.model';
 import { ReturnButton } from '../../../features/returns/components/return-button/return-button';
 import { ReturnModal } from '../../../features/returns/components/return-modal/return-modal';
 
 export interface loanReturnPayload {
-  prestamoId: string;
+  loanId: string;
   productoDanado: boolean;
 }
 
@@ -17,7 +17,7 @@ export interface loanReturnPayload {
   styleUrl: './loan-item.css',
 })
 export class LoanItem {
-  @Input() prestamo!: Prestamo;
+  @Input() loan!: Loan;
   @Input() mostrarBotonDevolver = false;
   @Input() mostrarFechaDevolucion = false;
   @Output() devolver = new EventEmitter<loanReturnPayload>();
@@ -34,7 +34,7 @@ export class LoanItem {
 
   confirmarDevolucion(payload?: { productoDanado: boolean }): void {
     this.devolver.emit({
-      prestamoId: this.prestamo.id,
+      loanId: this.loan.id ?? '',
       productoDanado: payload?.productoDanado ?? false,
     });
     this.modalAbierto = false;

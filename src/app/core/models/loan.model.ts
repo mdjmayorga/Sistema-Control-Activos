@@ -7,6 +7,7 @@ export interface Loan {
   numeroSerie?: string;
   estado: 'activo' | 'devuelto';
   fechaPrestamo: string;
+  fechaDevolucion?: string | null;
   usuarioId: string;
   usuarioNombre: string;
 }

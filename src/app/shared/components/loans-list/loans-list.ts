@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Prestamo } from '../../../core/models/prestamo';
+import { Loan } from '../../../core/models/loan.model';
 import { loanReturnPayload, LoanItem } from '../loan-item/loan-item';
 
 @Component({
@@ -11,7 +11,7 @@ import { loanReturnPayload, LoanItem } from '../loan-item/loan-item';
   styleUrl: './loans-list.css',
 })
 export class LoansList {
-  @Input() prestamos: Prestamo[] = [];
+  @Input() loans: Loan[] = [];
   @Input() mostrarBotonDevolver = false;
   @Input() mostrarFechaDevolucion = false;
   @Output() devolver = new EventEmitter<loanReturnPayload>();

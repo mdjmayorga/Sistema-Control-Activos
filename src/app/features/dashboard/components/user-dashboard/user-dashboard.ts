@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoanService } from '../../../loans/services/loan.service';
 import { Loan } from '../../../../core/models/loan.model';
-import { Prestamo } from '../../../../core/models/prestamo';
 import { LoansList } from '../../../../shared/components/loans-list/loans-list';
 import { loanReturnPayload } from '../../../../shared/components/loan-item/loan-item';
 import { PageLayout } from '../../../../shared/components/page-layout/page-layout';
@@ -16,8 +15,7 @@ import { PageLayout } from '../../../../shared/components/page-layout/page-layou
 export class UserDashboardComponent implements OnInit {
   titulo = 'Mis prestamos';
   descripcion = 'Consulte y gestione los prestamos que tiene activos actualmente';
-  prestamosActivos: Loan[] = [];
-  prestamosUsuario: Prestamo[] = [];
+  loans: Loan[] = [];
   cargando = true;
 
   constructor(private loanService: LoanService) {}
@@ -25,8 +23,7 @@ export class UserDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loanService.obtenerPrestamosActivos().subscribe({
       next: (data) => {
-        this.prestamosActivos = data;
-        this.prestamosUsuario = this.mapLoansToPrestamos(data);
+        this.loans = data;
         this.cargando = false;
       },
       error: (error) => {
@@ -38,26 +35,11 @@ export class UserDashboardComponent implements OnInit {
 
   async onDevolverPrestamo(payload: loanReturnPayload): Promise<void> {
     try {
-      await this.loanService.marcarPrestamoComoDevuelto(payload.prestamoId);
+      await this.loanService.marcarPrestamoComoDevuelto(payload.loanId);
 
-      this.prestamosActivos = this.prestamosActivos.filter(
-        (prestamo) => prestamo.id !== payload.prestamoId
-      );
-      this.prestamosUsuario = this.prestamosUsuario.filter(
-        (prestamo) => prestamo.id !== payload.prestamoId
-      );
+      this.loans = this.loans.filter((loan) => loan.id !== payload.loanId);
     } catch (error) {
       console.error('Error al devolver el préstamo:', error);
     }
-  }
-
-  private mapLoansToPrestamos(loans: Loan[]): Prestamo[] {
-    return loans.map((loan, index) => ({
-      id: loan.id ?? `loan-${index}`,
-      nombre_articulo: loan.activo,
-      nombre_persona: loan.usuarioNombre,
-      fecha_prestamos: loan.fechaPrestamo,
-      fecha_devolucion: loan.estado === 'devuelto' ? loan.fechaPrestamo : null,
-    }));
   }
 }

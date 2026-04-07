@@ -5,7 +5,7 @@
 
   @if (!cargando) {
     <app-prestamos-list
-      [prestamos]="prestamosUsuario"
+      [loans]="loans"
       [mostrarBotonDevolver]="true"
       (devolver)="onDevolverPrestamo($event)">
     </app-prestamos-list>
