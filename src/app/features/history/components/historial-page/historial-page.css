@@ -1,14 +1,6 @@
-.placeholder-page {
-  padding: 32px;
-  color: #e2e8f0;
-}
-
-.placeholder-page h1 {
-  margin: 0 0 8px;
-  font-size: 28px;
-}
-
-.placeholder-page p {
-  margin: 0;
-  color: #a8b0be;
+.status-message {
+  padding: 18px 26px;
+  font-size: 14px;
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(160, 174, 192, 0.14);
 }

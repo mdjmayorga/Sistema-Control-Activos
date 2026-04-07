@@ -1,12 +1,6 @@
-<div class="layout">
-  
-  <div class="content-area">
-    <div class="loan-header">
-      <h1>Solicitar Prestamo</h1>
-    </div>
-
-    <div class="loan-form-wrapper">
-      <form class="form-panel" [formGroup]="loanForm" (ngSubmit)="onSubmit()">
+<app-page-layout [title]="titulo" [description]="descripcion">
+  <div class="loan-form-wrapper">
+    <form class="form-panel" [formGroup]="loanForm" (ngSubmit)="onSubmit()">
         <div class="row two-cols">
           <div class="field">
             <label>GRUPO DE TOPOGRAFÍA</label>
@@ -122,7 +116,6 @@
           <button class="btn btn-rose" type="submit">Confirmar prestamo</button>
           <button class="btn btn-blue" type="button" (click)="onCancel()">Cancelar</button>
         </div>
-      </form>
-    </div>
+    </form>
   </div>
-</div>
+</app-page-layout>

@@ -4,9 +4,11 @@ import {
   collection,
   addDoc,
   collectionData,
+  doc,
   query,
   where,
-  orderBy
+  orderBy,
+  updateDoc
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Loan } from '../../../core/models/loan.model';
@@ -31,5 +33,13 @@ export class LoanService {
     );
 
     return collectionData(prestamosActivosQuery, { idField: 'id' }) as Observable<Loan[]>;
+  }
+
+  async marcarPrestamoComoDevuelto(prestamoId: string): Promise<void> {
+    const prestamoRef = doc(this.firestore, 'prestamos', prestamoId);
+    await updateDoc(prestamoRef, {
+      estado: 'devuelto',
+      fechaDevolucion: new Date().toISOString(),
+    });
   }
 }
