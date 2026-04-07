@@ -1,18 +1,23 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { LoanService } from '../../services/loan.service';
+import { UserNavigationComponent } from '../../../../layout/components/sidebar/user-navigation/user-navigation';
 
 @Component({
   selector: 'app-loan-request',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, UserNavigationComponent],
   templateUrl: './loan-request.html',
   styleUrl: './loan-request.css'
 })
 export class LoanRequestComponent {
   loanForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private loanService: LoanService
+  ) {
     this.loanForm = this.fb.group({
       grupoTopografia: ['', Validators.required],
       cuadrilla: ['', Validators.required],
@@ -22,18 +27,30 @@ export class LoanRequestComponent {
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.loanForm.valid) {
-      console.log('Formulario enviado:', this.loanForm.value);
-      alert('Solicitud registrada correctamente');
-      this.loanForm.reset();
+      const prestamo = {
+        ...this.loanForm.value,
+        estado: 'activo' as const,
+        fechaPrestamo: new Date().toISOString(),
+        usuarioId: 'usuario-prueba',
+        usuarioNombre: 'Usuario Demo'
+      };
+
+      try {
+        await this.loanService.crearPrestamo(prestamo);
+        alert('Solicitud registrada correctamente');
+        this.loanForm.reset();
+      } catch (error) {
+        console.error('Error al registrar préstamo:', error);
+        alert('Ocurrió un error al registrar el préstamo');
+      }
     } else {
       this.loanForm.markAllAsTouched();
     }
   }
 
   onCancel() {
-  this.loanForm.reset();
+    this.loanForm.reset();
+  }
 }
-}
-

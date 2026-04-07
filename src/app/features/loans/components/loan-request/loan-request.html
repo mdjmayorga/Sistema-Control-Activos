@@ -1,102 +1,128 @@
-<div class="page">
-  <div class="wrapper">
-    <nav class="topbar">
-      <a class="active">Solicitar préstamo</a>
-      <a href="#">Devolución</a>
-      <a href="#">Historial</a>
-    </nav>
+<div class="layout">
+  
+  <div class="content-area">
+    <div class="loan-header">
+      <h1>Solicitar Prestamo</h1>
+    </div>
 
-    <section class="header">
-      <h1>Formulario de Topografia</h1>
-      <p>
-        Para realizar el prestamo del activo, primero debe verificarse presencialmente
-        en bodega la disponibilidad del equipo solicitado
-      </p>
-    </section>
+    <div class="loan-form-wrapper">
+      <form class="form-panel" [formGroup]="loanForm" (ngSubmit)="onSubmit()">
+        <div class="row two-cols">
+          <div class="field">
+            <label>GRUPO DE TOPOGRAFÍA</label>
+            <select formControlName="grupoTopografia">
+              <option value="">seleccione</option>
+              <option value="Grupo de Topografia">Grupo de Topografía</option>
+              <option value="Grupo de Taller">Grupo de Taller</option>
+              <option value="Grupo de Proyecto">Grupo de Proyecto</option>
+            </select>
 
-    <form class="form-panel" [formGroup]="loanForm" (ngSubmit)="onSubmit()">
-      <div class="row two-cols">
+            <small
+              class="error"
+              *ngIf="loanForm.get('grupoTopografia')?.invalid && loanForm.get('grupoTopografia')?.touched"
+            >
+              Este campo es obligatorio
+            </small>
+          </div>
+
+          <div class="field">
+            <label>CUADRILLA</label>
+            <select formControlName="cuadrilla">
+              <option value="">seleccione</option>
+              <option value="Cuadrilla 1">Cuadrilla 1</option>
+              <option value="Cuadrilla 2">Cuadrilla 2</option>
+              <option value="Cuadrilla 3">Cuadrilla 3</option>
+              <option value="Cuadrilla 4">Cuadrilla 4</option>
+              <option value="Cuadrilla 5">Cuadrilla 5</option>
+              <option value="Cuadrilla 6">Cuadrilla 6</option>
+              <option value="Cuadrilla 7">Cuadrilla 7</option>
+              <option value="Cuadrilla 8">Cuadrilla 8</option>
+              <option value="Cuadrilla 9">Cuadrilla 9</option>
+              <option value="Cuadrilla 10">Cuadrilla 10</option>
+              <option value="Ninguna">Ninguna</option>
+            </select>
+
+            <small
+              class="error"
+              *ngIf="loanForm.get('cuadrilla')?.invalid && loanForm.get('cuadrilla')?.touched"
+            >
+              Este campo es obligatorio
+            </small>
+          </div>
+        </div>
+
         <div class="field">
-          <label>GRUPO DE TOPOGRAFÍA</label>
-          <select formControlName="grupoTopografia">
-            <option value="">Seleccione</option>
-            <option value="Grupo 01">Grupo 01</option>
-            <option value="Grupo 02">Grupo 02</option>
-            <option value="Grupo 03">Grupo 03</option>
-            <option value="Grupo 04">Grupo 04</option>
+          <label>RAZON DEL PRÉSTAMO</label>
+          <select formControlName="razonPrestamo">
+            <option value="">seleccione</option>
+            <option value="Docencia">Docencia</option>
+            <option value="Curso">Curso</option>
+            <option value="TFG">TFG</option>
           </select>
 
-          <small class="error"
-            *ngIf="loanForm.get('grupoTopografia')?.invalid && loanForm.get('grupoTopografia')?.touched">
+          <small
+            class="error"
+            *ngIf="loanForm.get('razonPrestamo')?.invalid && loanForm.get('razonPrestamo')?.touched"
+          >
+            Este campo es obligatorio
+          </small>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="field">
+          <label>ACTIVO</label>
+          <select formControlName="activo">
+            <option value="">seleccione</option>
+            <option value="Tripode de Aluminio">Trípode de Aluminio</option>
+            <option value="Nivel Automatico">Nivel Automático</option>
+            <option value="Estaciones Totales">Estaciones Totales(Sokkia)</option>
+            <option value="Estacion">Estadias</option>
+            <option value="Baston de Prisma">Bastón de Prisma</option>
+            <option value="Prisma">Prisma</option>
+            <option value="Tripode">Trípode</option>
+            <option value="Cinta metrica de topografia">Cinta métrica de topografía</option>
+            <option value="Odometro">Odómetro</option>
+            <option value="Aplica">Aplica</option>
+          </select>
+
+          <small
+            class="error"
+            *ngIf="loanForm.get('activo')?.invalid && loanForm.get('activo')?.touched"
+          >
             Este campo es obligatorio
           </small>
         </div>
 
         <div class="field">
-          <label>CUADRILLA</label>
-          <select formControlName="cuadrilla">
-            <option value="">Seleccione</option>
-            <option value="Cuadrilla 1">Cuadrilla 1</option>
-            <option value="Cuadrilla 2">Cuadrilla 2</option>
-            <option value="Cuadrilla 3">Cuadrilla 3</option>
-          </select>
+          <label>
+            NÚMERO DE SERIE
+            <span class="optional">Opcional</span>
+          </label>
 
-          <small class="error"
-            *ngIf="loanForm.get('cuadrilla')?.invalid && loanForm.get('cuadrilla')?.touched">
-            Este campo es obligatorio
+          <input
+            type="text"
+            formControlName="numeroSerie"
+            placeholder="Ejemplo: SRV-2021008-01"
+          />
+
+          <small
+            class="error"
+            *ngIf="loanForm.get('numeroSerie')?.invalid && loanForm.get('numeroSerie')?.touched"
+          >
+            El formato del número de serie no es válido
+          </small>
+
+          <small class="help-text">
+            Si el activo no trae su respectivo número de serie omitirlo
           </small>
         </div>
-      </div>
 
-      <div class="field">
-        <label>RAZÓN DEL PRÉSTAMO</label>
-        <select formControlName="razonPrestamo">
-          <option value="">Seleccione</option>
-          <option value="Docencia">Docencia</option>
-          <option value="Curso">Curso</option>
-          <option value="TFG">TFG</option>
-        </select>
-
-        <small class="error"
-          *ngIf="loanForm.get('razonPrestamo')?.invalid && loanForm.get('razonPrestamo')?.touched">
-          Este campo es obligatorio
-        </small>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="field">
-        <label>ACTIVO</label>
-        <select formControlName="activo">
-          <option value="">Seleccione</option>
-          <option value="Tripode de Aluminio">Tripode de Aluminio</option>
-          <option value="Nivel automatico">Nivel automatico</option>
-          <option value="Estacion total">Estacion total</option>
-        </select>
-
-        <small class="error"
-          *ngIf="loanForm.get('activo')?.invalid && loanForm.get('activo')?.touched">
-          Este campo es obligatorio
-        </small>
-      </div>
-
-      <div class="field">
-        <label>
-          NÚMERO DE SERIE
-          <span class="optional">Opcional</span>
-        </label>
-        <input type="text" formControlName="numeroSerie" placeholder="Ejemplo: SRV-2021008-01" />
-        <small class="error"
-          *ngIf="loanForm.get('numeroSerie')?.invalid && loanForm.get('numeroSerie')?.touched">
-          El formato del número de serie no es válido
-        </small>
-        <small>Si el activo no trae su respectivo número de serie omitirlo</small>
-      </div>
-
-      <div class="actions">
-        <button class="btn btn-rose" type="submit">Confirmar prestamo</button>
-        <button class="btn btn-blue" type="button" (click)="onCancel()">Cancelar</button>
-      </div>
-    </form>
+        <div class="actions">
+          <button class="btn btn-rose" type="submit">Confirmar prestamo</button>
+          <button class="btn btn-blue" type="button" (click)="onCancel()">Cancelar</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
