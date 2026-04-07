@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DevolverButton } from './devolver-button';
+import { ReturnModal } from './return-modal';
 
-describe('DevolverButton', () => {
-  let component: DevolverButton;
-  let fixture: ComponentFixture<DevolverButton>;
+describe('ReturnModal', () => {
+  let component: ReturnModal;
+  let fixture: ComponentFixture<ReturnModal>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DevolverButton]
+      imports: [ReturnModal]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DevolverButton);
+    fixture = TestBed.createComponent(ReturnModal);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -4,35 +4,35 @@
 	height: 100%;
 }
 
-.prestamos-page {
+.loans-page {
 	padding: 32px;
 	min-height: 100%;
 	background-color: var(--background-color);
 	box-sizing: border-box;
 }
 
-.prestamos-page__header {
+.loans-page__header {
 	margin-bottom: 24px;
 }
 
-.prestamos-page__title {
+.loans-page__title {
 	margin: 0 0 8px;
 	font-size: 28px;
 	font-weight: 700;
 	color: #e2e8f0;
 }
 
-.prestamos-page__description {
+.loans-page__description {
 	margin: 0;
 	font-size: 15px;
 	color: #a8b0be;
 }
 
-.prestamos-page__content {
+.loans-page__content {
 	width: 100%;
 }
 
-.prestamos-page__panel {
+.loans-page__panel {
 	background-color: var(--background-color);
 	border-radius: 12px;
 	padding: 1px 16px;

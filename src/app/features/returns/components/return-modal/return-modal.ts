@@ -2,13 +2,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-devolucion-modal',
+  selector: 'app-return-modal',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './devolucion-modal.html',
-  styleUrl: './devolucion-modal.css',
+  templateUrl: './return-modal.html',
+  styleUrl: './return-modal.css',
 })
-export class DevolucionModal {
+export class ReturnModal {
   @Input() abierto = false;
   @Output() cerrar = new EventEmitter<void>();
   @Output() confirmar = new EventEmitter<{ productoDanado: boolean }>();
