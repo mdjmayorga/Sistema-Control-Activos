@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { loanReturnPayload } from '../../../../shared/components/loan-item/loan-item';
 import { LoansList } from '../../../../shared/components/loans-list/loans-list';
-import { Prestamo } from '../../../../core/models/prestamo';
+import { Loan } from '../../../../core/models/loan.model';
 import { PageLayout } from '../../../../shared/components/page-layout/page-layout';
 
 @Component({
@@ -20,27 +20,39 @@ export class ActiveLoansPage {
   descripcion = 'Consulte los prestamos actualmente registrados en el sistema';
   mostrarBotonDevolver = false;
 
-  prestamos: Prestamo[] = [
+  loans: Loan[] = [
     {
       id: '1',
-      nombre_articulo: 'Articulo prestado 1',
-      nombre_persona: 'Nombre del usuario',
-      fecha_prestamos: '2026-03-12T09:00:00',
-      fecha_devolucion: '2026-03-19T09:00:00',
+      grupoTopografia: 'Grupo de Topografia',
+      cuadrilla: 'Cuadrilla 1',
+      razonPrestamo: 'Docencia',
+      activo: 'Articulo prestado 1',
+      estado: 'devuelto',
+      fechaPrestamo: '2026-03-12T09:00:00',
+      usuarioId: 'admin-demo',
+      usuarioNombre: 'Nombre del usuario',
     },
     {
       id: '2',
-      nombre_articulo: 'Articulo prestado 2',
-      nombre_persona: 'Nombre del usuario',
-      fecha_prestamos: '2026-03-13T10:30:00',
-      fecha_devolucion: null,
+      grupoTopografia: 'Grupo de Taller',
+      cuadrilla: 'Cuadrilla 2',
+      razonPrestamo: 'Curso',
+      activo: 'Articulo prestado 2',
+      estado: 'activo',
+      fechaPrestamo: '2026-03-13T10:30:00',
+      usuarioId: 'admin-demo',
+      usuarioNombre: 'Nombre del usuario',
     },
     {
       id: '3',
-      nombre_articulo: 'Articulo prestado 3',
-      nombre_persona: 'Nombre del usuario',
-      fecha_prestamos: '2026-03-15T08:15:00',
-      fecha_devolucion: null,
+      grupoTopografia: 'Grupo de Proyecto',
+      cuadrilla: 'Cuadrilla 3',
+      razonPrestamo: 'TFG',
+      activo: 'Articulo prestado 3',
+      estado: 'activo',
+      fechaPrestamo: '2026-03-15T08:15:00',
+      usuarioId: 'admin-demo',
+      usuarioNombre: 'Nombre del usuario',
     },
   ];
 
@@ -51,12 +63,10 @@ export class ActiveLoansPage {
   }
 
   onDevolverPrestamo(payload: loanReturnPayload): void {
-    const fechaActual = new Date().toISOString();
-
-    this.prestamos = this.prestamos.map((prestamo) =>
-      prestamo.id === payload.prestamoId
-        ? { ...prestamo, fecha_devolucion: fechaActual }
-        : prestamo
+    this.loans = this.loans.map((loan) =>
+      loan.id === payload.loanId
+        ? { ...loan, estado: 'devuelto' }
+        : loan
     );
   }
 }

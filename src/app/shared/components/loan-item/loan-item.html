@@ -1,16 +1,16 @@
 <article class="prestamo-item">
 	<div class="prestamo-item__left">
-		<h3>{{ prestamo.nombre_articulo }}</h3>
-		<p>Usuario: {{ prestamo.nombre_persona }}</p>
+		<h3>{{ loan.activo }}</h3>
+		<p>Usuario: {{ loan.usuarioNombre }}</p>
 	</div>
 
 	<div class="prestamo-item__right">
-		<p>Fecha del préstamo: {{ prestamo.fecha_prestamos | date:'dd/MM/yyyy' }}</p>
+		<p>Fecha del préstamo: {{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</p>
 
 		@if (mostrarFechaDevolucion) {
 			<p>
 				Fecha de devolución:
-				{{ prestamo.fecha_devolucion ? (prestamo.fecha_devolucion | date:'dd/MM/yyyy') : 'Pendiente' }}
+				{{ loan.fechaDevolucion ? (loan.fechaDevolucion | date:'dd/MM/yyyy') : 'Pendiente' }}
 			</p>
 		}
 

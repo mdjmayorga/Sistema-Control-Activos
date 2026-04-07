@@ -1,15 +1,15 @@
 <div class="prestamos-list-container">
-  @if (prestamos.length === 0) {
+  @if (loans.length === 0) {
     <div class="empty-state">
       <p>No hay préstamos registrados</p>
     </div>
   }
   
-  @if (prestamos.length > 0) {
+  @if (loans.length > 0) {
     <div class="prestamos-list">
-      @for (prestamo of prestamos; track prestamo.id) {
+      @for (loan of loans; track loan.id) {
         <app-loan-item
-          [prestamo]="prestamo"
+          [loan]="loan"
           [mostrarBotonDevolver]="mostrarBotonDevolver"
           [mostrarFechaDevolucion]="mostrarFechaDevolucion"
           (devolver)="onDevolver($event)"></app-loan-item>
