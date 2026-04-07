@@ -1,26 +1,26 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Prestamo } from '../../models/prestamo';
-import { DevolverButton } from '../devolver-button/devolver-button';
-import { DevolucionModal } from '../devolucion-modal/devolucion-modal';
+import { Prestamo } from '../../../core/models/prestamo';
+import { ReturnButton } from '../../../features/returns/components/return-button/return-button';
+import { ReturnModal } from '../../../features/returns/components/return-modal/return-modal';
 
-export interface DevolucionPrestamoPayload {
+export interface loanReturnPayload {
   prestamoId: string;
   productoDanado: boolean;
 }
 
 @Component({
-  selector: 'app-prestamo-item',
+  selector: 'app-loan-item',
   standalone: true,
-  imports: [CommonModule, DevolverButton, DevolucionModal],
-  templateUrl: './prestamo-item.html',
-  styleUrl: './prestamo-item.css',
+  imports: [CommonModule, ReturnButton, ReturnModal],
+  templateUrl: './loan-item.html',
+  styleUrl: './loan-item.css',
 })
-export class PrestamoItem {
+export class LoanItem {
   @Input() prestamo!: Prestamo;
   @Input() mostrarBotonDevolver = false;
   @Input() mostrarFechaDevolucion = false;
-  @Output() devolver = new EventEmitter<DevolucionPrestamoPayload>();
+  @Output() devolver = new EventEmitter<loanReturnPayload>();
 
   modalAbierto = false;
 

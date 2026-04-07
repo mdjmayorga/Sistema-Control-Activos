@@ -1,18 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { DevolucionPrestamoPayload } from '../../components/prestamo-item/prestamo-item';
-import { PrestamosList } from '../../components/prestamos-list/prestamos-list';
-import { Prestamo } from '../../models/prestamo';
+import { loanReturnPayload } from '../../../../shared/components/loan-item/loan-item';
+import { LoansList } from '../../../../shared/components/loans-list/loans-list';
+import { Prestamo } from '../../../../core/models/prestamo';
 
 @Component({
-  selector: 'app-prestamos-activos-admin-page',
+  selector: 'app-active-loans-page',
   standalone: true,
-  imports: [CommonModule, PrestamosList],
-  templateUrl: './prestamos-activos-admin-page.html',
-  styleUrl: './prestamos-activos-admin-page.css',
+  imports: [CommonModule, LoansList],
+  templateUrl: './active-loans.html',
+  styleUrl: './active-loans.css',
 })
-export class PrestamosActivosAdminPage {
+export class ActiveLoansPage {
   private readonly route = inject(ActivatedRoute);
 
   titulo = 'Prestamos activos';
@@ -49,7 +49,7 @@ export class PrestamosActivosAdminPage {
     });
   }
 
-  onDevolverPrestamo(payload: DevolucionPrestamoPayload): void {
+  onDevolverPrestamo(payload: loanReturnPayload): void {
     const fechaActual = new Date().toISOString();
 
     this.prestamos = this.prestamos.map((prestamo) =>

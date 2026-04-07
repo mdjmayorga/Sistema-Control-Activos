@@ -4,10 +4,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
   selector: 'app-devolver-button',
   standalone: true,
   imports: [],
-  templateUrl: './devolver-button.html',
-  styleUrl: './devolver-button.css',
+  templateUrl: './return-button.html',
+  styleUrl: './return-button.css',
 })
-export class DevolverButton {
+export class ReturnButton {
   @Output() devolverClick = new EventEmitter<void>();
 
   onClick(): void {
