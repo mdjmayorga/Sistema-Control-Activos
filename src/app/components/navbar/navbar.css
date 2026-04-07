@@ -86,11 +86,36 @@
 }
 
 .sidebar__nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   text-decoration: none;
   color: #a8b0be;
   padding: 10px 12px;
   border-radius: 8px;
   transition: background-color 120ms ease, color 120ms ease;
+}
+
+.nav-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.nav-icon--historial {
+  width: 25px;
+  height: 25px;
+}
+
+.nav-icon-only {
+  display: none;
 }
 
 .nav-label--short {
@@ -172,6 +197,14 @@
   padding-right: 8px;
 }
 
+.sidebar.is-collapsed .sidebar__settings .nav-label--short {
+  display: none;
+}
+
+.sidebar.is-collapsed .sidebar__settings .nav-icon-only {
+  display: inline-flex;
+}
+
 .sidebar.is-collapsed .action-label--full {
   display: none;
 }
@@ -186,6 +219,18 @@
 
 .sidebar.is-collapsed .nav-label--short {
   display: inline;
+}
+
+.sidebar.is-collapsed .sidebar__nav a {
+  justify-content: center;
+}
+
+.sidebar.is-collapsed .sidebar__nav a .nav-label--short {
+  display: none;
+}
+
+.sidebar.is-collapsed .sidebar__nav a .nav-icon-only {
+  display: inline-flex;
 }
 
 @media (max-width: 900px) {
