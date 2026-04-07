@@ -8,7 +8,11 @@
   @if (prestamos.length > 0) {
     <div class="prestamos-list">
       @for (prestamo of prestamos; track prestamo.id) {
-        <app-prestamo-item [prestamo]="prestamo" [mostrarBotonDevolver]="mostrarBotonDevolver" (devolver)="onDevolver($event)"></app-prestamo-item>
+        <app-prestamo-item
+          [prestamo]="prestamo"
+          [mostrarBotonDevolver]="mostrarBotonDevolver"
+          [mostrarFechaDevolucion]="mostrarFechaDevolucion"
+          (devolver)="onDevolver($event)"></app-prestamo-item>
       }
     </div>
   }

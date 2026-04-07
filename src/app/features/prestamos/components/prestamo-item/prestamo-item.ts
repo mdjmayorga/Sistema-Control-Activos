@@ -19,6 +19,7 @@ export interface DevolucionPrestamoPayload {
 export class PrestamoItem {
   @Input() prestamo!: Prestamo;
   @Input() mostrarBotonDevolver = false;
+  @Input() mostrarFechaDevolucion = false;
   @Output() devolver = new EventEmitter<DevolucionPrestamoPayload>();
 
   modalAbierto = false;

@@ -13,6 +13,7 @@ import { DevolucionPrestamoPayload, PrestamoItem } from '../prestamo-item/presta
 export class PrestamosList {
   @Input() prestamos: Prestamo[] = [];
   @Input() mostrarBotonDevolver = false;
+  @Input() mostrarFechaDevolucion = false;
   @Output() devolver = new EventEmitter<DevolucionPrestamoPayload>();
 
   onDevolver(payload: DevolucionPrestamoPayload): void {
