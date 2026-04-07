@@ -4,11 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { loanReturnPayload } from '../../../../shared/components/loan-item/loan-item';
 import { LoansList } from '../../../../shared/components/loans-list/loans-list';
 import { Prestamo } from '../../../../core/models/prestamo';
+import { PageLayout } from '../../../../shared/components/page-layout/page-layout';
 
 @Component({
   selector: 'app-active-loans-page',
   standalone: true,
-  imports: [CommonModule, LoansList],
+  imports: [CommonModule, LoansList, PageLayout],
   templateUrl: './active-loans.html',
   styleUrl: './active-loans.css',
 })

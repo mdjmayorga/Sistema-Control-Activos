@@ -1,26 +1,13 @@
-<div class="layout">
-  
-  <div class="content-area">
-    <div class="dashboard-header">
-      <h1>Mis prestamos</h1>
+<app-page-layout [title]="titulo" [description]="descripcion">
+  @if (cargando) {
+    <p class="status-message">Cargando prestamos...</p>
+  }
 
-      <div class="search-wrapper">
-        <span class="search-icon">⌕</span>
-        <input type="text" placeholder="Buscar producto prestado..." />
-      </div>
-    </div>
-
-    <div class="loans-list">
-      <p class="status-message" *ngIf="cargando">Cargando préstamos...</p>
-
-      <p class="status-message" *ngIf="!cargando && prestamosActivos.length === 0">
-        No hay préstamos activos
-      </p>
-
-      <div class="loan-item" *ngFor="let prestamo of prestamosActivos">
-        <h3>{{ prestamo.activo }}</h3>
-        <p>Fecha del prestamo: {{ prestamo.fechaPrestamo | date:'dd/MM/yyyy' }}</p>
-      </div>
-    </div>
-  </div>
-</div>
+  @if (!cargando) {
+    <app-prestamos-list
+      [prestamos]="prestamosUsuario"
+      [mostrarBotonDevolver]="true"
+      (devolver)="onDevolverPrestamo($event)">
+    </app-prestamos-list>
+  }
+</app-page-layout>

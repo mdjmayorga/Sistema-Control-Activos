@@ -1,14 +1,3 @@
-<section class="loans-page">
-	<header class="loans-page__header">
-		<div>
-			<h1 class="loans-page__title">{{ titulo }}</h1>
-			<p class="loans-page__description">{{ descripcion }}</p>
-		</div>
-	</header>
-
-	<main class="loans-page__content">
-		<div class="loans-page__panel">
-			<app-prestamos-list [prestamos]="prestamos" [mostrarBotonDevolver]="mostrarBotonDevolver" (devolver)="onDevolverPrestamo($event)"></app-prestamos-list>
-		</div>
-	</main>
-</section>
+<app-page-layout [title]="titulo" [description]="descripcion">
+	<app-prestamos-list [prestamos]="prestamos" [mostrarBotonDevolver]="mostrarBotonDevolver" (devolver)="onDevolverPrestamo($event)"></app-prestamos-list>
+</app-page-layout>

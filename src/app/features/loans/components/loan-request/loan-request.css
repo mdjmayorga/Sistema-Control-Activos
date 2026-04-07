@@ -1,38 +1,8 @@
-.layout {
-  display: flex;
-  min-height: 100vh;
-  background: #111317;
-  font-family: 'Roboto', sans-serif;
-}
-
-.content-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 34px 30px 40px 30px;
-  color: #FFFFFF;
-}
-
-.loan-header {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 12px;
-  margin-bottom: 44px;
-}
-
-.loan-header h1 {
-  font-size: 31px;
-  font-weight: 400;
-  color: #FFFFFF;
-  margin: 0;
-}
-
 .loan-form-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
+  padding-top: 8px;
 }
 
 .form-panel {

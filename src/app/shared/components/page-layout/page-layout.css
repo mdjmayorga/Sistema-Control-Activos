@@ -1,0 +1,41 @@
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.page-layout {
+  padding: 32px;
+  min-height: 100%;
+  background-color: var(--background-color);
+  box-sizing: border-box;
+}
+
+.page-layout__header {
+  margin-bottom: 24px;
+}
+
+.page-layout__title {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.page-layout__description {
+  margin: 0;
+  font-size: 15px;
+  color: #a8b0be;
+}
+
+.page-layout__content {
+  width: 100%;
+}
+
+.page-layout__panel {
+  background-color: var(--background-color);
+  border-radius: 12px;
+  padding: 1px 16px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.55);
+  min-height: 300px;
+}

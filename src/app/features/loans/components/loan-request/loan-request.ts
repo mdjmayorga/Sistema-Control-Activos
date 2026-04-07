@@ -2,15 +2,18 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoanService } from '../../services/loan.service';
+import { PageLayout } from '../../../../shared/components/page-layout/page-layout';
 
 @Component({
   selector: 'app-loan-request',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [PageLayout, ReactiveFormsModule, CommonModule],
   templateUrl: './loan-request.html',
   styleUrl: './loan-request.css'
 })
 export class LoanRequestComponent {
+  titulo = 'Solicitar Prestamo';
+  descripcion = 'Complete el formulario para registrar un nuevo prestamo de activo';
   loanForm: FormGroup;
 
   constructor(
