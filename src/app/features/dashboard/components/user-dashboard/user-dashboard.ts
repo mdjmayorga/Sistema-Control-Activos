@@ -3,7 +3,7 @@ import { LoanService } from '../../../loans/services/loan.service';
 import { Loan } from '../../../../core/models/loan.model';
 import { LoansList } from '../../../../shared/components/loans-list/loans-list';
 import { loanReturnPayload } from '../../../../shared/components/loan-item/loan-item';
-import { PageLayout } from '../../../../shared/components/page-layout/page-layout';
+import { PageLayout } from '../../../../layout/components/page-layout/page-layout';
 
 @Component({
   selector: 'app-user-dashboard',
