@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PageLayout } from '../../../../shared/components/page-layout/page-layout';
+import { PageLayout } from '../../../../layout/components/page-layout/page-layout';
 
 @Component({
   selector: 'app-historial-page',

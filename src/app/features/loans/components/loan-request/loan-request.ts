@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoanService } from '../../services/loan.service';
-import { PageLayout } from '../../../../shared/components/page-layout/page-layout';
+import { PageLayout } from '../../../../layout/components/page-layout/page-layout';
 
 @Component({
   selector: 'app-loan-request',
