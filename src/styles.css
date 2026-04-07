@@ -3,6 +3,15 @@
 :root {
   --background-color: #111317;
   --font-family-base: 'Roboto', sans-serif;
+
+  --bg: #111317;
+  --white: #FFFFFF;
+  --rose: #A58989;
+  --gray: #797979;
+  --blue: #0B9DFF;
+  --soft: #A0AEC0;
+  --line: rgba(160, 174, 192, 0.16);
+  --panel: #F5F5F5;
 }
 
 html,
@@ -14,4 +23,34 @@ body {
 body {
   background-color: var(--background-color);
   font-family: var(--font-family-base);
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--white);
+}
+
+body {
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: 'Roboto', sans-serif;
+  border: none;
+  cursor: pointer;
 }

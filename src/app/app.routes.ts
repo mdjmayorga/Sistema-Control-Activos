@@ -40,4 +40,9 @@ export const routes: Routes = [
         path: '**',
         redirectTo: 'prestamos-activos',
     },
+    { path: '', redirectTo: 'usuario', pathMatch: 'full' },
+    { path: 'usuario', component: UserDashboardComponent },
+    { path: 'admin', component: AdminDashboardComponent },
+    { path: 'solicitar-prestamo', component: LoanRequestComponent }
 ];
+
