@@ -7,7 +7,7 @@ import { UserNavigationComponent } from '../../../../layout/components/sidebar/u
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
-  imports: [CommonModule, UserNavigationComponent],
+  imports: [CommonModule],
   templateUrl: './user-dashboard.html',
   styleUrl: './user-dashboard.css'
 })

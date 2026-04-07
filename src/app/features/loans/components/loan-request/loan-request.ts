@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoanService } from '../../services/loan.service';
-import { UserNavigationComponent } from '../../../../layout/components/sidebar/user-navigation/user-navigation';
 
 @Component({
   selector: 'app-loan-request',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, UserNavigationComponent],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './loan-request.html',
   styleUrl: './loan-request.css'
 })

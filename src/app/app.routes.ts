@@ -10,58 +10,56 @@ import { HistorialPage } from './features/history/components/historial-page/hist
 import { ConfiguracionesPage } from './features/settings/components/configuraciones-page/configuraciones-page';
 
 export const routes: Routes = [
-    {
-        path: '',
-        redirectTo: 'prestamos-activos',
-        pathMatch: 'full',
-    },
-    {
-        path: 'prestamos-activos',
-        component: ActiveLoansPage,
-        data: { mostrarBotonDevolver: true },
-    },
-    {
-        path: 'mis-prestamos',
-        component: ActiveLoansPage,
-        data: { mostrarBotonDevolver: true },
-    },
-    {
-        path: 'historial',
-        component: HistorialPage,
-    },
-    {
-        path: 'mi-historial',
-        component: HistorialPage,
-    },
-    {
-        path: 'configuraciones',
-        component: ConfiguracionesPage,
-    },
-    {
-        path: '**',
-        redirectTo: 'prestamos-activos',
-    },
-    { path: '', redirectTo: 'usuario', pathMatch: 'full' },
-    { path: 'usuario', component: UserDashboardComponent },
-    { path: 'solicitar-prestamo', component: LoanRequestComponent },
-
-    { path: '', redirectTo: 'usuario/solicitar-prestamo', pathMatch: 'full' },
-
+  {
+    path: '',
+    redirectTo: 'usuario/solicitar-prestamo',
+    pathMatch: 'full',
+  },
   {
     path: 'usuario',
     children: [
+      { path: '', redirectTo: 'solicitar-prestamo', pathMatch: 'full' },
       { path: 'solicitar-prestamo', component: LoanRequestComponent },
       { path: 'mis-prestamos', component: UserDashboardComponent },
       { path: 'historial', component: HistorialPageUsuario },
-      { path: 'configuraciones', component: ConfiguracionesPageUsuario }
-    ]
+      { path: 'configuraciones', component: ConfiguracionesPageUsuario },
+    ],
   },
-
   {
     path: 'admin',
     children: [
+      { path: '', redirectTo: 'historial', pathMatch: 'full' },
       { path: 'historial', component: HistorialPage },
-      { path: 'configuraciones', component: ConfiguracionesPage }
-    ]
-  }
+      { path: 'configuraciones', component: ConfiguracionesPage },
+    ],
+  },
+  {
+    path: 'prestamos-activos',
+    component: ActiveLoansPage,
+    data: { mostrarBotonDevolver: true },
+  },
+  {
+    path: 'mis-prestamos',
+    redirectTo: 'usuario/mis-prestamos',
+    pathMatch: 'full',
+  },
+  {
+    path: 'mi-historial',
+    redirectTo: 'usuario/historial',
+    pathMatch: 'full',
+  },
+  {
+    path: 'historial',
+    redirectTo: 'admin/historial',
+    pathMatch: 'full',
+  },
+  {
+    path: 'configuraciones',
+    redirectTo: 'usuario/configuraciones',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'usuario/solicitar-prestamo',
+  },
 ];

@@ -18,6 +18,6 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.sidebar__profile .username')?.textContent).toContain('Username_123');
+    expect(compiled.querySelector('.sidebar__profile .username')?.textContent).toContain('Usuario');
   });
 });
