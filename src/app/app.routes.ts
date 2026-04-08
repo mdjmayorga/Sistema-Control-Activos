@@ -9,8 +9,15 @@ import { PrestamosActivosAdminPage } from './features/prestamos/pages/prestamos-
 import { HistorialPage } from './features/history/components/historial-page/historial-page';
 import { ConfiguracionesPage } from './features/settings/components/configuraciones-page/configuraciones-page';
 
-
 export const routes: Routes = [
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./features/auth/components/register/register.component').then(
+        (m) => m.RegisterComponent,
+      ),
+  },
+
   { path: '', redirectTo: 'usuario/solicitar-prestamo', pathMatch: 'full' },
 
   {
