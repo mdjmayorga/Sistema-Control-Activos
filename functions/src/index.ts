@@ -4,28 +4,45 @@ import {getDamageEmailTemplate} from "./emailTemplate";
 
 admin.initializeApp();
 
+const IS_EMULATOR = process.env.FUNCTIONS_EMULATOR === "true";
+
 export const notificarDanoActivo = onDocumentUpdated(
   "devoluciones/{devolucionId}",
   async (event) => {
-    const dataNueva = event.data?.after.data();
+    const beforeData = event.data?.before.data();
+    const afterData = event.data?.after.data();
 
-    if (!dataNueva || dataNueva.danoConfirmado !== true) {
+    if (!afterData) {
+      console.log("No hay datos después del update. Fin.");
+      return;
+    }
+    
+    const beforeDanio = beforeData?.danoConfirmado === true;
+    const afterDanio = afterData.danoConfirmado === true;
+
+    if (!afterDanio || beforeDanio) {
+      console.log("No aplica notificación.");
       return;
     }
 
-    const estudiante = dataNueva.nombreEstudiante || "Estudiante Desconocido";
-    const activo = dataNueva.nombreActivo || "Activo Desconocido";
-
+    const estudiante = afterData.nombreEstudiante || "Estudiante Desconocido";
+    const activo = afterData.nombreActivo || "Activo Desconocido";
     const htmlListo = getDamageEmailTemplate(estudiante, activo);
 
-    await admin.firestore().collection("mail").add({
+    const payload = {
       to: "jccoto@itcr.ac.cr",
       message: {
         subject: `URGENTE: Daño en ${activo}`,
         html: htmlListo,
       },
-    });
+    };
 
-    console.log("Correo de daño enviado exitosamente.");
+    if (IS_EMULATOR) {
+      console.log("EMULADOR: correo simulado");
+      console.log(JSON.stringify(payload, null, 2));
+    }
+
+    await admin.firestore().collection("mail").add(payload);
+    console.log("Notificación creada en colección mail.");
   }
 );
