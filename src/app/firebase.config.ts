@@ -1,3 +1,4 @@
+import { FirebaseOptions } from '@angular/fire/app';
 
 export const firebaseConfig: FirebaseOptions = {
   apiKey: 'YOUR_API_KEY',
