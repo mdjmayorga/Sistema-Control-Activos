@@ -17,7 +17,7 @@
 
   <a
     class="sidebar__action"
-    [routerLink]="isAdmin() ? '/prestamos-activos' : '/usuario/solicitar-prestamo'"
+    [routerLink]="isAdmin() ? '/admin/solicitar-prestamo' : '/usuario/solicitar-prestamo'"
     aria-label="Solicitar Prestamo"
   >
     <span class="action-label action-label--full">Solicitar Prestamo</span>
@@ -25,7 +25,7 @@
   </a>
 
   <nav class="sidebar__nav">
-    <a routerLink="/usuario/mis-prestamos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Mis prestamos">
+    <a [routerLink]="isAdmin() ? '/admin/mis-prestamos' : '/usuario/mis-prestamos'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Mis prestamos">
       <span class="nav-content nav-label--full">
         <img class="nav-icon" src="/prestamos-icon.png" alt="" aria-hidden="true" />
         <span class="nav-label">Mis prestamos</span>
@@ -35,7 +35,7 @@
       </span>
       <span class="nav-label nav-label--short">M</span>
     </a>
-    <a routerLink="/usuario/historial" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Mi historial">
+    <a [routerLink]="isAdmin() ? '/admin/mi-historial' : '/usuario/historial'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Mi historial">
       <span class="nav-content nav-label--full">
         <img class="nav-icon nav-icon--historial" src="/historial-icon.png" alt="" aria-hidden="true" />
         <span class="nav-label">Mi historial</span>
@@ -49,7 +49,7 @@
     @if (isAdmin()) {
       <div class="sidebar__divider" role="separator" aria-hidden="true"></div>
 
-      <a routerLink="/prestamos-activos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Prestamos">
+      <a routerLink="admin/prestamos-activos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Prestamos">
         <span class="nav-content nav-label--full">
           <img class="nav-icon" src="/prestamos-icon.png" alt="" aria-hidden="true" />
           <span class="nav-label">Prestamos</span>
