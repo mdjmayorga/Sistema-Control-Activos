@@ -26,7 +26,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'solicitar-prestamo', pathMatch: 'full' },
       { path: 'solicitar-prestamo', component: LoanRequestComponent },
       { path: 'mis-prestamos', component: UserDashboardComponent },
-      { path: 'historial', component: HistorialPageUsuario },
+      { path: 'mi-historial', component: HistorialPageUsuario },
       { path: 'configuraciones', component: ConfiguracionesPageUsuario },
     ],
   },
@@ -34,35 +34,15 @@ export const routes: Routes = [
     path: 'admin',
     children: [
       { path: '', redirectTo: 'historial', pathMatch: 'full' },
+      {path: 'solicitar-prestamo', component: LoanRequestComponent },
+      {path: 'mis-prestamos', component: UserDashboardComponent },
+      {path: 'prestamos-activos', component: ActiveLoansPage },
+      {path: 'mi-historial', component: HistorialPageUsuario },
       { path: 'historial', component: HistorialPage },
       { path: 'configuraciones', component: ConfiguracionesPage },
     ],
   },
-  {
-    path: 'prestamos-activos',
-    component: ActiveLoansPage,
-    data: { mostrarBotonDevolver: true },
-  },
-  {
-    path: 'mis-prestamos',
-    redirectTo: 'usuario/mis-prestamos',
-    pathMatch: 'full',
-  },
-  {
-    path: 'mi-historial',
-    redirectTo: 'usuario/historial',
-    pathMatch: 'full',
-  },
-  {
-    path: 'historial',
-    redirectTo: 'admin/historial',
-    pathMatch: 'full',
-  },
-  {
-    path: 'configuraciones',
-    redirectTo: 'usuario/configuraciones',
-    pathMatch: 'full',
-  },
+  
   {
     path: '**',
     redirectTo: 'usuario/solicitar-prestamo',
