@@ -1,0 +1,280 @@
+<div class="register-page">
+  <div class="register-card">
+    <!-- Header -->
+    <div class="card-header">
+      <h1 class="card-title">Crear cuenta</h1>
+      <p class="card-subtitle">Sistema de Control de Activos - CIVCO</p>
+    </div>
+
+    <!-- Error banner -->
+    @if (errorMessage()) {
+      <div class="alert alert-error" role="alert">
+        <svg class="alert-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        <span>{{ errorMessage() }}</span>
+      </div>
+    }
+
+    <!-- Form -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Full name -->
+      <div class="form-group">
+        <label for="fullName" class="form-label">Nombre completo</label>
+        <input
+          id="fullName"
+          type="text"
+          formControlName="fullName"
+          class="form-input"
+          [class.input-error]="registerForm.controls.fullName.touched && registerForm.controls.fullName.invalid"
+          placeholder="Ej: Maria Lopez Mora"
+          autocomplete="name"
+        />
+        @if (registerForm.controls.fullName.touched && registerForm.controls.fullName.invalid) {
+          <span class="error-text">
+            @if (registerForm.controls.fullName.hasError('required')) {
+              El nombre es obligatorio.
+            } @else if (registerForm.controls.fullName.hasError('minlength')) {
+              El nombre debe tener al menos 3 caracteres.
+            }
+          </span>
+        }
+      </div>
+
+      <!-- Institutional email (username + domain dropdown) -->
+      <div class="form-group">
+        <label for="emailUser" class="form-label">Correo institucional</label>
+        <div class="email-composite">
+          <input
+            id="emailUser"
+            type="text"
+            formControlName="emailUser"
+            class="form-input email-user-input"
+            [class.input-error]="registerForm.controls.emailUser.touched && registerForm.controls.emailUser.invalid"
+            placeholder="usuario"
+            autocomplete="email"
+          />
+          <select formControlName="emailDomain" class="form-select email-domain-select">
+            @for (domain of emailDomains; track domain) {
+              <option [value]="domain">{{ domain }}</option>
+            }
+          </select>
+        </div>
+        @if (registerForm.controls.emailUser.touched && registerForm.controls.emailUser.invalid) {
+          <span class="error-text">
+            @if (registerForm.controls.emailUser.hasError('required')) {
+              El usuario de correo es obligatorio.
+            } @else if (registerForm.controls.emailUser.hasError('pattern')) {
+              El usuario solo puede contener letras, numeros, puntos, guiones y guiones bajos.
+            }
+          </span>
+        }
+      </div>
+
+      <!-- Student ID (hidden for @itcr.ac.cr) -->
+      @if (!isStaffEmail()) {
+        <div class="form-group">
+          <label for="studentId" class="form-label">Carnet estudiantil</label>
+          <input
+            id="studentId"
+            type="text"
+            formControlName="studentId"
+            class="form-input"
+            [class.input-error]="registerForm.controls.studentId.touched && registerForm.controls.studentId.invalid"
+            placeholder="Ej: 2021456789"
+            autocomplete="off"
+            maxlength="10"
+          />
+          @if (registerForm.controls.studentId.touched && registerForm.controls.studentId.invalid) {
+            <span class="error-text">
+              @if (registerForm.controls.studentId.hasError('required')) {
+                El carnet es obligatorio.
+              } @else if (registerForm.controls.studentId.hasError('pattern')) {
+                El carnet debe ser un numero de exactamente 10 digitos.
+              }
+            </span>
+          }
+        </div>
+      }
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="input-wrapper">
+          <input
+            id="password"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            class="form-input"
+            [class.input-error]="registerForm.controls.password.touched && registerForm.controls.password.invalid"
+            placeholder="Minimo 8 caracteres"
+            autocomplete="new-password"
+          />
+          <button type="button" class="toggle-password" (click)="togglePasswordVisibility()" tabindex="-1">
+            @if (showPassword()) {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"
+                />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+            } @else {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            }
+          </button>
+        </div>
+        @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
+          <span class="error-text">
+            @if (registerForm.controls.password.hasError('required')) {
+              La contrasena es obligatoria.
+            } @else if (registerForm.controls.password.hasError('minlength')) {
+              La contrasena debe tener al menos 8 caracteres.
+            }
+          </span>
+        }
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="form-group">
+        <label for="confirmPassword" class="form-label">Confirmar contraseña</label>
+        <div class="input-wrapper">
+          <input
+            id="confirmPassword"
+            [type]="showConfirmPassword() ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            class="form-input"
+            [class.input-error]="
+              registerForm.controls.confirmPassword.touched &&
+              (registerForm.controls.confirmPassword.invalid || registerForm.hasError('passwordMismatch'))
+            "
+            placeholder="Repite tu contrasena"
+            autocomplete="new-password"
+          />
+          <button type="button" class="toggle-password" (click)="toggleConfirmPasswordVisibility()" tabindex="-1">
+            @if (showConfirmPassword()) {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"
+                />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+            } @else {
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            }
+          </button>
+        </div>
+        @if (registerForm.controls.confirmPassword.touched && registerForm.hasError('passwordMismatch')) {
+          <span class="error-text">Las contrasenas no coinciden.</span>
+        }
+      </div>
+
+      <!-- Accept Terms -->
+      <div class="form-group-checkbox">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="acceptTerms" class="form-checkbox" />
+          <span class="checkbox-text">
+            Acepto los
+            <button type="button" class="link-button" (click)="openTermsModal()">
+              terminos y condiciones
+            </button>
+            del sistema.
+          </span>
+        </label>
+        @if (registerForm.controls.acceptTerms.touched && registerForm.controls.acceptTerms.invalid) {
+          <span class="error-text">Debes aceptar los terminos y condiciones.</span>
+        }
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn-submit" [disabled]="isSubmitting()">
+        @if (isSubmitting()) {
+          <span class="spinner"></span>
+          Creando cuenta...
+        } @else {
+          Crear cuenta
+        }
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <p class="card-footer">
+      Ya tienes cuenta?
+      <a routerLink="/login" class="link">Inicia sesion</a>
+    </p>
+  </div>
+</div>
+
+<!-- Terms & Conditions Modal -->
+@if (showTermsModal()) {
+  <div class="modal-overlay" (click)="closeTermsModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">Terminos y Condiciones</h2>
+        <button type="button" class="modal-close" (click)="closeTermsModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <h3>1. Uso del sistema</h3>
+        <p>
+          El Sistema de Control de Activos del CIVCO es una herramienta exclusiva para estudiantes
+          y docentes del Instituto Tecnologico de Costa Rica (ITCR). Su uso esta limitado a la
+          gestion de prestamos de equipos topograficos del Centro de Investigaciones en Vivienda
+          y Construccion (CIVCO).
+        </p>
+
+        <h3>2. Responsabilidad sobre los equipos</h3>
+        <p>
+          Al solicitar un prestamo, el usuario se compromete a utilizar los equipos de manera
+          responsable y a devolverlos en las condiciones en que fueron entregados. Cualquier dano
+          o perdida debera ser reportado de inmediato al administrador del sistema.
+        </p>
+
+        <h3>3. Veracidad de la informacion</h3>
+        <p>
+          El usuario se compromete a proporcionar informacion veridica al registrarse en el
+          sistema, incluyendo su nombre completo, carnet estudiantil (cuando aplique) y correo
+          institucional.
+        </p>
+
+        <h3>4. Proteccion de datos</h3>
+        <p>
+          Los datos personales recopilados seran utilizados unicamente para la gestion de
+          prestamos de equipos. No se compartiran con terceros fuera del ambito institucional
+          del ITCR.
+        </p>
+
+        <h3>5. Sanciones</h3>
+        <p>
+          El incumplimiento de estos terminos podra resultar en la suspension temporal o
+          permanente del acceso al sistema, asi como en las sanciones academicas o
+          administrativas que correspondan segun la normativa del ITCR.
+        </p>
+
+        <h3>6. Modificaciones</h3>
+        <p>
+          El CIVCO se reserva el derecho de modificar estos terminos y condiciones en cualquier
+          momento. Los usuarios seran notificados de cualquier cambio relevante.
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-submit" (click)="closeTermsModal()">Entendido</button>
+      </div>
+    </div>
+  </div>
+}

@@ -27,6 +27,9 @@ body {
 
 
 * {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -44,9 +47,16 @@ body {
   color: var(--white);
 }
 
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
   overflow-x: hidden;
   font-family: var(--font-family-base);
+  line-height: 1.5;
 }
 
 a {

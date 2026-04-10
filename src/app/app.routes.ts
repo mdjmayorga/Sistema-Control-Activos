@@ -11,10 +11,15 @@ import { ConfiguracionesPage } from './features/settings/components/configuracio
 
 export const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'usuario/solicitar-prestamo',
-    pathMatch: 'full',
+    path: 'register',
+    loadComponent: () =>
+      import('./features/auth/components/register/register.component').then(
+        (m) => m.RegisterComponent,
+      ),
   },
+
+  { path: '', redirectTo: 'usuario/solicitar-prestamo', pathMatch: 'full' },
+
   {
     path: 'usuario',
     children: [

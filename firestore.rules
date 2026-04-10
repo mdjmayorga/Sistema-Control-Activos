@@ -35,9 +35,16 @@ service cloud.firestore {
 
     // Préstamos de equipos
     match /prestamos/{prestamoId} {
-      allow read:   if isAuthenticated() && hasInstitutionalEmail();
-      allow create: if isAuthenticated() && hasInstitutionalEmail();
-      allow update: if isAuthenticated() && hasInstitutionalEmail();
+      // REGLAS ORIGINALES
+      // allow read:   if isAuthenticated() && hasInstitutionalEmail();
+      // allow create: if isAuthenticated() && hasInstitutionalEmail();
+      // allow update: if isAuthenticated() && hasInstitutionalEmail();
+
+      // REGLAS TEMPORALES PARA DESARROLLO EN EMULATOR
+      allow read:   if true;
+      allow create: if true;
+      allow update: if true;
+
       allow delete: if false;
     }
 
