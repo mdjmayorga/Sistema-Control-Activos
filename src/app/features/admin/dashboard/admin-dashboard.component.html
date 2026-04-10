@@ -1,0 +1,14 @@
+<div class="page">
+  <div class="container">
+    <h1>Sistema de Control de Activos - CIVCO</h1>
+    <h2>Panel de Administrador</h2>
+
+    @if (userEmail()) {
+      <p class="info">Sesión iniciada como: <strong>{{ userEmail() }}</strong></p>
+    }
+
+    <p class="info role-badge">Rol: <span class="badge admin">administrador</span></p>
+
+    <button class="logout-btn" (click)="logout()">Cerrar sesión</button>
+  </div>
+</div>
