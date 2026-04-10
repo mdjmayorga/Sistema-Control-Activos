@@ -1,18 +1,21 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 
-const ALLOWED_DOMAINS = ['@estudiantec.cr', '@itcr.ac.cr'];
+export const INSTITUTIONAL_DOMAINS = ['estudiantec.cr', 'itcr.ac.cr'];
 
 /**
  * Validates that the email belongs to an institutional ITCR domain.
  */
-export function institutionalEmailValidator(control: AbstractControl): ValidationErrors | null {
-  const email = control.value as string;
+export function institutionalEmailValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const email: string = control.value;
+    if (!email) return null;
 
-  if (!email) {
-    return null;
-  }
+    const atIndex = email.indexOf('@');
+    if (atIndex === -1) return { institutionalEmail: true };
 
-  const isValid = ALLOWED_DOMAINS.some((domain) => email.toLowerCase().endsWith(domain));
+    const domain = email.slice(atIndex + 1).toLowerCase();
+    const isValid = INSTITUTIONAL_DOMAINS.includes(domain);
 
-  return isValid ? null : { institutionalEmail: true };
+    return isValid ? null : { institutionalEmail: { domain } };
+  };
 }
