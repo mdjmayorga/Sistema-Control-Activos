@@ -1,0 +1,7 @@
+<div class="admin-layout" [class.nav-collapsed]="isNavbarCollapsed()">
+  <app-navbar [collapsed]="isNavbarCollapsed()" (toggleRequested)="toggleNavbar()"></app-navbar>
+
+  <main class="content-area">
+    <router-outlet></router-outlet>
+  </main>
+</div>

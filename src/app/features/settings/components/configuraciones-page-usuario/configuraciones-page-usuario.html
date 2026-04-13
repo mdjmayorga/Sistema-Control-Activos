@@ -1,3 +1,25 @@
 <app-page-layout [title]="titulo" [description]="descripcion">
-  <p class="status-message">Aqui el usuario podra gestionar sus configuraciones.</p>
+  <section class="settings-list" aria-label="Opciones de configuracion">
+    <ul class="settings-list__items">
+      <li>
+        <app-settings-item
+          title="Cerrar sesion"
+          description="Finaliza la sesion actual y regresa a la pantalla de inicio de sesion."
+          actionLabel="Cerrar"
+          tone="danger"
+          (actionTriggered)="solicitarLogout()"
+        ></app-settings-item>
+      </li>
+    </ul>
+  </section>
+
+  <app-confirm-modal
+    [abierto]="modalLogoutAbierto"
+    titulo="Cerrar sesion"
+    mensaje="¿Desea cerrar sesion ahora?"
+    textoConfirmar="Si, cerrar"
+    textoCancelar="Cancelar"
+    (cerrar)="cancelarLogout()"
+    (confirmar)="confirmarLogout()"
+  ></app-confirm-modal>
 </app-page-layout>

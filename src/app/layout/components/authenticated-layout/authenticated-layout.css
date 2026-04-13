@@ -1,0 +1,31 @@
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.admin-layout {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  background: var(--background-color);
+  color: #e2e8f0;
+  transition: grid-template-columns 160ms ease;
+  overflow: hidden;
+}
+
+.admin-layout.nav-collapsed {
+  grid-template-columns: 84px 1fr;
+}
+
+.content-area {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+}

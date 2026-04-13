@@ -1,0 +1,10 @@
+<article class="settings-item" [class.settings-item--danger]="tone() === 'danger'">
+  <span class="settings-item__content">
+    <span class="settings-item__title">{{ title() }}</span>
+    <span class="settings-item__description">{{ description() }}</span>
+  </span>
+
+  <button class="settings-item__action" type="button" (click)="triggerAction()">
+    {{ actionLabel() }}
+  </button>
+</article>
