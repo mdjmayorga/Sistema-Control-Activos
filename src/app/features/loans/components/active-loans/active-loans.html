@@ -1,0 +1,3 @@
+<app-page-layout [title]="titulo" [description]="descripcion">
+	<app-prestamos-list [loans]="loans" [mostrarBotonDevolver]="mostrarBotonDevolver" (devolver)="onDevolverPrestamo($event)"></app-prestamos-list>
+</app-page-layout>

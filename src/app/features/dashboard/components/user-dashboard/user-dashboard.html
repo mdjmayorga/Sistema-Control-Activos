@@ -1,0 +1,13 @@
+<app-page-layout [title]="titulo" [description]="descripcion">
+  @if (cargando) {
+    <p class="status-message">Cargando prestamos...</p>
+  }
+
+  @if (!cargando) {
+    <app-prestamos-list
+      [loans]="loans"
+      [mostrarBotonDevolver]="true"
+      (devolver)="onDevolverPrestamo($event)">
+    </app-prestamos-list>
+  }
+</app-page-layout>
