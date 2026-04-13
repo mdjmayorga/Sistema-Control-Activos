@@ -47,7 +47,7 @@ export class UserDashboardComponent implements OnInit {
 
   async onDevolverPrestamo(payload: loanReturnPayload): Promise<void> {
     try {
-      await this.loanService.marcarPrestamoComoDevuelto(payload.loanId);
+      await this.loanService.marcarPrestamoComoDevuelto(payload.loanId, payload.productoDanado);
 
       this.loans = this.loans.filter((loan) => loan.id !== payload.loanId);
     } catch (error) {

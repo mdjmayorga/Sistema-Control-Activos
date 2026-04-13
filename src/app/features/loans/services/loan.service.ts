@@ -5,7 +5,9 @@ import {
   addDoc,
   collectionData,
   doc,
+  getDoc,
   query,
+  setDoc,
   where,
   updateDoc
 } from '@angular/fire/firestore';
@@ -41,11 +43,34 @@ export class LoanService {
     return collectionData(prestamosActivosQuery, { idField: 'id' }) as Observable<Loan[]>;
   }
 
-  async marcarPrestamoComoDevuelto(prestamoId: string): Promise<void> {
+  async marcarPrestamoComoDevuelto(prestamoId: string, productoDanado: boolean): Promise<void> {
     const prestamoRef = doc(this.firestore, 'prestamos', prestamoId);
+    const prestamoSnapshot = await getDoc(prestamoRef);
+
+    if (!prestamoSnapshot.exists()) {
+      throw new Error('No se encontró el préstamo que se intenta devolver.');
+    }
+
+    const prestamoData = prestamoSnapshot.data() as Loan;
+    const fechaDevolucion = new Date().toISOString();
+    const devolucionRef = doc(this.firestore, 'devoluciones', prestamoId);
+
+    await setDoc(
+      devolucionRef,
+      {
+        prestamoId,
+        danoConfirmado: productoDanado === true,
+        nombreEstudiante: prestamoData.usuarioNombre ?? 'Estudiante Desconocido',
+        nombreActivo: prestamoData.activo ?? 'Activo Desconocido',
+        fechaDevolucion,
+        updatedAt: fechaDevolucion,
+      },
+      { merge: true }
+    );
+
     await updateDoc(prestamoRef, {
       estado: 'devuelto',
-      fechaDevolucion: new Date().toISOString(),
+      fechaDevolucion,
     });
   }
 }
