@@ -3,8 +3,8 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { FirebaseError } from '@angular/fire/app';
 
-import { AuthService } from '../../services/auth.service';
-import { passwordMatchValidator } from '../../../../shared/validators/password-match.validator';
+import { AuthService } from '../services/auth.service';
+import { passwordMatchValidator } from '../../../shared/validators/password-match.validator';
 
 const EMAIL_DOMAINS = ['@estudiantec.cr', '@itcr.ac.cr'] as const;
 type EmailDomain = (typeof EMAIL_DOMAINS)[number];

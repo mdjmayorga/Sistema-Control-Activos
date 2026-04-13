@@ -1,80 +1,61 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 :root {
-  --background-color: #111317;
-  --font-family-base: 'Roboto', sans-serif;
+  --font-family-base: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
+  /* Background */
   --bg: #111317;
-  --white: #FFFFFF;
-  --rose: #A58989;
-  --gray: #797979;
-  --blue: #0B9DFF;
-  --soft: #A0AEC0;
-  --line: rgba(160, 174, 192, 0.16);
-  --panel: #F5F5F5;
+  --bg-card: #1a1d23;
+  --bg-input: #23272e;
+  --bg-input-focus: #2a2e36;
+
+  /* Borders */
+  --border: #2e3340;
+  --border-focus: #3b82f6;
+  --border-error: #ef4444;
+
+  /* Text */
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-label: #cbd5e1;
+
+  /* Accent */
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --accent-active: #1d4ed8;
+
+  /* Error */
+  --error: #f87171;
+  --error-bg: rgba(239, 68, 68, 0.1);
+  --error-border: rgba(239, 68, 68, 0.3);
 }
 
-html,
-body {
-  height: 100%;
-  margin: 0;
-}
-
-body {
-  background-color: var(--background-color);
-  font-family: var(--font-family-base);
-}
-
-
-* {
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: var(--font-family-base);
 }
 
 html,
 body {
   width: 100%;
-  min-height: 100%;
-  height: 100%;
-  margin: 0;
-  background: var(--bg);
-  background-color: var(--background-color);
-  color: var(--white);
-}
-
-html,
-body {
   height: 100%;
 }
 
 body {
-  font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: #111317;
-  color: #ffffff;
-  min-height: 100vh;
+  font-family: var(--font-family-base);
+  background-color: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-body {
   overflow-x: hidden;
-  font-family: var(--font-family-base);
-  line-height: 1.5;
 }
 
 a {
   text-decoration: none;
   color: inherit;
-}
-
-button {
-  font-family: var(--font-family-base);
-  border: none;
-  cursor: pointer;
-}
 }
