@@ -13,7 +13,7 @@ import { AuthenticatedLayout } from './layout/components/authenticated-layout/au
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  // Rutas públicas
+  // Rutas publicas
   {
     path: 'login',
     loadComponent: () =>
@@ -34,38 +34,33 @@ export const routes: Routes = [
       ),
   },
 
+  // Rutas de usuario autenticado
   {
-    path: '',
+    path: 'usuario',
+    canActivate: [authGuard],
     component: AuthenticatedLayout,
     children: [
-      // Rutas de usuario autenticado
-      {
-        path: 'usuario',
-        canActivate: [authGuard],
-        children: [
-          { path: '', redirectTo: 'solicitar-prestamo', pathMatch: 'full' },
-          { path: 'solicitar-prestamo', component: LoanRequestComponent },
-          { path: 'mis-prestamos', component: UserDashboardComponent },
-          { path: 'mi-historial', component: HistorialPageUsuario },
-          { path: 'configuraciones', component: ConfiguracionesPageUsuario },
-        ],
-      },
+      { path: '', redirectTo: 'solicitar-prestamo', pathMatch: 'full' },
+      { path: 'solicitar-prestamo', component: LoanRequestComponent },
+      { path: 'mis-prestamos', component: UserDashboardComponent },
+      { path: 'mi-historial', component: HistorialPageUsuario },
+      { path: 'configuraciones', component: ConfiguracionesPageUsuario },
+    ],
+  },
 
-      // Rutas de administrador
-      {
-        path: 'admin',
-        canActivate: [authGuard, adminGuard],
-        children: [
-          { path: '', redirectTo: 'historial', pathMatch: 'full' },
-          { path: 'solicitar-prestamo', component: LoanRequestComponent },
-          { path: 'mis-prestamos', component: UserDashboardComponent },
-          { path: 'prestamos-activos', component: ActiveLoansPage },
-          { path: 'mi-historial', component: HistorialPageUsuario },
-          { path: 'historial', component: HistorialPage },
-          { path: 'configuraciones', component: ConfiguracionesPage },
-        ],
-      },
-
+  // Rutas de administrador
+  {
+    path: 'admin',
+    canActivate: [authGuard, adminGuard],
+    component: AuthenticatedLayout,
+    children: [
+      { path: '', redirectTo: 'historial', pathMatch: 'full' },
+      { path: 'solicitar-prestamo', component: LoanRequestComponent },
+      { path: 'mis-prestamos', component: UserDashboardComponent },
+      { path: 'prestamos-activos', component: ActiveLoansPage },
+      { path: 'mi-historial', component: HistorialPageUsuario },
+      { path: 'historial', component: HistorialPage },
+      { path: 'configuraciones', component: ConfiguracionesPage },
     ],
   },
 

@@ -1,13 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import {
   Auth,
+  User,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
   user,
 } from '@angular/fire/auth';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
-import { UserProfile, UserRole } from '../models/user.model';
+import { UserProfile, UserRole, } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
