@@ -1,60 +1,55 @@
-[debug] [2026-04-13T04:32:05.219Z] ----------------------------------------------------------------------
-[debug] [2026-04-13T04:32:05.222Z] Command:       C:\Program Files\nodejs\node.exe D:\JAVIER DÍAZ\Documents\TEC\Sem1-2026\Proyecto\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
-[debug] [2026-04-13T04:32:05.222Z] CLI Version:   15.14.0
-[debug] [2026-04-13T04:32:05.223Z] Platform:      win32
-[debug] [2026-04-13T04:32:05.223Z] Node Version:  v22.16.0
-[debug] [2026-04-13T04:32:05.223Z] Time:          Sun Apr 12 2026 22:32:05 GMT-0600 (Central Standard Time)
-[debug] [2026-04-13T04:32:05.223Z] ----------------------------------------------------------------------
+[debug] [2026-04-13T17:19:20.650Z] ----------------------------------------------------------------------
+[debug] [2026-04-13T17:19:20.653Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\lolpa\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2026-04-13T17:19:20.653Z] CLI Version:   15.14.0
+[debug] [2026-04-13T17:19:20.653Z] Platform:      win32
+[debug] [2026-04-13T17:19:20.653Z] Node Version:  v24.14.0
+[debug] [2026-04-13T17:19:20.653Z] Time:          Mon Apr 13 2026 11:19:20 GMT-0600 (Central Standard Time)
+[debug] [2026-04-13T17:19:20.654Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2026-04-13T04:32:08.226Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] Failed to authenticate, have you run firebase login?
-[warn] !  emulators: You are not currently authenticated so some features may not work correctly. Please run firebase login to authenticate the CLI. 
-[debug] [2026-04-13T04:32:08.401Z] java version "21.0.8" 2025-07-15 LTS
+[debug] [2026-04-13T17:19:22.131Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-04-13T17:19:22.132Z] > authorizing via signed-in user (brenesignacio95@gmail.com)
+[debug] [2026-04-13T17:19:22.219Z] java version "26" 2026-03-17
+Java(TM) SE Runtime Environment (build 26+35-2893)
 
-[debug] [2026-04-13T04:32:08.402Z] Java(TM) SE Runtime Environment (build 21.0.8+12-LTS-250)
-Java HotSpot(TM) 64-Bit Server VM (build 21.0.8+12-LTS-250, mixed mode, sharing)
+[debug] [2026-04-13T17:19:22.219Z] Java HotSpot(TM) 64-Bit Server VM (build 26+35-2893, mixed mode, sharing)
 
-[debug] [2026-04-13T04:32:08.426Z] Parsed Java major version: 21
+[debug] [2026-04-13T17:19:22.227Z] Parsed Java major version: 26
 [info] i  emulators: Starting emulators: auth, functions, firestore, extensions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, functions, firestore, extensions"}}
-[debug] [2026-04-13T04:32:08.429Z] No OAuth tokens found
-[debug] [2026-04-13T04:32:08.429Z] No OAuth tokens found
-[debug] [2026-04-13T04:32:08.429Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2026-04-13T04:32:08.430Z] Unable to check that https://cloudresourcemanager.googleapis.com is enabled on civco-a947d. Calls to it will fail if it is not enabled
-[debug] [2026-04-13T04:32:08.430Z] No OAuth tokens found
-[debug] [2026-04-13T04:32:08.430Z] No OAuth tokens found
-[debug] [2026-04-13T04:32:08.430Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[error] !!  extensions: Unable to look up project number for civco-a947d.
- If this is a real project, ensure that you are logged in and have access to it.
- If this is a fake project, please use a project ID starting with 'demo-' to skip production calls.
- Continuing with a fake project number - secrets and other features that require production access may behave unexpectedly. {"metadata":{"emulator":{"name":"extensions"},"message":"Unable to look up project number for civco-a947d.\n If this is a real project, ensure that you are logged in and have access to it.\n If this is a fake project, please use a project ID starting with 'demo-' to skip production calls.\n Continuing with a fake project number - secrets and other features that require production access may behave unexpectedly."}}
-[debug] [2026-04-13T04:32:08.448Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2026-04-13T04:32:08.448Z] [auth] Authentication Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2026-04-13T04:32:08.448Z] [firestore] Firestore Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2026-04-13T04:32:08.448Z] [firestore.websocket] websocket server for firestore only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2026-04-13T04:32:08.448Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8081}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}]},"metadata":{"message":"assigned listening specs for emulators"}}
-[debug] [2026-04-13T04:32:08.453Z] Write emulator hub locator at C:\Users\JAVIER~1\AppData\Local\Temp\hub-civco-a947d.json
-[debug] [2026-04-13T04:32:08.462Z] [Extensions] Started Extensions emulator, this is a noop.
-[debug] [2026-04-13T04:32:08.470Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2026-04-13T04:32:08.470Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2026-04-13T04:32:08.470Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
-[debug] [2026-04-13T04:32:08.470Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8081}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[debug] [2026-04-13T17:19:22.229Z] Checked if tokens are valid: true, expires at: 1776104162340
+[debug] [2026-04-13T17:19:22.230Z] Checked if tokens are valid: true, expires at: 1776104162340
+[debug] [2026-04-13T17:19:22.230Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/civco-a947d [none]
+[debug] [2026-04-13T17:19:22.467Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/civco-a947d 200
+[debug] [2026-04-13T17:19:22.468Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/civco-a947d {"projectNumber":"507158418264","projectId":"civco-a947d","lifecycleState":"ACTIVE","name":"civco","labels":{"firebase":"enabled","firebase-core":"disabled"},"createTime":"2026-03-18T22:39:12.525196Z"}
+[debug] [2026-04-13T17:19:22.477Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-13T17:19:22.477Z] [auth] Authentication Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-13T17:19:22.477Z] [firestore] Firestore Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-13T17:19:22.477Z] [firestore.websocket] websocket server for firestore only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-13T17:19:22.477Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8081}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2026-04-13T17:19:22.479Z] Write emulator hub locator at C:\Users\lolpa\AppData\Local\Temp\hub-civco-a947d.json
+[debug] [2026-04-13T17:19:22.483Z] [Extensions] Started Extensions emulator, this is a noop.
+[debug] [2026-04-13T17:19:22.487Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-13T17:19:22.487Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-13T17:19:22.487Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-13T17:19:22.487Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8081}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
 [warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: apphosting, database, hosting, pubsub, storage, dataconnect {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mapphosting, database, hosting, pubsub, storage, dataconnect\u001b[22m"}}
-[debug] [2026-04-13T04:32:08.472Z] No OAuth tokens found
-[debug] [2026-04-13T04:32:08.472Z] No OAuth tokens found
-[debug] [2026-04-13T04:32:08.472Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2026-04-13T04:32:08.472Z] Failed to get Admin SDK config for civco-a947d, falling back to cache Failed to get Admin SDK for Firebase project civco-a947d. Please make sure the project exists and your account has permission to access it. {"name":"FirebaseError","children":[],"exit":2,"message":"Failed to get Admin SDK for Firebase project civco-a947d. Please make sure the project exists and your account has permission to access it.","original":{"name":"FirebaseError","children":[],"exit":1,"message":"Failed to authenticate, have you run \u001b[1mfirebase login\u001b[22m?","original":{},"status":500},"status":500}
-[warn] !  functions: Unable to fetch project Admin SDK configuration, Admin SDK behavior in Cloud Functions emulator may be incorrect. {"metadata":{"emulator":{"name":"functions"},"message":"Unable to fetch project Admin SDK configuration, Admin SDK behavior in Cloud Functions emulator may be incorrect."}}
-[debug] [2026-04-13T04:32:08.486Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
-[debug] [2026-04-13T04:32:08.486Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
-[debug] [2026-04-13T04:32:08.486Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\JAVIER DÍAZ\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.20.4.jar","--host","127.0.0.1","--port",8081,"--websocket_port",9150,"--database-edition","standard","--project_id","civco-a947d","--rules","D:\\JAVIER DÍAZ\\Documents\\TEC\\Sem1-2026\\Proyecto\\Sistema-Control-Activos\\firestore.rules","--single_project_mode",true,"--functions_emulator","127.0.0.1:5001"],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","database-edition","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false,"shell":false,"port":8081} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\JAVIER DÍAZ\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.20.4.jar\",\"--host\",\"127.0.0.1\",\"--port\",8081,\"--websocket_port\",9150,\"--database-edition\",\"standard\",\"--project_id\",\"civco-a947d\",\"--rules\",\"D:\\\\JAVIER DÍAZ\\\\Documents\\\\TEC\\\\Sem1-2026\\\\Proyecto\\\\Sistema-Control-Activos\\\\firestore.rules\",\"--single_project_mode\",true,\"--functions_emulator\",\"127.0.0.1:5001\"],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"database-edition\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false,\"port\":8081}"}}
+[debug] [2026-04-13T17:19:22.497Z] defaultcredentials: writing to file C:\Users\lolpa\AppData\Roaming\firebase\brenesignacio95_gmail_com_application_default_credentials.json
+[debug] [2026-04-13T17:19:22.498Z] Setting GAC to C:\Users\lolpa\AppData\Roaming\firebase\brenesignacio95_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\lolpa\\AppData\\Roaming\\firebase\\brenesignacio95_gmail_com_application_default_credentials.json"}}
+[debug] [2026-04-13T17:19:22.498Z] Checked if tokens are valid: true, expires at: 1776104162340
+[debug] [2026-04-13T17:19:22.498Z] Checked if tokens are valid: true, expires at: 1776104162340
+[debug] [2026-04-13T17:19:22.498Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/civco-a947d/adminSdkConfig [none]
+[debug] [2026-04-13T17:19:25.013Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/civco-a947d/adminSdkConfig 200
+[debug] [2026-04-13T17:19:25.013Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/civco-a947d/adminSdkConfig {"projectId":"civco-a947d","storageBucket":"civco-a947d.firebasestorage.app"}
+[debug] [2026-04-13T17:19:25.024Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2026-04-13T17:19:25.024Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
+[debug] [2026-04-13T17:19:25.024Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\lolpa\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.20.4.jar","--host","127.0.0.1","--port",8081,"--websocket_port",9150,"--database-edition","standard","--project_id","civco-a947d","--rules","C:\\Users\\lolpa\\OneDrive\\Escritorio\\TEC\\proyecto\\Sistema-Control-Activos\\firestore.rules","--single_project_mode",true,"--functions_emulator","127.0.0.1:5001"],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","database-edition","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false,"shell":false,"port":8081} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\lolpa\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.20.4.jar\",\"--host\",\"127.0.0.1\",\"--port\",8081,\"--websocket_port\",9150,\"--database-edition\",\"standard\",\"--project_id\",\"civco-a947d\",\"--rules\",\"C:\\\\Users\\\\lolpa\\\\OneDrive\\\\Escritorio\\\\TEC\\\\proyecto\\\\Sistema-Control-Activos\\\\firestore.rules\",\"--single_project_mode\",true,\"--functions_emulator\",\"127.0.0.1:5001\"],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"database-edition\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false,\"port\":8081}"}}
 [info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
 [info] +  firestore: Firestore Emulator was started in standard edition. {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator was started in standard edition."}}
 [info] +  firestore: Firestore Emulator UI websocket is running on 9150. {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator UI websocket is running on 9150."}}
-[debug] [2026-04-13T04:32:19.001Z] [Extensions] Connecting Extensions emulator, this is a noop.
-[info] i  functions: Watching "D:\JAVIER DÍAZ\Documents\TEC\Sem1-2026\Proyecto\Sistema-Control-Activos\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"D:\\JAVIER DÍAZ\\Documents\\TEC\\Sem1-2026\\Proyecto\\Sistema-Control-Activos\\functions\" for Cloud Functions..."}}
-[debug] [2026-04-13T04:32:19.004Z] Validating nodejs source
+[debug] [2026-04-13T17:19:30.217Z] [Extensions] Connecting Extensions emulator, this is a noop.
+[info] i  functions: Watching "C:\Users\lolpa\OneDrive\Escritorio\TEC\proyecto\Sistema-Control-Activos\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\lolpa\\OneDrive\\Escritorio\\TEC\\proyecto\\Sistema-Control-Activos\\functions\" for Cloud Functions..."}}
+[debug] [2026-04-13T17:19:30.220Z] Validating nodejs source
 [warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
-[debug] [2026-04-13T04:32:20.457Z] > [functions] package.json contents: {
+[debug] [2026-04-13T17:19:31.180Z] > [functions] package.json contents: {
   "name": "functions",
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
@@ -85,10 +80,25 @@ Java HotSpot(TM) 64-Bit Server VM (build 21.0.8+12-LTS-250, mixed mode, sharing)
   },
   "private": true
 }
-[error] !!  functions: Failed to load function definition from source: FirebaseError: There was an error reading functions\package.json:
+[debug] [2026-04-13T17:19:31.180Z] Building nodejs source
+[debug] [2026-04-13T17:19:31.180Z] Failed to find version of module node: reached end of search path C:\Users\lolpa\OneDrive\Escritorio\TEC\proyecto\Sistema-Control-Activos\functions\node_modules
+[info] +  functions: Using node@24 from host. 
+[debug] [2026-04-13T17:19:31.182Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-04-13T17:19:31.189Z] Found firebase-functions binary at 'C:\Users\lolpa\OneDrive\Escritorio\TEC\proyecto\Sistema-Control-Activos\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8578
 
- functions\lib\index.js does not exist, can't deploy Cloud Functions {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: There was an error reading functions\\package.json:\n\n functions\\lib\\index.js does not exist, can't deploy Cloud Functions"}}
-[debug] [2026-04-13T04:32:20.468Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[debug] [2026-04-13T17:19:31.726Z] Got response from /__/functions.yaml {"endpoints":{"notificarDanoActivo":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"eventTrigger":{"eventType":"google.cloud.firestore.document.v1.updated","eventFilters":{"database":"(default)","namespace":"(default)"},"eventFilterPathPatterns":{"document":"devoluciones/{devolucionId}"},"retry":false},"entryPoint":"notificarDanoActivo"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[debug] [2026-04-13T17:19:35.754Z] defaultcredentials: writing to file C:\Users\lolpa\AppData\Roaming\firebase\brenesignacio95_gmail_com_application_default_credentials.json
+[debug] [2026-04-13T17:19:35.754Z] Setting GAC to C:\Users\lolpa\AppData\Roaming\firebase\brenesignacio95_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\lolpa\\AppData\\Roaming\\firebase\\brenesignacio95_gmail_com_application_default_credentials.json"}}
+[info] +  functions: Loaded functions definitions from source: notificarDanoActivo. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: notificarDanoActivo."}}
+[debug] [2026-04-13T17:19:35.756Z] Found a v2 firestore trigger.
+[debug] [2026-04-13T17:19:35.756Z] addFirestoreTrigger "{\"eventType\":\"google.cloud.firestore.document.v1.updated\",\"database\":\"(default)\",\"namespace\":\"(default)\",\"document\":{\"value\":\"devoluciones/{devolucionId}\",\"matchType\":\"PATH_PATTERN\"}}"
+[debug] [2026-04-13T17:19:35.756Z] >>> [apiv2][query] POST http://127.0.0.1:8081/emulator/v1/projects/civco-a947d/eventarcTrigger?eventarcTriggerId=us-central1-notificarDanoActivo-0 [none]
+[debug] [2026-04-13T17:19:35.757Z] >>> [apiv2][body] POST http://127.0.0.1:8081/emulator/v1/projects/civco-a947d/eventarcTrigger?eventarcTriggerId=us-central1-notificarDanoActivo-0 "{\"eventType\":\"google.cloud.firestore.document.v1.updated\",\"database\":\"(default)\",\"namespace\":\"(default)\",\"document\":{\"value\":\"devoluciones/{devolucionId}\",\"matchType\":\"PATH_PATTERN\"}}"
+[debug] [2026-04-13T17:19:36.374Z] <<< [apiv2][status] POST http://127.0.0.1:8081/emulator/v1/projects/civco-a947d/eventarcTrigger?eventarcTriggerId=us-central1-notificarDanoActivo-0 200
+[debug] [2026-04-13T17:19:36.374Z] <<< [apiv2][body] POST http://127.0.0.1:8081/emulator/v1/projects/civco-a947d/eventarcTrigger?eventarcTriggerId=us-central1-notificarDanoActivo-0 {"eventType":"google.cloud.firestore.document.v1.updated","database":"(default)","namespace":"(default)","document":{"value":"devoluciones/{devolucionId}","matchType":"PATH_PATTERN"}}
+[info] +  functions[us-central1-notificarDanoActivo]: firestore function initialized. {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mfirestore\u001b[22m function initialized."}}
+[debug] [2026-04-13T17:19:36.380Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
 [info] 
 ┌─────────────────────────────────────────────────────────────┐
 │ ✔  All emulators ready! It is now safe to connect your app. │
@@ -113,19 +123,109 @@ Java HotSpot(TM) 64-Bit Server VM (build 21.0.8+12-LTS-250, mixed mode, sharing)
 └─────────────────────────┴───────────────┴─────────────────────┘
 Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
  
-[debug] [2026-04-13T04:32:24.835Z] >>> [apiv2][query] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast [none]
-[debug] [2026-04-13T04:32:24.836Z] >>> [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"eventId":"41d11e7f-760b-471f-9990-a86c583371f1","eventType":"providers/firebase.auth/eventTypes/user.create","resource":{"name":"projects/civco-a947d","service":"firebaseauth.googleapis.com"},"params":{},"timestamp":"2026-04-13T04:32:24.834Z","data":{"uid":"admin-001","email":"jccoto@itcr.ac.cr","emailVerified":true,"displayName":"Juan Carlos Coto","metadata":{"creationTime":"2026-04-13T04:32:24.833Z","lastSignInTime":"2026-04-13T04:32:24.833Z"},"customClaims":{},"providerData":[{"rawId":"jccoto@itcr.ac.cr","providerId":"password","displayName":"Juan Carlos Coto","email":"jccoto@itcr.ac.cr","federatedId":"jccoto@itcr.ac.cr"}]}}
-[debug] [2026-04-13T04:32:24.852Z] <<< [apiv2][status] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast 200
-[debug] [2026-04-13T04:32:24.852Z] <<< [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"status":"multicast_acknowledged"}
-[debug] [2026-04-13T04:32:24.992Z] >>> [apiv2][query] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast [none]
-[debug] [2026-04-13T04:32:24.992Z] >>> [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"eventId":"05a83fce-3212-4420-bddc-d5d8e20a919c","eventType":"providers/firebase.auth/eventTypes/user.create","resource":{"name":"projects/civco-a947d","service":"firebaseauth.googleapis.com"},"params":{},"timestamp":"2026-04-13T04:32:24.992Z","data":{"uid":"user-001","email":"estudiante1@estudiantec.cr","emailVerified":true,"displayName":"Maria Lopez","metadata":{"creationTime":"2026-04-13T04:32:24.992Z","lastSignInTime":"2026-04-13T04:32:24.992Z"},"customClaims":{},"providerData":[{"rawId":"estudiante1@estudiantec.cr","providerId":"password","displayName":"Maria Lopez","email":"estudiante1@estudiantec.cr","federatedId":"estudiante1@estudiantec.cr"}]}}
-[debug] [2026-04-13T04:32:24.995Z] <<< [apiv2][status] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast 200
-[debug] [2026-04-13T04:32:24.996Z] <<< [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"status":"multicast_acknowledged"}
-[debug] [2026-04-13T04:32:25.011Z] >>> [apiv2][query] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast [none]
-[debug] [2026-04-13T04:32:25.011Z] >>> [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"eventId":"20589ea0-5030-4fca-9cd6-bd8fff38eb3f","eventType":"providers/firebase.auth/eventTypes/user.create","resource":{"name":"projects/civco-a947d","service":"firebaseauth.googleapis.com"},"params":{},"timestamp":"2026-04-13T04:32:25.011Z","data":{"uid":"user-002","email":"estudiante2@estudiantec.cr","emailVerified":true,"displayName":"Carlos Ramirez","metadata":{"creationTime":"2026-04-13T04:32:25.010Z","lastSignInTime":"2026-04-13T04:32:25.010Z"},"customClaims":{},"providerData":[{"rawId":"estudiante2@estudiantec.cr","providerId":"password","displayName":"Carlos Ramirez","email":"estudiante2@estudiantec.cr","federatedId":"estudiante2@estudiantec.cr"}]}}
-[debug] [2026-04-13T04:32:25.013Z] <<< [apiv2][status] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast 200
-[debug] [2026-04-13T04:32:25.013Z] <<< [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"status":"multicast_acknowledged"}
-[debug] [2026-04-13T04:32:25.027Z] >>> [apiv2][query] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast [none]
-[debug] [2026-04-13T04:32:25.027Z] >>> [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"eventId":"f78b9446-8162-4b5c-b74a-9804d8f0a7eb","eventType":"providers/firebase.auth/eventTypes/user.create","resource":{"name":"projects/civco-a947d","service":"firebaseauth.googleapis.com"},"params":{},"timestamp":"2026-04-13T04:32:25.027Z","data":{"uid":"user-003","email":"docente1@itcr.ac.cr","emailVerified":true,"displayName":"Ana Martinez","metadata":{"creationTime":"2026-04-13T04:32:25.026Z","lastSignInTime":"2026-04-13T04:32:25.026Z"},"customClaims":{},"providerData":[{"rawId":"docente1@itcr.ac.cr","providerId":"password","displayName":"Ana Martinez","email":"docente1@itcr.ac.cr","federatedId":"docente1@itcr.ac.cr"}]}}
-[debug] [2026-04-13T04:32:25.030Z] <<< [apiv2][status] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast 200
-[debug] [2026-04-13T04:32:25.030Z] <<< [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"status":"multicast_acknowledged"}
+[debug] [2026-04-13T17:23:44.448Z] >>> [apiv2][query] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast [none]
+[debug] [2026-04-13T17:23:44.448Z] >>> [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"eventId":"f1c948ed-c0a1-46e6-9f85-d0e298f1b6ac","eventType":"providers/firebase.auth/eventTypes/user.create","resource":{"name":"projects/civco-a947d","service":"firebaseauth.googleapis.com"},"params":{},"timestamp":"2026-04-13T17:23:44.447Z","data":{"uid":"uW8SjktkeMauiTSH1QKTLkA8oaoo","email":"qa@estudiantec.cr","emailVerified":false,"metadata":{"creationTime":"2026-04-13T17:23:44.446Z","lastSignInTime":"2026-04-13T17:23:44.446Z"},"customClaims":{},"providerData":[{"rawId":"qa@estudiantec.cr","providerId":"password","email":"qa@estudiantec.cr","federatedId":"qa@estudiantec.cr"}]}}
+[debug] [2026-04-13T17:23:44.452Z] <<< [apiv2][status] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast 200
+[debug] [2026-04-13T17:23:44.452Z] <<< [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"status":"multicast_acknowledged"}
+[info] i  firestore: Change detected, updating rules... 
+[debug] [2026-04-13T18:00:58.087Z] >>> [apiv2][query] PUT http://127.0.0.1:8081/emulator/v1/projects/civco-a947d:securityRules [none]
+[debug] [2026-04-13T18:00:58.087Z] >>> [apiv2][body] PUT http://127.0.0.1:8081/emulator/v1/projects/civco-a947d:securityRules {"ignore_errors":true,"rules":{"files":[{"name":"security.rules","content":"rules_version = '2';\r\n\r\nservice cloud.firestore {\r\n  match /databases/{database}/documents {\r\n\r\n    // AU003 - Solo correos institucionales del ITCR pueden acceder.\r\n    function isAuthenticated() {\r\n      return request.auth != null;\r\n    }\r\n\r\n    function hasInstitutionalEmail() {\r\n      return request.auth.token.email.matches('.*@estudiantec\\\\.cr$')\r\n          || request.auth.token.email.matches('.*@itcr\\\\.ac\\\\.cr$');\r\n    }\r\n\r\n    function isOwner(userId) {\r\n      return request.auth.uid == userId;\r\n    }\r\n\r\n    // AU004 - Verifica si el usuario autenticado tiene rol de administrador.\r\n    function isAdmin() {\r\n      return isAuthenticated()\r\n          && hasInstitutionalEmail()\r\n          && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';\r\n    }\r\n\r\n    // Perfiles de usuario\r\n    match /users/{userId} {\r\n      // AU004 - El propietario puede leer/editar su propio perfil; el admin puede leer/editar cualquiera.\r\n      allow read:   if isAuthenticated() && hasInstitutionalEmail() && (isOwner(userId) || isAdmin());\r\n      allow create: if isAuthenticated() && isOwner(userId) && hasInstitutionalEmail();\r\n      allow update: if isAuthenticated() && hasInstitutionalEmail() && (isOwner(userId) || isAdmin());\r\n      allow delete: if false;\r\n    }\r\n\r\n    // Préstamos de equipos\r\n    match /prestamos/{prestamoId} {\r\n      // REGLAS ORIGINALES\r\n      // allow read:   if isAuthenticated() && hasInstitutionalEmail();\r\n      // allow create: if isAuthenticated() && hasInstitutionalEmail();\r\n      // allow update: if isAuthenticated() && hasInstitutionalEmail();\r\n\r\n      // REGLAS TEMPORALES PARA DESARROLLO EN EMULATOR\r\n      allow read:   if true;\r\n      allow create: if true;\r\n      allow update: if true;\r\n\r\n      allow delete: if false;\r\n    }\r\n\r\n    // Devoluciones de equipos\r\n    match /devoluciones/{devolucionId} {\r\n      // REGLAS TEMPORALES PARA DESARROLLO EN EMULATOR\r\n      allow read:   if true;\r\n      allow create: if true;\r\n      allow update: if true;\r\n\r\n      allow delete: if false;\r\n    }\r\n\r\n    // Activos/equipos — solo lectura para usuarios institucionales\r\n    match /activos/{activoId} {\r\n      allow read:   if isAuthenticated() && hasInstitutionalEmail();\r\n      allow write:  if false; // Gestión reservada al Admin SDK\r\n    }\r\n  }\r\n}"}]}}
+[debug] [2026-04-13T18:00:58.152Z] <<< [apiv2][status] PUT http://127.0.0.1:8081/emulator/v1/projects/civco-a947d:securityRules 200
+[debug] [2026-04-13T18:00:58.152Z] <<< [apiv2][body] PUT http://127.0.0.1:8081/emulator/v1/projects/civco-a947d:securityRules {}
+[info] +  firestore: Rules updated. 
+[debug] [2026-04-13T18:01:02.087Z] File C:\Users\lolpa\OneDrive\Escritorio\TEC\proyecto\Sistema-Control-Activos\functions\src\index.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\lolpa\\OneDrive\\Escritorio\\TEC\\proyecto\\Sistema-Control-Activos\\functions\\src\\index.ts changed, reloading triggers"}}
+[debug] [2026-04-13T18:01:03.102Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2026-04-13T18:01:04.164Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "24"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^3.4.1",
+    "typescript": "^5.7.3"
+  },
+  "private": true
+}
+[debug] [2026-04-13T18:01:04.164Z] Building nodejs source
+[debug] [2026-04-13T18:01:04.164Z] Failed to find version of module node: reached end of search path C:\Users\lolpa\OneDrive\Escritorio\TEC\proyecto\Sistema-Control-Activos\functions\node_modules
+[info] +  functions: Using node@24 from host. 
+[debug] [2026-04-13T18:01:04.166Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-04-13T18:01:04.175Z] Found firebase-functions binary at 'C:\Users\lolpa\OneDrive\Escritorio\TEC\proyecto\Sistema-Control-Activos\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8547
+
+[debug] [2026-04-13T18:01:04.847Z] Got response from /__/functions.yaml {"endpoints":{"notificarDanoActivo":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"eventTrigger":{"eventType":"google.cloud.firestore.document.v1.updated","eventFilters":{"database":"(default)","namespace":"(default)"},"eventFilterPathPatterns":{"document":"devoluciones/{devolucionId}"},"retry":false},"entryPoint":"notificarDanoActivo"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[debug] [2026-04-13T18:01:06.579Z] File C:\Users\lolpa\OneDrive\Escritorio\TEC\proyecto\Sistema-Control-Activos\functions\src\index.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File C:\\Users\\lolpa\\OneDrive\\Escritorio\\TEC\\proyecto\\Sistema-Control-Activos\\functions\\src\\index.ts changed, reloading triggers"}}
+[info] i  firestore: Change detected, updating rules... 
+[debug] [2026-04-13T18:01:06.597Z] >>> [apiv2][query] PUT http://127.0.0.1:8081/emulator/v1/projects/civco-a947d:securityRules [none]
+[debug] [2026-04-13T18:01:06.597Z] >>> [apiv2][body] PUT http://127.0.0.1:8081/emulator/v1/projects/civco-a947d:securityRules {"ignore_errors":true,"rules":{"files":[{"name":"security.rules","content":"rules_version = '2';\r\n\r\nservice cloud.firestore {\r\n  match /databases/{database}/documents {\r\n\r\n    // AU003 - Solo correos institucionales del ITCR pueden acceder.\r\n    function isAuthenticated() {\r\n      return request.auth != null;\r\n    }\r\n\r\n    function hasInstitutionalEmail() {\r\n      return request.auth.token.email.matches('.*@estudiantec\\\\.cr$')\r\n          || request.auth.token.email.matches('.*@itcr\\\\.ac\\\\.cr$');\r\n    }\r\n\r\n    function isOwner(userId) {\r\n      return request.auth.uid == userId;\r\n    }\r\n\r\n    // AU004 - Verifica si el usuario autenticado tiene rol de administrador.\r\n    function isAdmin() {\r\n      return isAuthenticated()\r\n          && hasInstitutionalEmail()\r\n          && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';\r\n    }\r\n\r\n    // Perfiles de usuario\r\n    match /users/{userId} {\r\n      // AU004 - El propietario puede leer/editar su propio perfil; el admin puede leer/editar cualquiera.\r\n      allow read:   if isAuthenticated() && hasInstitutionalEmail() && (isOwner(userId) || isAdmin());\r\n      allow create: if isAuthenticated() && isOwner(userId) && hasInstitutionalEmail();\r\n      allow update: if isAuthenticated() && hasInstitutionalEmail() && (isOwner(userId) || isAdmin());\r\n      allow delete: if false;\r\n    }\r\n\r\n    // Préstamos de equipos\r\n    match /prestamos/{prestamoId} {\r\n      // REGLAS ORIGINALES\r\n      // allow read:   if isAuthenticated() && hasInstitutionalEmail();\r\n      // allow create: if isAuthenticated() && hasInstitutionalEmail();\r\n      // allow update: if isAuthenticated() && hasInstitutionalEmail();\r\n\r\n      // REGLAS TEMPORALES PARA DESARROLLO EN EMULATOR\r\n      allow read:   if true;\r\n      allow create: if true;\r\n      allow update: if true;\r\n\r\n      allow delete: if false;\r\n    }\r\n\r\n    // Devoluciones de equipos\r\n    match /devoluciones/{devolucionId} {\r\n      // REGLAS TEMPORALES PARA DESARROLLO EN EMULATOR\r\n      allow read:   if true;\r\n      allow create: if true;\r\n      allow update: if true;\r\n\r\n      allow delete: if false;\r\n    }\r\n\r\n    // Activos/equipos — solo lectura para usuarios institucionales\r\n    match /activos/{activoId} {\r\n      allow read:   if isAuthenticated() && hasInstitutionalEmail();\r\n      allow write:  if false; // Gestión reservada al Admin SDK\r\n    }\r\n  }\r\n}"}]}}
+[debug] [2026-04-13T18:01:06.634Z] <<< [apiv2][status] PUT http://127.0.0.1:8081/emulator/v1/projects/civco-a947d:securityRules 200
+[debug] [2026-04-13T18:01:06.634Z] <<< [apiv2][body] PUT http://127.0.0.1:8081/emulator/v1/projects/civco-a947d:securityRules {}
+[info] +  firestore: Rules updated. 
+[debug] [2026-04-13T18:01:07.593Z] Validating nodejs source
+[warn] !  functions: package.json indicates an outdated version of firebase-functions. Please upgrade using npm install --save firebase-functions@latest in your functions directory. 
+[debug] [2026-04-13T18:01:08.457Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "24"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^3.4.1",
+    "typescript": "^5.7.3"
+  },
+  "private": true
+}
+[debug] [2026-04-13T18:01:08.457Z] Building nodejs source
+[debug] [2026-04-13T18:01:08.457Z] Failed to find version of module node: reached end of search path C:\Users\lolpa\OneDrive\Escritorio\TEC\proyecto\Sistema-Control-Activos\functions\node_modules
+[info] +  functions: Using node@24 from host. 
+[debug] [2026-04-13T18:01:08.458Z] Could not find functions.yaml. Must use http discovery
+[debug] [2026-04-13T18:01:08.466Z] Found firebase-functions binary at 'C:\Users\lolpa\OneDrive\Escritorio\TEC\proyecto\Sistema-Control-Activos\functions\node_modules\.bin\firebase-functions'
+[info] Serving at port 8013
+
+[debug] [2026-04-13T18:01:08.871Z] defaultcredentials: writing to file C:\Users\lolpa\AppData\Roaming\firebase\brenesignacio95_gmail_com_application_default_credentials.json
+[debug] [2026-04-13T18:01:08.872Z] Setting GAC to C:\Users\lolpa\AppData\Roaming\firebase\brenesignacio95_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\lolpa\\AppData\\Roaming\\firebase\\brenesignacio95_gmail_com_application_default_credentials.json"}}
+[info] +  functions: Loaded functions definitions from source: notificarDanoActivo. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: notificarDanoActivo."}}
+[debug] [2026-04-13T18:01:08.989Z] Got response from /__/functions.yaml {"endpoints":{"notificarDanoActivo":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"eventTrigger":{"eventType":"google.cloud.firestore.document.v1.updated","eventFilters":{"database":"(default)","namespace":"(default)"},"eventFilterPathPatterns":{"document":"devoluciones/{devolucionId}"},"retry":false},"entryPoint":"notificarDanoActivo"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[debug] [2026-04-13T18:01:13.019Z] defaultcredentials: writing to file C:\Users\lolpa\AppData\Roaming\firebase\brenesignacio95_gmail_com_application_default_credentials.json
+[debug] [2026-04-13T18:01:13.020Z] Setting GAC to C:\Users\lolpa\AppData\Roaming\firebase\brenesignacio95_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\lolpa\\AppData\\Roaming\\firebase\\brenesignacio95_gmail_com_application_default_credentials.json"}}
+[info] +  functions: Loaded functions definitions from source: notificarDanoActivo. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: notificarDanoActivo."}}
