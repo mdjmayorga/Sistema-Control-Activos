@@ -1,59 +1,118 @@
-# SistemaControlActivos
+# Sistema de Control de Activos - CIVCO
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.8.
+Sistema web para la gestión de préstamos de equipos topográficos del Centro de Investigaciones en Vivienda y Construcción (CIVCO), Instituto Tecnológico de Costa Rica.
 
-## Development server
+**Stack:** Angular · TypeScript · Firebase (Auth + Firestore) · Angular Fire
 
-To start a local development server, run:
+---
 
-```bash
-ng serve
-```
+## Requisitos previos
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Node.js 18+
+- Java 21+ (requerido por el emulador de Firebase)
+- Firebase CLI: `npm install -g firebase-tools`
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Configuración inicial
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### 1. Instalar dependencias
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
+### 2. Configurar Firebase (solo para producción)
 
-To build the project run:
+Edita `src/app/firebase.config.ts` con los datos reales de tu proyecto Firebase:
+
+```ts
+export const firebaseConfig = {
+  apiKey: '...',
+  authDomain: '...',
+  projectId: '...',
+  ...
+};
+```
+
+En desarrollo los emuladores usan el proyecto `demo-civco` y no necesitan credenciales reales.
+
+---
+
+## Desarrollo local
+
+Para correr el proyecto localmente se necesitan **tres terminales**:
+
+### Terminal 1 — Emuladores de Firebase
 
 ```bash
-ng build
+npm run emulators
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Levanta Auth (puerto 9099) y Firestore (puerto 8080) localmente.
+UI del emulador disponible en http://127.0.0.1:4000
 
-## Running unit tests
+### Terminal 2 — Usuario de prueba
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Espera a que los emuladores estén listos y luego ejecuta:
 
 ```bash
-ng test
+npm run seed
 ```
 
-## Running end-to-end tests
+Acá se crean los usuarios de prueba, se borran al reiniciar la terminal
 
-For end-to-end (e2e) testing, run:
+### Terminal 3 — Angular
 
 ```bash
-ng e2e
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Abre http://localhost:4200 en el navegador.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Tests
+
+### Reglas de Firestore (AU003)
+
+Prueba las reglas de seguridad de Firestore contra el emulador:
+
+```bash
+npm run test:rules
+```
+
+Este comando levanta el emulador de Firestore automáticamente, corre los 13 tests y lo apaga. No requiere tener los emuladores corriendo de antemano.
+
+---
+
+## Puertos utilizados
+
+| Servicio            | Puerto |
+|---------------------|--------|
+| Angular Dev Server  | 4200   |
+| Emulador Auth       | 9099   |
+| Emulador Firestore  | 8080   |
+| Emulator UI         | 4000   |
+
+---
+
+## Estructura del proyecto
+
+```
+src/
+├── app/
+│   ├── core/
+│   │   └── services/          # AuthService
+│   ├── features/
+│   │   └── auth/
+│   │       └── login/         # Componente de login (AU003, AU005)
+│   └── shared/
+│       └── validators/        # institutionalEmailValidator (AU003)
+├── environments/
+│   ├── environment.ts         # Dev — conecta a emuladores
+│   └── environment.prod.ts    # Prod — conecta a Firebase real
+firestore.rules                # Reglas de seguridad Firestore (AU003)
+tests/
+└── firestore.rules.test.js    # Tests de las reglas
+```
