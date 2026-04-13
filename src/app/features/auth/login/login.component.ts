@@ -44,7 +44,7 @@ export class LoginComponent {
     try {
       const credential = await this.authService.login(this.email.value!, this.password.value!);
       const role = await this.authService.getUserRole(credential.user.uid);
-      this.router.navigate([role === 'admin' ? '/admin' : '/dashboard']);
+      this.router.navigate([role === 'admin' ? '/admin' : '/usuario']);
     } catch (err: any) {
       this.errorMessage.set(this.mapFirebaseError(err.code));
     } finally {
