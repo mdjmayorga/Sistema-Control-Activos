@@ -1,0 +1,115 @@
+.loan-form-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.form-panel {
+  width: 910px;
+  background: #F3F3F3;
+  border-radius: 16px;
+  padding: 46px 96px 34px 96px;
+  box-sizing: border-box;
+}
+
+.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+}
+
+.field {
+  margin-bottom: 24px;
+}
+
+.field label {
+  display: block;
+  color: #202020;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.field select,
+.field input {
+  width: 100%;
+  height: 36px;
+  border: 1px solid #D4D4D4;
+  border-radius: 6px;
+  padding: 0 14px;
+  box-sizing: border-box;
+  background: #F7F7F7;
+  color: #555555;
+  font-size: 14px;
+  outline: none;
+}
+
+.field select {
+  cursor: pointer;
+}
+
+.field input::placeholder {
+  color: #9A9A9A;
+}
+
+.divider {
+  border-top: 1px solid #D8D8D8;
+  margin: 8px 0 18px 0;
+}
+
+.optional {
+  display: inline-block;
+  margin-left: 10px;
+  background: #A58989;
+  color: #FFFFFF;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  vertical-align: middle;
+}
+
+.help-text {
+  display: block;
+  margin-top: 10px;
+  color: #8A8A8A;
+  font-size: 11px;
+}
+
+.field small.error {
+  display: block;
+  margin-top: 8px;
+  color: #D64545;
+  font-size: 11px;
+}
+
+select.ng-invalid.ng-touched,
+input.ng-invalid.ng-touched {
+  border: 1px solid #D64545;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  margin-top: 34px;
+}
+
+.btn {
+  width: 165px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.btn-rose {
+  background: #A58989;
+}
+
+.btn-blue {
+  background: #0B9DFF;
+}

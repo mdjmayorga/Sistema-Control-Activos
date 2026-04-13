@@ -1,0 +1,33 @@
+@if (abierto) {
+	<div class="devolucion-modal__backdrop" (click)="onCerrar()"></div>
+
+	<section class="devolucion-modal" role="dialog" aria-modal="true" aria-labelledby="devolucion-modal-title">
+		<h2 id="devolucion-modal-title">Confirmar devolucion</h2>
+		<p>Esta seguro de registrar la devolucion de este prestamo?</p>
+
+		<label class="devolucion-modal__checkbox" for="productoDanado">
+			<input
+				id="productoDanado"
+				type="checkbox"
+				[checked]="productoDanado"
+				(change)="onCambioDanado($event)">
+			<span>El producto esta dañado</span>
+		</label>
+		<p class="devolucion-modal__estado">Estado: {{ productoDanado ? 'Dañado' : 'No dañado' }}</p>
+
+		@if (productoDanado) {
+			<p class="devolucion-modal__whatsapp-msg">
+				Se le enviara un mensaje por WhatsApp para continuar con el proceso.
+			</p>
+		}
+
+		<div class="devolucion-modal__actions">
+			<button type="button" class="devolucion-modal__btn devolucion-modal__btn--ghost" (click)="onCerrar()">
+				Cancelar
+			</button>
+			<button type="button" class="devolucion-modal__btn devolucion-modal__btn--confirm" (click)="onConfirmar()">
+				Confirmar devolucion
+			</button>
+		</div>
+	</section>
+}

@@ -1,0 +1,27 @@
+<article class="prestamo-item">
+	<div class="prestamo-item__left">
+		<h3>{{ loan.activo }}</h3>
+		<p>Usuario: {{ loan.usuarioNombre }}</p>
+	</div>
+
+	<div class="prestamo-item__right">
+		<p>Fecha del préstamo: {{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</p>
+
+		@if (mostrarFechaDevolucion) {
+			<p>
+				Fecha de devolución:
+				{{ loan.fechaDevolucion ? (loan.fechaDevolucion | date:'dd/MM/yyyy') : 'Pendiente' }}
+			</p>
+		}
+
+		@if (mostrarBotonDevolver) {
+			<app-devolver-button (devolverClick)="abrirModal()"></app-devolver-button>
+		}
+	</div>
+</article>
+
+<app-return-modal
+	[abierto]="modalAbierto"
+	(cerrar)="cerrarModal()"
+	(confirmar)="confirmarDevolucion($event)">
+</app-return-modal>

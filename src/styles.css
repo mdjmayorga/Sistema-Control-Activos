@@ -1,7 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+  --background-color: #111317;
+  --font-family-base: 'Roboto', sans-serif;
+
+  --bg: #111317;
+  --white: #FFFFFF;
+  --rose: #A58989;
+  --gray: #797979;
+  --blue: #0B9DFF;
+  --soft: #A0AEC0;
+  --line: rgba(160, 174, 192, 0.16);
+  --panel: #F5F5F5;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: var(--background-color);
+  font-family: var(--font-family-base);
+}
+
+
 * {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  font-family: var(--font-family-base);
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  background-color: var(--background-color);
+  color: var(--white);
 }
 
 html,
@@ -16,4 +59,22 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overflow-x: hidden;
+  font-family: var(--font-family-base);
+  line-height: 1.5;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: var(--font-family-base);
+  border: none;
+  cursor: pointer;
+}
 }

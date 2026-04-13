@@ -1,0 +1,14 @@
+<section class="page-layout">
+  <header class="page-layout__header">
+    <div>
+      <h1 class="page-layout__title">{{ title() }}</h1>
+      <p class="page-layout__description">{{ description() }}</p>
+    </div>
+  </header>
+
+  <main class="page-layout__content">
+    <div class="page-layout__panel">
+      <ng-content></ng-content>
+    </div>
+  </main>
+</section>
