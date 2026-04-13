@@ -1,57 +1,88 @@
-<div class="page">
-  <div class="container">
-    <h1>Sistema de Control de Activos - CIVCO</h1>
-    <h2>Inicio de sesión</h2>
+<div class="auth-page">
+  <div class="auth-card">
+    <!-- Header -->
+    <div class="card-header">
+      <h1 class="card-title">Iniciar sesion</h1>
+      <p class="card-subtitle">Sistema de Control de Activos - CIVCO</p>
+    </div>
 
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="field-group">
-        <label for="email">Correo Institucional</label>
+    <!-- Error banner -->
+    @if (errorMessage()) {
+      <div class="alert alert-error" role="alert">
+        <svg class="alert-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        <span>{{ errorMessage() }}</span>
+      </div>
+    }
+
+    <!-- Form -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email" class="form-label">Correo institucional</label>
         <input
           id="email"
           type="email"
           formControlName="email"
+          class="form-input"
+          [class.input-error]="email.touched && email.invalid"
+          placeholder="usuario@estudiantec.cr"
           autocomplete="email"
-          placeholder=""
         />
-        @if (email.touched && email.errors?.['required']) {
-          <span class="error">El correo es obligatorio.</span>
-        }
-        @if (email.touched && email.errors?.['email']) {
-          <span class="error">Ingrese un correo con formato válido.</span>
-        }
-        @if (email.touched && email.errors?.['institutionalEmail']) {
-          <span class="error">
-            Solo se permiten correos &#64;estudiantec.cr o &#64;itcr.ac.cr.
+        @if (email.touched && email.invalid) {
+          <span class="error-text">
+            @if (email.hasError('required')) {
+              El correo es obligatorio.
+            } @else if (email.hasError('email')) {
+              Ingrese un correo con formato valido.
+            } @else if (email.hasError('institutionalEmail')) {
+              Solo se permiten correos &#64;estudiantec.cr o &#64;itcr.ac.cr.
+            }
           </span>
         }
       </div>
 
-      <div class="field-group">
-        <label for="password">Contraseña</label>
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password" class="form-label">Contrasena</label>
         <input
           id="password"
           type="password"
           formControlName="password"
+          class="form-input"
+          [class.input-error]="password.touched && password.invalid"
+          placeholder="Tu contrasena"
           autocomplete="current-password"
-          placeholder=""
         />
-        @if (password.touched && password.errors?.['required']) {
-          <span class="error">La contraseña es obligatoria.</span>
+        @if (password.touched && password.invalid) {
+          <span class="error-text">
+            @if (password.hasError('required')) {
+              La contrasena es obligatoria.
+            }
+          </span>
         }
       </div>
 
-      @if (errorMessage()) {
-        <p class="error-banner">{{ errorMessage() }}</p>
-      }
-
-      <button type="submit" [disabled]="loading()">
-        {{ loading() ? 'Iniciando sesión...' : 'Iniciar sesión' }}
+      <!-- Submit -->
+      <button type="submit" class="btn-submit" [disabled]="loading()">
+        @if (loading()) {
+          <span class="spinner"></span>
+          Iniciando sesion...
+        } @else {
+          Iniciar sesion
+        }
       </button>
     </form>
 
-    <p class="register-link">
-      ¿No tiene cuenta?
-      <a routerLink="/register">Regístrese ahora</a>
+    <!-- Footer -->
+    <p class="card-footer">
+      No tienes cuenta?
+      <a routerLink="/register" class="link">Registrate ahora</a>
     </p>
   </div>
 </div>

@@ -22,7 +22,7 @@ export const routes: Routes = [
   {
     path: 'register',
     loadComponent: () =>
-      import('./features/auth/components/register/register.component').then(
+      import('./features/auth/register/register.component').then(
         (m) => m.RegisterComponent,
       ),
   },
