@@ -28,5 +28,65 @@ export const routes: Routes = [
         (m) => m.RegisterComponent,
       ),
   },
-  { path: '', redirectTo: 'register', pathMatch: 'full' },
+  {
+    path: 'unauthorized',
+    loadComponent: () =>
+      import('./features/auth/unauthorized/unauthorized.component').then(
+        (m) => m.UnauthorizedComponent,
+      ),
+  },
+
+  // AU004 - Ruta protegida: solo usuarios autenticados
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./features/user/dashboard/user-dashboard.component').then(
+        (m) => m.UserDashboardComponent,
+      ),
+    canActivate: [authGuard],
+  },
+
+  // AU004 - Ruta protegida: solo administradores
+  {
+    path: 'admin',
+    loadComponent: () =>
+      import('./features/admin/dashboard/admin-dashboard.component').then(
+        (m) => m.AdminDashboardComponent,
+      ),
+    canActivate: [adminGuard],
+  },
+
+  { path: '**', redirectTo: 'login' },
+];
+
+
+  { path: '', redirectTo: 'usuario/solicitar-prestamo', pathMatch: 'full' },
+
+  {
+    path: 'usuario',
+    children: [
+      { path: '', redirectTo: 'solicitar-prestamo', pathMatch: 'full' },
+      { path: 'solicitar-prestamo', component: LoanRequestComponent },
+      { path: 'mis-prestamos', component: UserDashboardComponent },
+      { path: 'mi-historial', component: HistorialPageUsuario },
+      { path: 'configuraciones', component: ConfiguracionesPageUsuario },
+    ],
+  },
+  {
+    path: 'admin',
+    children: [
+      { path: '', redirectTo: 'historial', pathMatch: 'full' },
+      {path: 'solicitar-prestamo', component: LoanRequestComponent },
+      {path: 'mis-prestamos', component: UserDashboardComponent },
+      {path: 'prestamos-activos', component: ActiveLoansPage },
+      {path: 'mi-historial', component: HistorialPageUsuario },
+      { path: 'historial', component: HistorialPage },
+      { path: 'configuraciones', component: ConfiguracionesPage },
+    ],
+  },
+  
+  {
+    path: '**',
+    redirectTo: 'usuario/solicitar-prestamo',
+  },
 ];
