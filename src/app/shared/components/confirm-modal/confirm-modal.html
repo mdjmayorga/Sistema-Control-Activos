@@ -6,10 +6,23 @@
     <p>{{ mensaje() }}</p>
 
     <div class="confirm-modal__actions">
-      <button type="button" class="confirm-modal__btn confirm-modal__btn--ghost" (click)="onCerrar()">
+      <button
+        type="button"
+        class="confirm-modal__btn confirm-modal__btn--ghost"
+        [disabled]="deshabilitado()"
+        (click)="onCerrar()"
+      >
         {{ textoCancelar() }}
       </button>
-      <button type="button" class="confirm-modal__btn confirm-modal__btn--confirm" (click)="onConfirmar()">
+      <button
+        type="button"
+        class="confirm-modal__btn confirm-modal__btn--confirm"
+        [disabled]="deshabilitado()"
+        (click)="onConfirmar()"
+      >
+        @if (cargando()) {
+          <span class="confirm-modal__spinner" aria-hidden="true"></span>
+        }
         {{ textoConfirmar() }}
       </button>
     </div>
