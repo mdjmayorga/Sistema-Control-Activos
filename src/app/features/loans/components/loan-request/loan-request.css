@@ -2,12 +2,15 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-top: 8px;
+  padding-top: 24px;
+  padding-bottom: 24px;
 }
 
 .form-panel {
   width: 910px;
-  background: #F3F3F3;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
   border-radius: 16px;
   padding: 46px 96px 34px 96px;
   box-sizing: border-box;
@@ -25,9 +28,9 @@
 
 .field label {
   display: block;
-  color: #202020;
+  color: #e2e8f0;
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 500;
   margin-bottom: 10px;
 }
 
@@ -35,34 +38,50 @@
 .field input {
   width: 100%;
   height: 36px;
-  border: 1px solid #D4D4D4;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 6px;
   padding: 0 14px;
   box-sizing: border-box;
-  background: #F7F7F7;
-  color: #555555;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f8fafc;
   font-size: 14px;
   outline: none;
+  transition: border-color 120ms ease, background-color 120ms ease;
 }
 
 .field select {
   cursor: pointer;
 }
 
+.field select option {
+  background-color: #1b212d;
+  color: #f8fafc;
+}
+
+.field select option[value=''] {
+  color: #a8b0be;
+}
+
+.field select:focus,
+.field input:focus {
+  border-color: var(--blue);
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .field input::placeholder {
-  color: #9A9A9A;
+  color: #a8b0be;
 }
 
 .divider {
-  border-top: 1px solid #D8D8D8;
+  border-top: 1px solid var(--line);
   margin: 8px 0 18px 0;
 }
 
 .optional {
   display: inline-block;
   margin-left: 10px;
-  background: #A58989;
-  color: #FFFFFF;
+  background: rgba(165, 137, 137, 0.22);
+  color: #f8fafc;
   font-size: 10px;
   padding: 2px 8px;
   border-radius: 6px;
@@ -72,20 +91,20 @@
 .help-text {
   display: block;
   margin-top: 10px;
-  color: #8A8A8A;
+  color: #a8b0be;
   font-size: 11px;
 }
 
 .field small.error {
   display: block;
   margin-top: 8px;
-  color: #D64545;
+  color: #f87171;
   font-size: 11px;
 }
 
 select.ng-invalid.ng-touched,
 input.ng-invalid.ng-touched {
-  border: 1px solid #D64545;
+  border: 1px solid #f87171;
 }
 
 .actions {
@@ -100,16 +119,25 @@ input.ng-invalid.ng-touched {
   height: 40px;
   border: none;
   border-radius: 8px;
-  color: #FFFFFF;
+  color: var(--white);
   font-size: 16px;
-  font-weight: 400;
+  font-weight: 500;
   cursor: pointer;
+  transition: filter 120ms ease, transform 120ms ease;
 }
 
 .btn-rose {
-  background: #A58989;
+  background: var(--rose);
 }
 
 .btn-blue {
-  background: #0B9DFF;
+  background: var(--blue);
+}
+
+.btn:hover {
+  filter: brightness(1.08);
+}
+
+.btn:active {
+  transform: translateY(1px);
 }

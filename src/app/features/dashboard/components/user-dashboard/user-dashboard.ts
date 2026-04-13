@@ -4,6 +4,7 @@ import { Loan } from '../../../../core/models/loan.model';
 import { LoansList } from '../../../../shared/components/loans-list/loans-list';
 import { loanReturnPayload } from '../../../../shared/components/loan-item/loan-item';
 import { PageLayout } from '../../../../layout/components/page-layout/page-layout';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -18,12 +19,23 @@ export class UserDashboardComponent implements OnInit {
   loans: Loan[] = [];
   cargando = true;
 
-  constructor(private loanService: LoanService) {}
+  constructor(
+    private loanService: LoanService,
+    private authService: AuthService,
+  ) {}
 
   ngOnInit(): void {
-    this.loanService.obtenerPrestamosActivos().subscribe({
+    const currentUser = this.authService.getCurrentUser();
+
+    if (!currentUser) {
+      this.loans = [];
+      this.cargando = false;
+      return;
+    }
+
+    this.loanService.obtenerPrestamosActivosByID(currentUser.uid).subscribe({
       next: (data) => {
-        this.loans = data;
+        this.loans = data.sort((a, b) => b.fechaPrestamo.localeCompare(a.fechaPrestamo));
         this.cargando = false;
       },
       error: (error) => {

@@ -1,12 +1,16 @@
 :host {
   display: block;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
+  min-height: 0;
 }
 
 .page-layout {
   padding: 32px;
-  min-height: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
   background-color: var(--background-color);
   box-sizing: border-box;
 }
@@ -30,6 +34,8 @@
 
 .page-layout__content {
   width: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .page-layout__panel {
@@ -37,5 +43,32 @@
   border-radius: 12px;
   padding: 1px 16px;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.55);
-  min-height: 300px;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(160, 174, 192, 0.45) transparent;
+}
+
+.page-layout__panel::-webkit-scrollbar {
+  width: 10px;
+}
+
+.page-layout__panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.page-layout__panel::-webkit-scrollbar-thumb {
+  background: rgba(160, 174, 192, 0.35);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.page-layout__panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(160, 174, 192, 0.55);
+  border: 2px solid transparent;
+  background-clip: content-box;
 }

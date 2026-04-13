@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { LoanService } from '../../services/loan.service';
 import { PageLayout } from '../../../../layout/components/page-layout/page-layout';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-loan-request',
@@ -18,7 +19,8 @@ export class LoanRequestComponent {
 
   constructor(
     private fb: FormBuilder,
-    private loanService: LoanService
+    private loanService: LoanService,
+    private authService: AuthService,
   ) {
     this.loanForm = this.fb.group({
       grupoTopografia: ['', Validators.required],
@@ -31,12 +33,24 @@ export class LoanRequestComponent {
 
   async onSubmit() {
     if (this.loanForm.valid) {
+      const currentUser = this.authService.getCurrentUser();
+      if (!currentUser) {
+        alert('Debe iniciar sesion para registrar un prestamo');
+        return;
+      }
+
+      const usuarioNombre = await this.authService.getUserDisplayName(
+        currentUser.uid,
+        currentUser.displayName,
+        currentUser.email,
+      );
+
       const prestamo = {
         ...this.loanForm.value,
         estado: 'activo' as const,
         fechaPrestamo: new Date().toISOString(),
-        usuarioId: 'usuario-prueba',
-        usuarioNombre: 'Usuario Demo'
+        usuarioId: currentUser.uid,
+        usuarioNombre,
       };
 
       try {

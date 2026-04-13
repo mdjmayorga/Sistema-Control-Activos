@@ -8,6 +8,7 @@ import { ConfiguracionesPageUsuario } from './features/settings/components/confi
 
 import { HistorialPage } from './features/history/components/historial-page/historial-page';
 import { ConfiguracionesPage } from './features/settings/components/configuraciones-page/configuraciones-page';
+import { AuthenticatedLayout } from './layout/components/authenticated-layout/authenticated-layout';
 
 export const routes: Routes = [
   {
@@ -18,6 +19,7 @@ export const routes: Routes = [
       ),
   },
 
+<<<<<<< Updated upstream
   { path: '', redirectTo: 'usuario/solicitar-prestamo', pathMatch: 'full' },
 
   {
@@ -40,6 +42,39 @@ export const routes: Routes = [
       {path: 'mi-historial', component: HistorialPageUsuario },
       { path: 'historial', component: HistorialPage },
       { path: 'configuraciones', component: ConfiguracionesPage },
+=======
+  {
+    path: '',
+    component: AuthenticatedLayout,
+    children: [
+      // Rutas de usuario autenticado
+      {
+        path: 'usuario',
+        canActivate: [authGuard],
+        children: [
+          { path: '', redirectTo: 'solicitar-prestamo', pathMatch: 'full' },
+          { path: 'solicitar-prestamo', component: LoanRequestComponent },
+          { path: 'mis-prestamos', component: UserDashboardComponent },
+          { path: 'mi-historial', component: HistorialPageUsuario },
+          { path: 'configuraciones', component: ConfiguracionesPageUsuario },
+        ],
+      },
+
+      // Rutas de administrador
+      {
+        path: 'admin',
+        canActivate: [authGuard, adminGuard],
+        children: [
+          { path: '', redirectTo: 'historial', pathMatch: 'full' },
+          { path: 'solicitar-prestamo', component: LoanRequestComponent },
+          { path: 'mis-prestamos', component: UserDashboardComponent },
+          { path: 'prestamos-activos', component: ActiveLoansPage },
+          { path: 'mi-historial', component: HistorialPageUsuario },
+          { path: 'historial', component: HistorialPage },
+          { path: 'configuraciones', component: ConfiguracionesPage },
+        ],
+      },
+>>>>>>> Stashed changes
     ],
   },
   

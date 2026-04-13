@@ -7,7 +7,6 @@ import {
   doc,
   query,
   where,
-  orderBy,
   updateDoc
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
@@ -26,10 +25,17 @@ export class LoanService {
 
   obtenerPrestamosActivos(): Observable<Loan[]> {
     const prestamosRef = collection(this.firestore, 'prestamos');
+    const prestamosActivosQuery = query(prestamosRef, where('estado', '==', 'activo'));
+
+    return collectionData(prestamosActivosQuery, { idField: 'id' }) as Observable<Loan[]>;
+  }
+
+  obtenerPrestamosActivosByID(usuarioId: string): Observable<Loan[]> {
+    const prestamosRef = collection(this.firestore, 'prestamos');
     const prestamosActivosQuery = query(
       prestamosRef,
       where('estado', '==', 'activo'),
-      orderBy('fechaPrestamo', 'desc')
+      where('usuarioId', '==', usuarioId)
     );
 
     return collectionData(prestamosActivosQuery, { idField: 'id' }) as Observable<Loan[]>;

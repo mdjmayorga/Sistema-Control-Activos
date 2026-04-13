@@ -1,0 +1,17 @@
+@if (abierto()) {
+  <div class="confirm-modal__backdrop" (click)="onCerrar()"></div>
+
+  <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-modal-title">
+    <h2 id="confirm-modal-title">{{ titulo() }}</h2>
+    <p>{{ mensaje() }}</p>
+
+    <div class="confirm-modal__actions">
+      <button type="button" class="confirm-modal__btn confirm-modal__btn--ghost" (click)="onCerrar()">
+        {{ textoCancelar() }}
+      </button>
+      <button type="button" class="confirm-modal__btn confirm-modal__btn--confirm" (click)="onConfirmar()">
+        {{ textoConfirmar() }}
+      </button>
+    </div>
+  </section>
+}

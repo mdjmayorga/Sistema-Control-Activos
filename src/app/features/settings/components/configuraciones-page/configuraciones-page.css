@@ -1,6 +1,21 @@
-.status-message {
-  padding: 18px 26px;
-  font-size: 14px;
-  color: #FFFFFF;
-  border-bottom: 1px solid rgba(160, 174, 192, 0.14);
+.settings-list {
+  padding: 16px 26px 24px;
+}
+
+.settings-list__title {
+  margin: 0;
+  font-size: 18px;
+  color: #f8fafc;
+}
+
+.settings-list__description {
+  margin: 8px 0 18px;
+  font-size: 13px;
+  color: #a8b0be;
+}
+
+.settings-list__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
