@@ -1,4 +1,4 @@
-import {onDocumentUpdated} from "firebase-functions/v2/firestore";
+import {onDocumentWritten} from "firebase-functions/v2/firestore";
 import * as admin from "firebase-admin";
 import {getDamageEmailTemplate} from "./emailTemplate";
 
@@ -6,14 +6,14 @@ admin.initializeApp();
 
 const IS_EMULATOR = process.env.FUNCTIONS_EMULATOR === "true";
 
-export const notificarDanoActivo = onDocumentUpdated(
+export const notificarDanoActivo = onDocumentWritten(
   "devoluciones/{devolucionId}",
   async (event) => {
     const beforeData = event.data?.before.data();
     const afterData = event.data?.after.data();
 
     if (!afterData) {
-      console.log("No hay datos después del update. Fin.");
+      console.log("No hay datos después del write. Fin.");
       return;
     }
     

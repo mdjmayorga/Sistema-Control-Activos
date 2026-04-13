@@ -48,6 +48,16 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    // Devoluciones de equipos
+    match /devoluciones/{devolucionId} {
+      // REGLAS TEMPORALES PARA DESARROLLO EN EMULATOR
+      allow read:   if true;
+      allow create: if true;
+      allow update: if true;
+
+      allow delete: if false;
+    }
+
     // Activos/equipos — solo lectura para usuarios institucionales
     match /activos/{activoId} {
       allow read:   if isAuthenticated() && hasInstitutionalEmail();

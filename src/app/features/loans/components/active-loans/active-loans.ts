@@ -43,7 +43,7 @@ export class ActiveLoansPage {
 
   async onDevolverPrestamo(payload: loanReturnPayload): Promise<void> {
     try {
-      await this.loanService.marcarPrestamoComoDevuelto(payload.loanId);
+      await this.loanService.marcarPrestamoComoDevuelto(payload.loanId, payload.productoDanado);
     } catch (error) {
       console.error('Error al devolver el préstamo:', error);
     }
