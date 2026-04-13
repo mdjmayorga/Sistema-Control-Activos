@@ -118,4 +118,15 @@
         </div>
     </form>
   </div>
+  <app-confirm-modal
+    [abierto]="modalConfirmacionAbierto"
+    [titulo]="modalTitulo"
+    [mensaje]="modalMensaje"
+    [textoConfirmar]="textoConfirmarModal"
+    textoCancelar="Cancelar"
+    [cargando]="procesandoSolicitud"
+    [deshabilitado]="procesandoSolicitud || solicitudCompletada"
+    (cerrar)="cancelarConfirmacion()"
+    (confirmar)="confirmarSolicitud()"
+  ></app-confirm-modal>
 </app-page-layout>
