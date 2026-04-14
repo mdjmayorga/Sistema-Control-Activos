@@ -49,20 +49,20 @@
 
       <!-- Password -->
       <div class="form-group">
-        <label for="password" class="form-label">Contrasena</label>
+        <label for="password" class="form-label">Contraseña</label>
         <input
           id="password"
           type="password"
           formControlName="password"
           class="form-input"
           [class.input-error]="password.touched && password.invalid"
-          placeholder="Tu contrasena"
+          placeholder="Tu contraseña"
           autocomplete="current-password"
         />
         @if (password.touched && password.invalid) {
           <span class="error-text">
             @if (password.hasError('required')) {
-              La contrasena es obligatoria.
+              La contraseña es obligatoria.
             }
           </span>
         }
