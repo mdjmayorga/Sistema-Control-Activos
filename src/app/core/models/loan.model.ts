@@ -5,6 +5,7 @@ export interface Loan {
   razonPrestamo: string;
   activo: string;
   numeroSerie?: string;
+  correoInstitucional?: string;
   estado: 'activo' | 'devuelto';
   fechaPrestamo: string;
   fechaDevolucion?: string | null;
