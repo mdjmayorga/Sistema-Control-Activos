@@ -54,6 +54,11 @@ export class LoanService {
     const prestamoData = prestamoSnapshot.data() as Loan;
     const fechaDevolucion = new Date().toISOString();
     const devolucionRef = doc(this.firestore, 'devoluciones', prestamoId);
+    const numeroSerie = prestamoData.numeroSerie?.trim() || 'N/A';
+    const correoInstitucional = prestamoData.correoInstitucional?.trim() || 'N/A';
+    const grupoTopografia = prestamoData.grupoTopografia?.trim() || 'N/A';
+    const cuadrilla = prestamoData.cuadrilla?.trim() || 'N/A';
+    const razonPrestamo = prestamoData.razonPrestamo?.trim() || 'N/A';
 
     await setDoc(
       devolucionRef,
@@ -62,6 +67,11 @@ export class LoanService {
         danoConfirmado: productoDanado === true,
         nombreEstudiante: prestamoData.usuarioNombre ?? 'Estudiante Desconocido',
         nombreActivo: prestamoData.activo ?? 'Activo Desconocido',
+        numeroSerie,
+        correoInstitucional,
+        grupoTopografia,
+        cuadrilla,
+        razonPrestamo,
         fechaDevolucion,
         updatedAt: fechaDevolucion,
       },
