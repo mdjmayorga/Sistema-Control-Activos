@@ -27,7 +27,39 @@ export const notificarDanoActivo = onDocumentWritten(
 
     const estudiante = afterData.nombreEstudiante || "Estudiante Desconocido";
     const activo = afterData.nombreActivo || "Activo Desconocido";
-    const htmlListo = getDamageEmailTemplate(estudiante, activo);
+
+    const fieldOrNA = (value: unknown): string => {
+      if (typeof value === "string" && value.trim()) {
+        return value.trim();
+      }
+
+      return "N/A";
+    };
+
+    const numeroSerie = fieldOrNA(afterData.numeroSerie);
+    const correoInstitucional = fieldOrNA(
+      afterData.correoInstitucional ?? afterData.correo ?? afterData.email
+    );
+    const grupo = fieldOrNA(
+      afterData.grupoTopografia ?? afterData.grupo ?? afterData.group
+    );
+    const cuadrilla = fieldOrNA(afterData.cuadrilla ?? afterData.crew);
+    const grupoCuadrilla =
+      grupo === "N/A" && cuadrilla === "N/A"
+        ? "N/A"
+        : `${grupo} / ${cuadrilla}`;
+    const razonPrestamo = fieldOrNA(
+      afterData.razonPrestamo ?? afterData.razon ?? afterData.reason
+    );
+
+    const htmlListo = getDamageEmailTemplate(
+      estudiante,
+      activo,
+      numeroSerie,
+      correoInstitucional,
+      grupoCuadrilla,
+      razonPrestamo
+    );
 
     const payload = {
       to: "jccoto@itcr.ac.cr",
