@@ -82,6 +82,7 @@ export class LoanRequestComponent {
       fechaPrestamo: new Date().toISOString(),
       usuarioId: currentUser.uid,
       usuarioNombre,
+      correoInstitucional: currentUser.email ?? 'N/A',
     };
 
     try {

@@ -1,6 +1,13 @@
 /* eslint-disable */
 
-export const getDamageEmailTemplate = (estudiante: string, activo: string) => {
+export const getDamageEmailTemplate = (
+  estudiante: string,
+  activo: string,
+  numeroSerie: string = "N/A",
+  correoInstitucional: string = "N/A",
+  grupoCuadrilla: string = "N/A",
+  razonPrestamo: string = "N/A",
+) => {
   return `
 <!-- ══ EMAIL: Notificación de Daño en Activo - CIVCO/TEC ══ -->
 <div style="margin:0;padding:32px 16px;background-color:#f0f2f5;font-family:Arial,Helvetica,sans-serif;">
@@ -64,6 +71,14 @@ export const getDamageEmailTemplate = (estudiante: string, activo: string) => {
             <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">${activo}</span>
           </td>
         </tr>
+        <tr>
+          <td width="42%" style="padding:11px 14px;background-color:#eef1fb;border-right:1px solid #e8edf7;">
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;color:#4a5568;"> &nbsp;Número de Serie</span>
+          </td>
+          <td style="padding:11px 14px;background-color:#ffffff;">
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">${numeroSerie}</span>
+          </td>
+        </tr>
       </table>
 
       <!-- ── Detalles del Préstamo ── -->
@@ -77,6 +92,30 @@ export const getDamageEmailTemplate = (estudiante: string, activo: string) => {
           </td>
           <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
             <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">${estudiante}</span>
+          </td>
+        </tr>
+        <tr>
+          <td width="42%" style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;color:#4a5568;"> &nbsp;Correo Institucional</span>
+          </td>
+          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">${correoInstitucional}</span>
+          </td>
+        </tr>
+        <tr>
+          <td width="42%" style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;color:#4a5568;"> &nbsp;Grupo y Cuadrilla</span>
+          </td>
+          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">${grupoCuadrilla}</span>
+          </td>
+        </tr>
+        <tr>
+          <td width="42%" style="padding:11px 14px;background-color:#eef1fb;border-right:1px solid #e8edf7;">
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:600;color:#4a5568;"> &nbsp;Razón del Préstamo</span>
+          </td>
+          <td style="padding:11px 14px;background-color:#ffffff;">
+            <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#a0aec0;font-style:italic;">${razonPrestamo}</span>
           </td>
         </tr>
       </table>
