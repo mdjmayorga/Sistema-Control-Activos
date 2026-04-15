@@ -18,9 +18,9 @@
   <a
     class="sidebar__action"
     [routerLink]="isAdmin() ? '/admin/solicitar-prestamo' : '/usuario/solicitar-prestamo'"
-    aria-label="Solicitar Prestamo"
+    aria-label="Solicitar Préstamo"
   >
-    <span class="action-label action-label--full">Solicitar Prestamo</span>
+    <span class="action-label action-label--full">Solicitar Préstamo</span>
     <span class="action-label action-label--short">+</span>
   </a>
 
@@ -28,7 +28,7 @@
     <a [routerLink]="isAdmin() ? '/admin/mis-prestamos' : '/usuario/mis-prestamos'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Mis prestamos">
       <span class="nav-content nav-label--full">
         <img class="nav-icon" src="/prestamos-icon.png" alt="" aria-hidden="true" />
-        <span class="nav-label">Mis prestamos</span>
+        <span class="nav-label">Mis préstamos</span>
       </span>
       <span class="nav-icon-only" aria-hidden="true"> 
         <img class="nav-icon" src="/prestamos-icon.png" alt="" />
@@ -52,7 +52,7 @@
       <a routerLink="/admin/prestamos-activos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Prestamos">
         <span class="nav-content nav-label--full">
           <img class="nav-icon" src="/prestamos-icon.png" alt="" aria-hidden="true" />
-          <span class="nav-label">Prestamos</span>
+          <span class="nav-label">Préstamos</span>
         </span>
         <span class="nav-icon-only" aria-hidden="true">
           <img class="nav-icon" src="/prestamos-icon.png" alt="" />

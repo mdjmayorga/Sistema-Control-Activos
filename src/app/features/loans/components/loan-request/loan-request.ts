@@ -114,19 +114,19 @@ export class LoanRequestComponent {
       return 'Registrando prestamo';
     }
 
-    return 'Confirmar prestamo';
+    return 'Confirmar préstamo';
   }
 
   get modalMensaje(): string {
     if (this.solicitudCompletada) {
-      return 'Se realizo el prestamo';
+      return 'Se realizo el préstamo';
     }
 
     if (this.procesandoSolicitud) {
-      return 'Realizando prestamo...';
+      return 'Realizando préstamo...';
     }
 
-    return '¿Desea registrar este prestamo y continuar a Mis prestamos?';
+    return '¿Desea registrar este préstamo y continuar a Mis préstamos?';
   }
 
   get textoConfirmarModal(): string {
