@@ -1,14 +1,20 @@
 .settings-item {
   width: 100%;
   border-bottom: 1px solid var(--line);
-  background: transparent;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 25, 47, 0.95) 100%);
   color: inherit;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 8px 4px;
+  padding: 18px 20px;
   text-align: left;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .settings-item__content {
