@@ -1,6 +1,21 @@
-.status-message {
-  padding: 18px 26px;
+.historial-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 14px 0 8px;
+}
+
+.btn-csv {
+  padding: 8px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  background: transparent;
+  color: #e2e8f0;
   font-size: 14px;
-  color: #FFFFFF;
-  border-bottom: 1px solid rgba(160, 174, 192, 0.14);
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.btn-csv:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.24);
 }
