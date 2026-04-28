@@ -229,3 +229,227 @@ Issues? Report them at https://github.com/firebase/firebase-tools/issues and att
 [debug] [2026-04-13T18:01:13.019Z] defaultcredentials: writing to file C:\Users\lolpa\AppData\Roaming\firebase\brenesignacio95_gmail_com_application_default_credentials.json
 [debug] [2026-04-13T18:01:13.020Z] Setting GAC to C:\Users\lolpa\AppData\Roaming\firebase\brenesignacio95_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\lolpa\\AppData\\Roaming\\firebase\\brenesignacio95_gmail_com_application_default_credentials.json"}}
 [info] +  functions: Loaded functions definitions from source: notificarDanoActivo. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: notificarDanoActivo."}}
+[debug] [2026-04-28T20:39:41.841Z] ----------------------------------------------------------------------
+[debug] [2026-04-28T20:39:41.844Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js emulators:start
+[debug] [2026-04-28T20:39:41.844Z] CLI Version:   15.11.0
+[debug] [2026-04-28T20:39:41.844Z] Platform:      win32
+[debug] [2026-04-28T20:39:41.844Z] Node Version:  v22.14.0
+[debug] [2026-04-28T20:39:41.845Z] Time:          Tue Apr 28 2026 14:39:41 GMT-0600 (hora estándar central)
+[debug] [2026-04-28T20:39:41.845Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-04-28T20:39:41.846Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2026-04-28T20:39:43.664Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-04-28T20:39:43.664Z] > authorizing via signed-in user (mayorga.halabi@gmail.com)
+[debug] [2026-04-28T20:39:43.815Z] openjdk version "21.0.10" 2026-01-20 LTS
+
+[debug] [2026-04-28T20:39:43.816Z] OpenJDK Runtime Environment Temurin-21.0.10+7 (build 21.0.10+7-LTS)
+OpenJDK 64-Bit Server VM Temurin-21.0.10+7 (build 21.0.10+7-LTS, mixed mode, sharing)
+
+[debug] [2026-04-28T20:39:43.846Z] Parsed Java major version: 21
+[info] i  emulators: Starting emulators: auth, functions, firestore, extensions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: auth, functions, firestore, extensions"}}
+[debug] [2026-04-28T20:39:43.848Z] Checked if tokens are valid: false, expires at: 1776804550821
+[debug] [2026-04-28T20:39:43.848Z] Checked if tokens are valid: false, expires at: 1776804550821
+[debug] [2026-04-28T20:39:43.848Z] > refreshing access token with scopes: []
+[debug] [2026-04-28T20:39:43.849Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-04-28T20:39:43.849Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-04-28T20:39:44.068Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2026-04-28T20:39:44.068Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2026-04-28T20:39:44.160Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-04-28T20:39:44.160Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-04-28T20:39:44.164Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/civco-a947d/services/cloudresourcemanager.googleapis.com [none]
+[debug] [2026-04-28T20:39:44.164Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/civco-a947d/services/cloudresourcemanager.googleapis.com  x-goog-user-project=civco-a947d
+[debug] [2026-04-28T20:39:44.818Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/civco-a947d/services/cloudresourcemanager.googleapis.com 403
+[debug] [2026-04-28T20:39:44.818Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/civco-a947d/services/cloudresourcemanager.googleapis.com [omitted]
+[debug] [2026-04-28T20:39:44.818Z] Unable to check that https://cloudresourcemanager.googleapis.com is enabled on civco-a947d. Calls to it will fail if it is not enabled
+[debug] [2026-04-28T20:39:44.818Z] Checked if tokens are valid: true, expires at: 1777412383160
+[debug] [2026-04-28T20:39:44.819Z] Checked if tokens are valid: true, expires at: 1777412383160
+[debug] [2026-04-28T20:39:44.819Z] >>> [apiv2][query] GET https://cloudresourcemanager.googleapis.com/v1/projects/civco-a947d [none]
+[debug] [2026-04-28T20:39:45.422Z] <<< [apiv2][status] GET https://cloudresourcemanager.googleapis.com/v1/projects/civco-a947d 403
+[debug] [2026-04-28T20:39:45.423Z] <<< [apiv2][body] GET https://cloudresourcemanager.googleapis.com/v1/projects/civco-a947d {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[error] !!  extensions: Unable to look up project number for civco-a947d.
+ If this is a real project, ensure that you are logged in and have access to it.
+ If this is a fake project, please use a project ID starting with 'demo-' to skip production calls.
+ Continuing with a fake project number - secrets and other features that require production access may behave unexpectedly. {"metadata":{"emulator":{"name":"extensions"},"message":"Unable to look up project number for civco-a947d.\n If this is a real project, ensure that you are logged in and have access to it.\n If this is a fake project, please use a project ID starting with 'demo-' to skip production calls.\n Continuing with a fake project number - secrets and other features that require production access may behave unexpectedly."}}
+[debug] [2026-04-28T20:39:45.434Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-28T20:39:45.434Z] [auth] Authentication Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-28T20:39:45.434Z] [firestore] Firestore Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-28T20:39:45.434Z] [firestore.websocket] websocket server for firestore only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-28T20:39:45.434Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8081}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2026-04-28T20:39:45.439Z] Write emulator hub locator at C:\Users\Mayorga\AppData\Local\Temp\hub-civco-a947d.json
+[debug] [2026-04-28T20:39:45.446Z] [Extensions] Started Extensions emulator, this is a noop.
+[debug] [2026-04-28T20:39:45.449Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-28T20:39:45.449Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-28T20:39:45.449Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2026-04-28T20:39:45.449Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"auth":[{"address":"127.0.0.1","family":"IPv4","port":9099}],"firestore":[{"address":"127.0.0.1","family":"IPv4","port":8081}],"firestore.websocket":[{"address":"127.0.0.1","family":"IPv4","port":9150}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] !  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: apphosting, database, hosting, pubsub, storage, dataconnect {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mapphosting, database, hosting, pubsub, storage, dataconnect\u001b[22m"}}
+[debug] [2026-04-28T20:39:45.460Z] defaultcredentials: writing to file C:\Users\Mayorga\AppData\Roaming\firebase\mayorga_halabi_gmail.com_application_default_credentials.json
+[debug] [2026-04-28T20:39:45.461Z] Setting GAC to C:\Users\Mayorga\AppData\Roaming\firebase\mayorga_halabi_gmail.com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to C:\\Users\\Mayorga\\AppData\\Roaming\\firebase\\mayorga_halabi_gmail.com_application_default_credentials.json"}}
+[debug] [2026-04-28T20:39:45.462Z] Checked if tokens are valid: true, expires at: 1777412383160
+[debug] [2026-04-28T20:39:45.462Z] Checked if tokens are valid: true, expires at: 1777412383160
+[debug] [2026-04-28T20:39:45.462Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/civco-a947d/adminSdkConfig [none]
+[debug] [2026-04-28T20:39:46.219Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/civco-a947d/adminSdkConfig 403
+[debug] [2026-04-28T20:39:46.219Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/civco-a947d/adminSdkConfig {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2026-04-28T20:39:46.219Z] Failed to get Admin SDK config for civco-a947d, falling back to cache Failed to get Admin SDK for Firebase project civco-a947d. Please make sure the project exists and your account has permission to access it. {"name":"FirebaseError","children":[],"exit":2,"message":"Failed to get Admin SDK for Firebase project civco-a947d. Please make sure the project exists and your account has permission to access it.","original":{"name":"FirebaseError","children":[],"context":{"body":{"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}},"response":{"statusCode":403}},"exit":1,"message":"Request to https://firebase.googleapis.com/v1beta1/projects/civco-a947d/adminSdkConfig had HTTP Error: 403, The caller does not have permission","status":403},"status":500}
+[warn] !  functions: Unable to fetch project Admin SDK configuration, Admin SDK behavior in Cloud Functions emulator may be incorrect. {"metadata":{"emulator":{"name":"functions"},"message":"Unable to fetch project Admin SDK configuration, Admin SDK behavior in Cloud Functions emulator may be incorrect."}}
+[debug] [2026-04-28T20:39:46.234Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2026-04-28T20:39:46.234Z] Ignoring unsupported arg: single_project_mode_error {"metadata":{"emulator":{"name":"firestore"},"message":"Ignoring unsupported arg: single_project_mode_error"}}
+[debug] [2026-04-28T20:39:46.234Z] Starting Firestore Emulator with command {"binary":"java","args":["-Dgoogle.cloud_firestore.debug_log_level=FINE","-Duser.language=en","-jar","C:\\Users\\Mayorga\\.cache\\firebase\\emulators\\cloud-firestore-emulator-v1.20.4.jar","--host","127.0.0.1","--port",8081,"--websocket_port",9150,"--project_id","civco-a947d","--rules","C:\\Users\\Mayorga\\OneDrive\\Documents\\TEC\\IS2026\\Proyecto\\Sistema-Control-Activos\\firestore.rules","--single_project_mode",true,"--functions_emulator","127.0.0.1:5001"],"optionalArgs":["port","webchannel_port","host","rules","websocket_port","functions_emulator","seed_from_export","project_id","single_project_mode"],"joinArgs":false,"shell":false,"port":8081} {"metadata":{"emulator":{"name":"firestore"},"message":"Starting Firestore Emulator with command {\"binary\":\"java\",\"args\":[\"-Dgoogle.cloud_firestore.debug_log_level=FINE\",\"-Duser.language=en\",\"-jar\",\"C:\\\\Users\\\\Mayorga\\\\.cache\\\\firebase\\\\emulators\\\\cloud-firestore-emulator-v1.20.4.jar\",\"--host\",\"127.0.0.1\",\"--port\",8081,\"--websocket_port\",9150,\"--project_id\",\"civco-a947d\",\"--rules\",\"C:\\\\Users\\\\Mayorga\\\\OneDrive\\\\Documents\\\\TEC\\\\IS2026\\\\Proyecto\\\\Sistema-Control-Activos\\\\firestore.rules\",\"--single_project_mode\",true,\"--functions_emulator\",\"127.0.0.1:5001\"],\"optionalArgs\":[\"port\",\"webchannel_port\",\"host\",\"rules\",\"websocket_port\",\"functions_emulator\",\"seed_from_export\",\"project_id\",\"single_project_mode\"],\"joinArgs\":false,\"shell\":false,\"port\":8081}"}}
+[info] i  firestore: Firestore Emulator logging to firestore-debug.log {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator logging to \u001b[1mfirestore-debug.log\u001b[22m"}}
+[debug] [2026-04-28T20:39:47.516Z] Apr 28, 2026 2:39:47 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start
+INFO: Started WebSocket server on ws://127.0.0.1:9150
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Apr 28, 2026 2:39:47 PM com.google.cloud.datastore.emulator.firestore.websocket.WebSocketServer start\r\nINFO: Started WebSocket server on ws://127.0.0.1:9150\r\n"}}
+[debug] [2026-04-28T20:39:47.595Z] 
+API endpoint: http://127.0.0.1:8081
+Database Edition: STANDARD
+Database Mode: CLOUD_FIRESTORE
+
+If you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:
+
+   export FIRESTORE_EMULATOR_HOST=127.0.0.1:8081
+
+If you are running a Firestore in Datastore Mode project, run:
+
+   export DATASTORE_EMULATOR_HOST=127.0.0.1:8081
+
+Note: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.
+Dev App Server is now running.
+
+ {"metadata":{"emulator":{"name":"firestore"},"message":"\nAPI endpoint: http://127.0.0.1:8081\nDatabase Edition: STANDARD\nDatabase Mode: CLOUD_FIRESTORE\n\nIf you are using a library that supports the FIRESTORE_EMULATOR_HOST environment variable, run:\r\n\n   export FIRESTORE_EMULATOR_HOST=127.0.0.1:8081\n\nIf you are running a Firestore in Datastore Mode project, run:\r\n\n   export DATASTORE_EMULATOR_HOST=127.0.0.1:8081\n\nNote: Support for Datastore Mode is in preview. If you encounter any bugs please file at https://github.com/firebase/firebase-tools/issues.\r\nDev App Server is now running.\n\r\n"}}
+[info] +  firestore: Firestore Emulator UI websocket is running on 9150. {"metadata":{"emulator":{"name":"firestore"},"message":"Firestore Emulator UI websocket is running on 9150."}}
+[debug] [2026-04-28T20:39:52.140Z] [Extensions] Connecting Extensions emulator, this is a noop.
+[info] i  functions: Watching "C:\Users\Mayorga\OneDrive\Documents\TEC\IS2026\Proyecto\Sistema-Control-Activos\functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"C:\\Users\\Mayorga\\OneDrive\\Documents\\TEC\\IS2026\\Proyecto\\Sistema-Control-Activos\\functions\" for Cloud Functions..."}}
+[debug] [2026-04-28T20:39:52.142Z] Validating nodejs source
+[warn] !  functions: Couldn't find firebase-functions package in your source code. Have you run 'npm install'? 
+[debug] [2026-04-28T20:39:52.143Z] getFunctionsSDKVersion encountered error: Cannot find module 'firebase-functions'
+Require stack:
+- C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\runtimes\node\versioning.js
+- C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\runtimes\node\index.js
+- C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\runtimes\index.js
+- C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\deploy\functions\prepare.js
+- C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\functionsEmulatorShared.js
+- C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\functionsEmulator.js
+- C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\emulator\controller.js
+- C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\commands\emulators-start.js
+- C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\commands\index.js
+- C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\index.js
+- C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\cli.js
+- C:\Users\Mayorga\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js {"code":"MODULE_NOT_FOUND","requireStack":["C:\\Users\\Mayorga\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\deploy\\functions\\runtimes\\node\\versioning.js","C:\\Users\\Mayorga\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\deploy\\functions\\runtimes\\node\\index.js","C:\\Users\\Mayorga\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\deploy\\functions\\runtimes\\index.js","C:\\Users\\Mayorga\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\deploy\\functions\\prepare.js","C:\\Users\\Mayorga\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\emulator\\functionsEmulatorShared.js","C:\\Users\\Mayorga\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\emulator\\functionsEmulator.js","C:\\Users\\Mayorga\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\emulator\\controller.js","C:\\Users\\Mayorga\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\commands\\emulators-start.js","C:\\Users\\Mayorga\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\commands\\index.js","C:\\Users\\Mayorga\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\index.js","C:\\Users\\Mayorga\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\bin\\cli.js","C:\\Users\\Mayorga\\AppData\\Roaming\\npm\\node_modules\\firebase-tools\\lib\\bin\\firebase.js"]}
+[debug] [2026-04-28T20:39:52.145Z] checkFunctionsSDKVersion encountered error: Invalid Version:  {}
+[debug] [2026-04-28T20:39:52.145Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "24"
+  },
+  "main": "lib/index.js",
+  "dependencies": {
+    "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^3.4.1",
+    "typescript": "^5.7.3"
+  },
+  "private": true
+}
+[error] !!  functions: Failed to load function definition from source: FirebaseError: There was an error reading functions\package.json:
+
+ functions\lib\index.js does not exist, can't deploy Cloud Functions {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: There was an error reading functions\\package.json:\n\n functions\\lib\\index.js does not exist, can't deploy Cloud Functions"}}
+[debug] [2026-04-28T20:39:52.154Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬──────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI              │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Authentication │ 127.0.0.1:9099 │ http://127.0.0.1:4000/auth       │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Functions      │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions  │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Firestore      │ 127.0.0.1:8081 │ http://127.0.0.1:4000/firestore  │
+├────────────────┼────────────────┼──────────────────────────────────┤
+│ Extensions     │ 127.0.0.1:5001 │ http://127.0.0.1:4000/extensions │
+└────────────────┴────────────────┴──────────────────────────────────┘
+  Emulator Hub host: 127.0.0.1 port: 4400
+  Other reserved ports: 4500, 9150
+┌─────────────────────────┬───────────────┬─────────────────────┐
+│ Extension Instance Name │ Extension Ref │ View in Emulator UI │
+└─────────────────────────┴───────────────┴─────────────────────┘
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2026-04-28T20:40:15.845Z] Apr 28, 2026 2:40:15 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Apr 28, 2026 2:40:15 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected HTTP/2 connection.\r\n"}}
+[debug] [2026-04-28T20:40:16.743Z] >>> [apiv2][query] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast [none]
+[debug] [2026-04-28T20:40:16.743Z] >>> [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"eventId":"6417ea17-bf74-4386-9933-d343f3533ef2","eventType":"providers/firebase.auth/eventTypes/user.create","resource":{"name":"projects/civco-a947d","service":"firebaseauth.googleapis.com"},"params":{},"timestamp":"2026-04-28T20:40:16.743Z","data":{"uid":"admin-001","email":"jccoto@itcr.ac.cr","emailVerified":true,"displayName":"Juan Carlos Coto","metadata":{"creationTime":"2026-04-28T20:40:16.742Z","lastSignInTime":"2026-04-28T20:40:16.742Z"},"customClaims":{},"providerData":[{"rawId":"jccoto@itcr.ac.cr","providerId":"password","displayName":"Juan Carlos Coto","email":"jccoto@itcr.ac.cr","federatedId":"jccoto@itcr.ac.cr"}]}}
+[debug] [2026-04-28T20:40:16.755Z] <<< [apiv2][status] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast 200
+[debug] [2026-04-28T20:40:16.755Z] <<< [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"status":"multicast_acknowledged"}
+[debug] [2026-04-28T20:40:16.855Z] >>> [apiv2][query] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast [none]
+[debug] [2026-04-28T20:40:16.855Z] >>> [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"eventId":"01a471dd-4ca6-4faa-b9a9-8e7c1eda822b","eventType":"providers/firebase.auth/eventTypes/user.create","resource":{"name":"projects/civco-a947d","service":"firebaseauth.googleapis.com"},"params":{},"timestamp":"2026-04-28T20:40:16.855Z","data":{"uid":"user-001","email":"estudiante1@estudiantec.cr","emailVerified":true,"displayName":"Maria Lopez","metadata":{"creationTime":"2026-04-28T20:40:16.855Z","lastSignInTime":"2026-04-28T20:40:16.855Z"},"customClaims":{},"providerData":[{"rawId":"estudiante1@estudiantec.cr","providerId":"password","displayName":"Maria Lopez","email":"estudiante1@estudiantec.cr","federatedId":"estudiante1@estudiantec.cr"}]}}
+[debug] [2026-04-28T20:40:16.858Z] <<< [apiv2][status] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast 200
+[debug] [2026-04-28T20:40:16.858Z] <<< [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"status":"multicast_acknowledged"}
+[debug] [2026-04-28T20:40:16.867Z] >>> [apiv2][query] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast [none]
+[debug] [2026-04-28T20:40:16.867Z] >>> [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"eventId":"c895e1b2-2554-4fe3-94ab-389c7f28d3a1","eventType":"providers/firebase.auth/eventTypes/user.create","resource":{"name":"projects/civco-a947d","service":"firebaseauth.googleapis.com"},"params":{},"timestamp":"2026-04-28T20:40:16.867Z","data":{"uid":"user-002","email":"estudiante2@estudiantec.cr","emailVerified":true,"displayName":"Carlos Ramirez","metadata":{"creationTime":"2026-04-28T20:40:16.867Z","lastSignInTime":"2026-04-28T20:40:16.867Z"},"customClaims":{},"providerData":[{"rawId":"estudiante2@estudiantec.cr","providerId":"password","displayName":"Carlos Ramirez","email":"estudiante2@estudiantec.cr","federatedId":"estudiante2@estudiantec.cr"}]}}
+[debug] [2026-04-28T20:40:16.869Z] <<< [apiv2][status] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast 200
+[debug] [2026-04-28T20:40:16.869Z] <<< [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"status":"multicast_acknowledged"}
+[debug] [2026-04-28T20:40:16.879Z] >>> [apiv2][query] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast [none]
+[debug] [2026-04-28T20:40:16.879Z] >>> [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"eventId":"4d1d2ec4-d0de-429b-ac48-761f6d782e41","eventType":"providers/firebase.auth/eventTypes/user.create","resource":{"name":"projects/civco-a947d","service":"firebaseauth.googleapis.com"},"params":{},"timestamp":"2026-04-28T20:40:16.879Z","data":{"uid":"user-003","email":"docente1@itcr.ac.cr","emailVerified":true,"displayName":"Ana Martinez","metadata":{"creationTime":"2026-04-28T20:40:16.879Z","lastSignInTime":"2026-04-28T20:40:16.879Z"},"customClaims":{},"providerData":[{"rawId":"docente1@itcr.ac.cr","providerId":"password","displayName":"Ana Martinez","email":"docente1@itcr.ac.cr","federatedId":"docente1@itcr.ac.cr"}]}}
+[debug] [2026-04-28T20:40:16.882Z] <<< [apiv2][status] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast 200
+[debug] [2026-04-28T20:40:16.882Z] <<< [apiv2][body] POST http://127.0.0.1:5001/functions/projects/civco-a947d/trigger_multicast {"status":"multicast_acknowledged"}
+[debug] [2026-04-28T20:40:16.939Z] Apr 28, 2026 2:40:16 PM io.netty.channel.DefaultChannelPipeline onUnhandledInboundException
+WARNING: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.SocketChannelImpl.throwConnectionReset(SocketChannelImpl.java:401)
+	at java.base/sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:434)
+	at io.netty.buffer.PooledByteBuf.setBytes(PooledByteBuf.java:255)
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1132)
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:356)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:151)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:796)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:732)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:658)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:998)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Apr 28, 2026 2:40:16 PM io.netty.channel.DefaultChannelPipeline onUnhandledInboundException\r\nWARNING: An exceptionCaught() event was fired, and it reached at the tail of the pipeline. It usually means the last handler in the pipeline did not handle the exception.\r\njava.net.SocketException: Connection reset\r\n\tat java.base/sun.nio.ch.SocketChannelImpl.throwConnectionReset(SocketChannelImpl.java:401)\r\n\tat java.base/sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:434)\r\n\tat io.netty.buffer.PooledByteBuf.setBytes(PooledByteBuf.java:255)\r\n\tat io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1132)\r\n\tat io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:356)\r\n\tat io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:151)\r\n\tat io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:796)\r\n\tat io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:732)\r\n\tat io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:658)\r\n\tat io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)\r\n\tat io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:998)\r\n\tat io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)\r\n\tat io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)\r\n\tat java.base/java.lang.Thread.run(Thread.java:1583)\r\n\r\n"}}
+[debug] [2026-04-28T20:40:59.704Z] Apr 28, 2026 2:40:59 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Apr 28, 2026 2:40:59 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-04-28T20:41:00.017Z] Apr 28, 2026 2:41:00 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Apr 28, 2026 2:41:00 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-04-28T20:41:00.354Z] Apr 28, 2026 2:41:00 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Apr 28, 2026 2:41:00 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-04-28T20:41:00.681Z] Apr 28, 2026 2:41:00 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Apr 28, 2026 2:41:00 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-04-28T20:41:01.002Z] Apr 28, 2026 2:41:01 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Apr 28, 2026 2:41:01 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-04-28T20:42:01.012Z] Apr 28, 2026 2:42:01 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead
+INFO: Detected non-HTTP/2 connection.
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Apr 28, 2026 2:42:01 PM io.gapi.emulators.netty.HttpVersionRoutingHandler channelRead\r\nINFO: Detected non-HTTP/2 connection.\r\n"}}
+[debug] [2026-04-28T20:42:01.016Z] Apr 28, 2026 2:42:01 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreListenHandler onClose
+INFO: channel closed
+ {"metadata":{"emulator":{"name":"firestore"},"message":"Apr 28, 2026 2:42:01 PM com.google.cloud.datastore.emulator.firestore.webchannel.FirestoreV1WebChannelAdapter$FirestoreListenHandler onClose\r\nINFO: channel closed\r\n"}}
