@@ -8,9 +8,13 @@
 
 .form-panel {
   width: 910px;
-  background: rgba(255, 255, 255, 0.04);
+  background: #0f1729;
   border: 1px solid var(--line);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28);
+  box-shadow: 
+    -12px 0 24px rgba(0, 0, 0, 0.4),
+    12px 0 24px rgba(0, 0, 0, 0.4),
+    0 12px 24px rgba(0, 0, 0, 0.4),
+    0 -12px 24px rgba(0, 0, 0, 0.2);
   border-radius: 16px;
   padding: 46px 96px 34px 96px;
   box-sizing: border-box;
