@@ -8,9 +8,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './return-button.css',
 })
 export class ReturnButton {
-  @Output() devolverClick = new EventEmitter<void>();
+  @Output() returnClick = new EventEmitter<void>();
 
   onClick(): void {
-    this.devolverClick.emit();
+    this.returnClick.emit();
   }
 }

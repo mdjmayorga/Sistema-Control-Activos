@@ -7,30 +7,30 @@
     <div class="table-panel">
       <div class="table-container">
         <table class="history-table">
-        <thead>
-          <tr>
-            <th>Activo</th>
-            <th>Grupo</th>
-            <th>Cuadrilla</th>
-            <th>Razon</th>
-            <th>Fecha prestamo</th>
-            <th>Fecha devolucion</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (loan of paginatedLoans(); track loan.id) {
+          <thead>
             <tr>
-              <td>{{ loan.activo }}</td>
-              <td>{{ loan.grupoTopografia }}</td>
-              <td>{{ loan.cuadrilla }}</td>
-              <td>{{ loan.razonPrestamo }}</td>
-              <td>{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</td>
-              <td>{{ loan.fechaDevolucion | date:'dd/MM/yyyy' }}</td>
+              <th>Activo</th>
+              <th>Grupo</th>
+              <th>Cuadrilla</th>
+              <th>Razon</th>
+              <th>Fecha prestamo</th>
+              <th>Fecha devolucion</th>
             </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            @for (loan of paginatedLoans(); track loan.id) {
+              <tr>
+                <td>{{ loan.activo }}</td>
+                <td>{{ loan.grupoTopografia }}</td>
+                <td>{{ loan.cuadrilla }}</td>
+                <td>{{ loan.razonPrestamo }}</td>
+                <td>{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</td>
+                <td>{{ loan.fechaDevolucion | date:'dd/MM/yyyy' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
 
     <div class="pagination">
       <div class="pagination__info">

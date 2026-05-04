@@ -22,8 +22,8 @@ export class HistorialPage implements OnInit {
 
   filterName = signal('');
   filterStatus = signal<LoanStatus | ''>('');
-  filterDatePrestamo = signal('');
-  filterDateDevolucion = signal('');
+  filterLoanDate = signal('');
+  filterReturnDate = signal('');
 
   pageSize = signal(10);
   currentPage = signal(1);
@@ -39,13 +39,13 @@ export class HistorialPage implements OnInit {
     const name = this.filterName().toLowerCase();
     const status = this.filterStatus();
 
-    const datePrestamo = this.filterDatePrestamo();
-    const dateDevolucion = this.filterDateDevolucion();
+    const loanDate = this.filterLoanDate();
+    const returnDate = this.filterReturnDate();
 
     if (name) result = result.filter(l => l.usuarioNombre.toLowerCase().includes(name));
     if (status) result = result.filter(l => l.estado === status);
-    if (datePrestamo) result = result.filter(l => l.fechaPrestamo.startsWith(datePrestamo));
-    if (dateDevolucion) result = result.filter(l => l.fechaDevolucion?.startsWith(dateDevolucion));
+    if (loanDate) result = result.filter(l => l.fechaPrestamo.startsWith(loanDate));
+    if (returnDate) result = result.filter(l => l.fechaDevolucion?.startsWith(returnDate));
 
     return result;
   });
@@ -83,13 +83,13 @@ export class HistorialPage implements OnInit {
     this.currentPage.set(1);
   }
 
-  onDatePrestamoChange(event: Event): void {
-    this.filterDatePrestamo.set((event.target as HTMLInputElement).value);
+  onLoanDateChange(event: Event): void {
+    this.filterLoanDate.set((event.target as HTMLInputElement).value);
     this.currentPage.set(1);
   }
 
-  onDateDevolucionChange(event: Event): void {
-    this.filterDateDevolucion.set((event.target as HTMLInputElement).value);
+  onReturnDateChange(event: Event): void {
+    this.filterReturnDate.set((event.target as HTMLInputElement).value);
     this.currentPage.set(1);
   }
 
