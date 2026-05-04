@@ -9,24 +9,23 @@ import { CommonModule } from '@angular/common';
   styleUrl: './return-modal.css',
 })
 export class ReturnModal {
-  @Input() abierto = false;
-  @Output() cerrar = new EventEmitter<void>();
-  @Output() confirmar = new EventEmitter<{ productoDanado: boolean }>();
-  productoDanado = false;
+  @Input() open = false;
+  @Output() close = new EventEmitter<void>();
+  @Output() confirm = new EventEmitter<{ isDamaged: boolean }>();
+  isDamaged = false;
 
-  onCerrar(): void {
-    this.productoDanado = false;
-    this.cerrar.emit();
+  onClose(): void {
+    this.isDamaged = false;
+    this.close.emit();
   }
 
-  onCambioDanado(event: Event): void {
+  onDamagedChange(event: Event): void {
     const target = event.target as HTMLInputElement;
-    this.productoDanado = target.checked;
+    this.isDamaged = target.checked;
   }
 
-  onConfirmar(): void {
-    this.confirmar.emit({ productoDanado: this.productoDanado });
-    this.productoDanado = false;
+  onConfirm(): void {
+    this.confirm.emit({ isDamaged: this.isDamaged });
+    this.isDamaged = false;
   }
-
 }

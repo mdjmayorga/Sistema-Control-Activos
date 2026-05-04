@@ -4,9 +4,9 @@ import { Loan } from '../../../core/models/loan.model';
 import { ReturnButton } from '../../../features/returns/components/return-button/return-button';
 import { ReturnModal } from '../../../features/returns/components/return-modal/return-modal';
 
-export interface loanReturnPayload {
+export interface LoanReturnPayload {
   loanId: string;
-  productoDanado: boolean;
+  isDamaged: boolean;
 }
 
 @Component({
@@ -18,25 +18,25 @@ export interface loanReturnPayload {
 })
 export class LoanItem {
   @Input() loan!: Loan;
-  @Input() mostrarBotonDevolver = false;
-  @Input() mostrarFechaDevolucion = false;
-  @Output() devolver = new EventEmitter<loanReturnPayload>();
+  @Input() showReturnButton = false;
+  @Input() showReturnDate = false;
+  @Output() returnLoan = new EventEmitter<LoanReturnPayload>();
 
-  modalAbierto = false;
+  modalOpen = false;
 
-  abrirModal(): void {
-    this.modalAbierto = true;
+  openModal(): void {
+    this.modalOpen = true;
   }
 
-  cerrarModal(): void {
-    this.modalAbierto = false;
+  closeModal(): void {
+    this.modalOpen = false;
   }
 
-  confirmarDevolucion(payload?: { productoDanado: boolean }): void {
-    this.devolver.emit({
+  confirmReturn(payload?: { isDamaged: boolean }): void {
+    this.returnLoan.emit({
       loanId: this.loan.id ?? '',
-      productoDanado: payload?.productoDanado ?? false,
+      isDamaged: payload?.isDamaged ?? false,
     });
-    this.modalAbierto = false;
+    this.modalOpen = false;
   }
 }

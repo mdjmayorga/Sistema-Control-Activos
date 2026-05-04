@@ -45,7 +45,7 @@
 }
 
 .filter-input::placeholder {
-  color: #fff;
+  color: var(--text-muted);
 }
 
 .filter-input:focus {

@@ -108,8 +108,8 @@
   }
 
   <app-return-modal
-    [abierto]="modalOpen()"
-    (cerrar)="closeReturnModal()"
-    (confirmar)="confirmReturn($event)">
+    [open]="modalOpen()"
+    (close)="closeReturnModal()"
+    (confirm)="confirmReturn($event)">
   </app-return-modal>
 </app-page-layout>

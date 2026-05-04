@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { PageLayout } from '../../../../layout/components/page-layout/page-layout';
 import { ReturnModal } from '../../../returns/components/return-modal/return-modal';
@@ -12,7 +12,7 @@ import { LoanService } from '../../services/loan.service';
   templateUrl: './active-loans.html',
   styleUrl: './active-loans.css',
 })
-export class ActiveLoansPage {
+export class ActiveLoansPage implements OnInit {
   private readonly loanService = inject(LoanService);
 
   title = 'Gestión de Préstamos Activos';
@@ -120,13 +120,13 @@ export class ActiveLoansPage {
     this.selectedLoanId.set('');
   }
 
-  async confirmReturn(payload: { productoDanado: boolean }): Promise<void> {
+  async confirmReturn(payload: { isDamaged: boolean }): Promise<void> {
     try {
-      await this.loanService.marcarPrestamoComoDevuelto(this.selectedLoanId(), payload.productoDanado);
+      await this.loanService.marcarPrestamoComoDevuelto(this.selectedLoanId(), payload.isDamaged);
+      this.modalOpen.set(false);
+      this.selectedLoanId.set('');
     } catch (error) {
       console.error('Error returning loan:', error);
     }
-    this.modalOpen.set(false);
-    this.selectedLoanId.set('');
   }
 }

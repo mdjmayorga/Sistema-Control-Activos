@@ -17,7 +17,7 @@ export type LoanStatus = 'activo' | 'devuelto';
   providedIn: 'root',
 })
 export class LoanHistoryService {
-  private firestore = inject(Firestore);
+  private readonly firestore = inject(Firestore);
 
   getLoansByUser(
     userId: string,
