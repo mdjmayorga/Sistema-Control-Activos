@@ -2,6 +2,7 @@
   display: block;
   height: 100%;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 25, 47, 0.95) 100%);
 }
 
 .sidebar {
@@ -64,15 +65,18 @@
   gap: 8px;
   padding: 10px 12px;
   border-radius: 8px;
-  background: #1f4aa0;
+  background: linear-gradient(135deg, #0284c7 0%, #0891b2 100%);
   color: #f8fafc;
   font-size: 14px;
   font-weight: 500;
-  transition: background-color 120ms ease;
+  transition: all 120ms ease;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
 }
 
 .sidebar__action:hover {
-  background: #2859bb;
+  background: linear-gradient(135deg, #0369a1 0%, #06737e 100%);
+  box-shadow: 0 6px 16px rgba(14, 165, 233, 0.4);
+  transform: translateY(-1px);
 }
 
 .action-label--short {
