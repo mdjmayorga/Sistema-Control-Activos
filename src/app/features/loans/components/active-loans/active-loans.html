@@ -13,19 +13,19 @@
           (input)="onFilterChange('name', $event)" />
         <select class="filter-select" (change)="onFilterChange('activo', $event)">
           <option value="">Todos los activos</option>
-          @for (opt of activoOptions; track opt) {
+          @for (opt of equipmentOptions; track opt) {
             <option [value]="opt">{{ opt }}</option>
           }
         </select>
         <select class="filter-select" (change)="onFilterChange('cuadrilla', $event)">
           <option value="">Todas las cuadrillas</option>
-          @for (opt of cuadrillaOptions; track opt) {
+          @for (opt of crewOptions; track opt) {
             <option [value]="opt">{{ opt }}</option>
           }
         </select>
         <select class="filter-select" (change)="onFilterChange('grupo', $event)">
           <option value="">Todos los grupos</option>
-          @for (opt of grupoOptions; track opt) {
+          @for (opt of groupOptions; track opt) {
             <option [value]="opt">{{ opt }}</option>
           }
         </select>

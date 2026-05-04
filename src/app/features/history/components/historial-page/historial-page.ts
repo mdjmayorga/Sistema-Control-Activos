@@ -9,7 +9,7 @@ import { Loan } from '../../../../core/models/loan.model';
   standalone: true,
   imports: [PageLayout, DatePipe],
   templateUrl: './historial-page.html',
-  styleUrl: './historial-page.css',
+  styleUrls: ['../../../../shared/styles/data-table.css', './historial-page.css'],
 })
 export class HistorialPage implements OnInit {
   private readonly loanHistoryService = inject(LoanHistoryService);
