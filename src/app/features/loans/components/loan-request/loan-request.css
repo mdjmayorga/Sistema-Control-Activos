@@ -55,6 +55,12 @@
 
 .field select {
   cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a0aec0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
 }
 
 .field select option {
@@ -68,7 +74,7 @@
 
 .field select:focus,
 .field input:focus {
-  border-color: var(--blue);
+  border-color: var(--border-focus);
   background: rgba(255, 255, 255, 0.08);
 }
 
@@ -123,19 +129,21 @@ input.ng-invalid.ng-touched {
   height: 40px;
   border: none;
   border-radius: 8px;
-  color: var(--white);
+  color: #fff;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   transition: filter 120ms ease, transform 120ms ease;
 }
 
-.btn-rose {
-  background: var(--rose);
+.btn-confirm {
+  background: var(--accent);
 }
 
-.btn-blue {
-  background: var(--blue);
+.btn-cancel {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
 }
 
 .btn:hover {

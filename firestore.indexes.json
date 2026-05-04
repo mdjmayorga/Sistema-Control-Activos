@@ -16,6 +16,14 @@
         { "fieldPath": "estado", "order": "ASCENDING" },
         { "fieldPath": "fechaPrestamo", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "prestamos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "estado", "order": "ASCENDING" },
+        { "fieldPath": "fechaPrestamo", "order": "DESCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []
