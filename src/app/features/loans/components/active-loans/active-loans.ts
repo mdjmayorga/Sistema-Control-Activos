@@ -4,13 +4,14 @@ import { PageLayout } from '../../../../layout/components/page-layout/page-layou
 import { ReturnModal } from '../../../returns/components/return-modal/return-modal';
 import { Loan } from '../../../../core/models/loan.model';
 import { LoanService } from '../../services/loan.service';
+import { EQUIPMENT_OPTIONS, CREW_OPTIONS, TOPOGRAPHY_GROUP_OPTIONS } from '../../../../core/constants/loan-options';
 
 @Component({
   selector: 'app-active-loans-page',
   standalone: true,
   imports: [PageLayout, DatePipe, ReturnModal],
   templateUrl: './active-loans.html',
-  styleUrl: './active-loans.css',
+  styleUrls: ['../../../../shared/styles/data-table.css', './active-loans.css'],
 })
 export class ActiveLoansPage implements OnInit {
   private readonly loanService = inject(LoanService);
@@ -31,21 +32,9 @@ export class ActiveLoansPage implements OnInit {
   currentPage = signal(1);
   readonly pageSizeOptions = [5, 10, 15, 20];
 
-  readonly activoOptions = [
-    'Trípode de Aluminio', 'Nivel Automático', 'Estaciones Totales(Sokkia)',
-    'Estadias', 'Bastón de Prisma', 'Prisma', 'Trípode',
-    'Cinta métrica de topografía', 'Odómetro', 'Aplica',
-  ];
-
-  readonly cuadrillaOptions = [
-    'Cuadrilla 1', 'Cuadrilla 2', 'Cuadrilla 3', 'Cuadrilla 4', 'Cuadrilla 5',
-    'Cuadrilla 6', 'Cuadrilla 7', 'Cuadrilla 8', 'Cuadrilla 9', 'Cuadrilla 10',
-    'Ninguna',
-  ];
-
-  readonly grupoOptions = [
-    'Grupo de Topografía', 'Grupo de Taller', 'Grupo de Proyecto',
-  ];
+  readonly equipmentOptions = EQUIPMENT_OPTIONS;
+  readonly crewOptions = CREW_OPTIONS;
+  readonly groupOptions = TOPOGRAPHY_GROUP_OPTIONS;
 
   modalOpen = signal(false);
   selectedLoanId = signal('');

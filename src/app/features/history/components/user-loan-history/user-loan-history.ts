@@ -9,7 +9,7 @@ import { Loan } from '../../../../core/models/loan.model';
   selector: 'app-user-loan-history',
   imports: [PageLayout, DatePipe],
   templateUrl: './user-loan-history.html',
-  styleUrl: './user-loan-history.css',
+  styleUrls: ['../../../../shared/styles/data-table.css', './user-loan-history.css'],
 })
 export class UserLoanHistoryPage implements OnInit {
   private readonly loanHistoryService = inject(LoanHistoryService);
