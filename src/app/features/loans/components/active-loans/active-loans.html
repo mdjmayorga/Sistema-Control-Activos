@@ -1,3 +1,115 @@
-<app-page-layout [title]="titulo" [description]="descripcion">
-	<app-prestamos-list [loans]="loans" [mostrarBotonDevolver]="mostrarBotonDevolver" (devolver)="onDevolverPrestamo($event)"></app-prestamos-list>
+<app-page-layout [title]="title" [description]="description">
+  @if (loading()) {
+    <p class="status-message">Cargando préstamos activos...</p>
+  } @else if (loans().length === 0) {
+    <p class="status-message">No hay préstamos activos en el sistema.</p>
+  } @else {
+    <div class="table-panel">
+      <div class="filters">
+        <input
+          type="text"
+          class="filter-input"
+          placeholder="Buscar por estudiante..."
+          (input)="onFilterChange('name', $event)" />
+        <select class="filter-select" (change)="onFilterChange('activo', $event)">
+          <option value="">Todos los activos</option>
+          @for (opt of activoOptions; track opt) {
+            <option [value]="opt">{{ opt }}</option>
+          }
+        </select>
+        <select class="filter-select" (change)="onFilterChange('cuadrilla', $event)">
+          <option value="">Todas las cuadrillas</option>
+          @for (opt of cuadrillaOptions; track opt) {
+            <option [value]="opt">{{ opt }}</option>
+          }
+        </select>
+        <select class="filter-select" (change)="onFilterChange('grupo', $event)">
+          <option value="">Todos los grupos</option>
+          @for (opt of grupoOptions; track opt) {
+            <option [value]="opt">{{ opt }}</option>
+          }
+        </select>
+        <input
+          type="date"
+          class="filter-input filter-date"
+          (change)="onFilterChange('date', $event)" />
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Estudiante</th>
+              <th>Activo</th>
+              <th>Grupo Topo</th>
+              <th>Cuadrilla</th>
+              <th>Razón</th>
+              <th>Fecha Préstamo</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (filteredLoans().length === 0) {
+              <tr>
+                <td colspan="7" class="empty-row">No se encontraron préstamos con los filtros aplicados.</td>
+              </tr>
+            } @else {
+              @for (loan of paginatedLoans(); track loan.id) {
+                <tr>
+                  <td>{{ loan.usuarioNombre }}</td>
+                  <td>{{ loan.activo }}</td>
+                  <td>{{ loan.grupoTopografia }}</td>
+                  <td>{{ loan.cuadrilla }}</td>
+                  <td>{{ loan.razonPrestamo }}</td>
+                  <td>{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</td>
+                  <td>
+                    <button class="btn-return" (click)="openReturnModal(loan.id ?? '')">
+                      Devolver
+                    </button>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <div class="pagination__info">
+          <span>{{ startIndex() }}–{{ endIndex() }} de {{ filteredLoans().length }}</span>
+        </div>
+
+        <div class="pagination__controls">
+          <label class="pagination__size">
+            Mostrar
+            <select (change)="onPageSizeChange($event)">
+              @for (option of pageSizeOptions; track option) {
+                <option [value]="option" [selected]="option === pageSize()">{{ option }}</option>
+              }
+            </select>
+          </label>
+
+          <div class="pagination__nav">
+            <button
+              [disabled]="currentPage() === 1"
+              (click)="goToPage(currentPage() - 1)">
+              &laquo;
+            </button>
+            <span class="pagination__page">{{ currentPage() }} / {{ totalPages() }}</span>
+            <button
+              [disabled]="currentPage() === totalPages()"
+              (click)="goToPage(currentPage() + 1)">
+              &raquo;
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <app-return-modal
+    [abierto]="modalOpen()"
+    (cerrar)="closeReturnModal()"
+    (confirmar)="confirmReturn($event)">
+  </app-return-modal>
 </app-page-layout>

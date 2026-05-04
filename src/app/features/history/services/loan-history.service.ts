@@ -39,4 +39,20 @@ export class LoanHistoryService {
       idField: 'id',
     }) as Observable<Loan[]>;
   }
+
+  getAllLoans(status?: LoanStatus): Observable<Loan[]> {
+    const loansRef = collection(this.firestore, 'prestamos');
+    const constraints: QueryConstraint[] = [];
+
+    if (status) {
+      constraints.push(where('estado', '==', status));
+    }
+
+    constraints.push(orderBy('fechaPrestamo', 'desc'));
+
+    const loansQuery = query(loansRef, ...constraints);
+    return collectionData(loansQuery, {
+      idField: 'id',
+    }) as Observable<Loan[]>;
+  }
 }
