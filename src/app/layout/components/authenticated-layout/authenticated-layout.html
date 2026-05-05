@@ -1,5 +1,28 @@
 <div class="admin-layout" [class.nav-collapsed]="isNavbarCollapsed()">
-  <app-navbar [collapsed]="isNavbarCollapsed()" (toggleRequested)="toggleNavbar()"></app-navbar>
+  <div class="mobile-topbar">
+    <button
+      class="mobile-hamburger"
+      type="button"
+      (click)="toggleMobileMenu()"
+      aria-label="Abrir menú"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <span class="mobile-title">Control de Activos</span>
+  </div>
+
+  @if (isMobileMenuOpen()) {
+    <div class="mobile-backdrop" (click)="closeMobileMenu()"></div>
+  }
+
+  <app-navbar
+    [collapsed]="isNavbarCollapsed()"
+    [mobileOpen]="isMobileMenuOpen()"
+    (toggleRequested)="toggleNavbar()"
+    (mobileCloseRequested)="closeMobileMenu()"
+  ></app-navbar>
 
   <main class="content-area">
     <router-outlet></router-outlet>
