@@ -106,3 +106,18 @@
 	background: #0f172a;
 	color: #ffffff;
 }
+
+.devolucion-modal__qr-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 12px;
+	padding: 10px;
+	background: #ffffff;
+	border-radius: 8px;
+}
+
+.devolucion-modal__qr {
+	display: block;
+	max-width: 150px;
+	height: auto;
+}
