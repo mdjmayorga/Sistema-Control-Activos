@@ -7,7 +7,7 @@
 	background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(10, 25, 47, 0.95) 100%);
 	border-radius: 12px;
 	border-left: 4px solid #06b6d4;
-	margin-bottom: 8px;
+	margin-bottom: 0;
 	box-shadow:
 		0 4px 12px rgba(0, 0, 0, 0.3),
 		0 8px 24px rgba(0, 0, 0, 0.2),
