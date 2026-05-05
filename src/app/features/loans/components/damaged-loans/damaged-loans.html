@@ -1,2 +1,11 @@
 <app-page-layout [title]="titulo" [description]="descripcion">
+	<div class="damaged-loans-grid">
+		@for (damagedLoan of damagedLoans; track damagedLoan.id) {
+			<app-damaged-loan-card
+				[loan]="damagedLoan"
+				(resolver)="onResolver($event)">
+
+			</app-damaged-loan-card>
+		}
+	</div>
 </app-page-layout>

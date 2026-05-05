@@ -47,7 +47,9 @@
     </a>
 
     @if (isAdmin()) {
-      <div class="sidebar__divider" role="separator" aria-hidden="true"></div>
+      <div class="sidebar__divider" role="separator" aria-hidden="true">
+        <span class="divider-label">ADMIN</span>
+      </div>
 
       <a routerLink="/admin/prestamos-activos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Prestamos">
         <span class="nav-content nav-label--full">
@@ -61,11 +63,11 @@
       </a>
       <a routerLink="/admin/prestamos-danados" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Prestamos Danados">
         <span class="nav-content nav-label--full">
-          <img class="nav-icon" src="/prestamos-icon.png" alt="" aria-hidden="true" />
+          <img class="nav-icon" src="/damaged-loans-icon.png" alt="" aria-hidden="true" />
           <span class="nav-label">Préstamos Dañados</span>
         </span>
         <span class="nav-icon-only" aria-hidden="true">
-          <img class="nav-icon" src="/prestamos-icon.png" alt="" />
+          <img class="nav-icon" src="/damaged-loans-icon.png" alt="" />
         </span>
         <span class="nav-label nav-label--short">PD</span>
       </a>

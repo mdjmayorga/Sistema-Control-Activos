@@ -137,9 +137,27 @@
 }
 
 .sidebar__divider {
-  height: 1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin: 6px 4px;
+  color: #9ca3af;
+}
+
+.sidebar__divider::before,
+.sidebar__divider::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
   background: rgba(255, 255, 255, 0.12);
+}
+
+.sidebar__divider .divider-label {
+  padding: 0 10px;
+  font-size: 12px;
+  text-transform: capitalize;
+  color: #9ca3af;
+  white-space: nowrap;
 }
 
 .sidebar__settings {
@@ -227,6 +245,10 @@
 
 .sidebar.is-collapsed .sidebar__nav a {
   justify-content: center;
+}
+
+.sidebar.is-collapsed .sidebar__divider .divider-label {
+  display: none;
 }
 
 .sidebar.is-collapsed .sidebar__nav a .nav-label--short {
