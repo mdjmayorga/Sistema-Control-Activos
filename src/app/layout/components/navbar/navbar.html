@@ -13,29 +13,39 @@
     >
       {{ collapsed() ? '>' : '<' }}
     </button>
+
+    <button
+      class="sidebar__mobile-close"
+      type="button"
+      (click)="mobileCloseRequested.emit()"
+      aria-label="Cerrar menú"
+    >
+      ✕
+    </button>
   </div>
 
   <a
     class="sidebar__action"
     [routerLink]="isAdmin() ? '/admin/solicitar-prestamo' : '/usuario/solicitar-prestamo'"
     aria-label="Solicitar Préstamo"
+    (click)="mobileCloseRequested.emit()"
   >
     <span class="action-label action-label--full">Solicitar Préstamo</span>
     <span class="action-label action-label--short">+</span>
   </a>
 
   <nav class="sidebar__nav">
-    <a [routerLink]="isAdmin() ? '/admin/mis-prestamos' : '/usuario/mis-prestamos'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Mis prestamos">
+    <a [routerLink]="isAdmin() ? '/admin/mis-prestamos' : '/usuario/mis-prestamos'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Mis prestamos" (click)="mobileCloseRequested.emit()">
       <span class="nav-content nav-label--full">
         <img class="nav-icon" src="/prestamos-icon.png" alt="" aria-hidden="true" />
         <span class="nav-label">Mis préstamos</span>
       </span>
-      <span class="nav-icon-only" aria-hidden="true"> 
+      <span class="nav-icon-only" aria-hidden="true">
         <img class="nav-icon" src="/prestamos-icon.png" alt="" />
       </span>
       <span class="nav-label nav-label--short">M</span>
     </a>
-    <a [routerLink]="isAdmin() ? '/admin/mi-historial' : '/usuario/mi-historial'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Mi historial">
+    <a [routerLink]="isAdmin() ? '/admin/mi-historial' : '/usuario/mi-historial'" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Mi historial" (click)="mobileCloseRequested.emit()">
       <span class="nav-content nav-label--full">
         <img class="nav-icon nav-icon--historial" src="/historial-icon.png" alt="" aria-hidden="true" />
         <span class="nav-label">Mi historial</span>
@@ -51,7 +61,7 @@
         <span class="divider-label">ADMIN</span>
       </div>
 
-      <a routerLink="/admin/prestamos-activos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Prestamos">
+      <a routerLink="/admin/prestamos-activos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Prestamos" (click)="mobileCloseRequested.emit()">
         <span class="nav-content nav-label--full">
           <img class="nav-icon" src="/prestamos-icon.png" alt="" aria-hidden="true" />
           <span class="nav-label">Préstamos</span>
@@ -61,7 +71,7 @@
         </span>
         <span class="nav-label nav-label--short">P</span>
       </a>
-      <a routerLink="/admin/prestamos-danados" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Prestamos Danados">
+      <a routerLink="/admin/prestamos-danados" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Prestamos Danados" (click)="mobileCloseRequested.emit()">
         <span class="nav-content nav-label--full">
           <img class="nav-icon" src="/damaged-loans-icon.png" alt="" aria-hidden="true" />
           <span class="nav-label">Préstamos Dañados</span>
@@ -71,7 +81,7 @@
         </span>
         <span class="nav-label nav-label--short">PD</span>
       </a>
-      <a routerLink="/admin/historial" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Historial">
+      <a routerLink="/admin/historial" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Historial" (click)="mobileCloseRequested.emit()">
         <span class="nav-content nav-label--full">
           <img class="nav-icon nav-icon--historial" src="/historial-icon.png" alt="" aria-hidden="true" />
           <span class="nav-label">Historial</span>
@@ -89,6 +99,7 @@
     [routerLink]="isAdmin() ? '/admin/configuraciones' : '/usuario/configuraciones'"
     routerLinkActive="active"
     aria-label="Configuraciones"
+    (click)="mobileCloseRequested.emit()"
   >
     <span class="nav-content nav-label--full">
       <img class="nav-icon" src="/configuraciones-icon.png" alt="" aria-hidden="true" />
