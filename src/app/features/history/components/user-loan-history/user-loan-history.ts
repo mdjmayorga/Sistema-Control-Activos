@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { PageLayout } from '../../../../layout/components/page-layout/page-layout';
 import { LoanHistoryService } from '../../services/loan-history.service';
+import { HistorialService } from '../../services/historial.service';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Loan } from '../../../../core/models/loan.model';
 
@@ -13,6 +14,7 @@ import { Loan } from '../../../../core/models/loan.model';
 })
 export class UserLoanHistoryPage implements OnInit {
   private readonly loanHistoryService = inject(LoanHistoryService);
+  private readonly historialService = inject(HistorialService);
   private readonly authService = inject(AuthService);
 
   title = 'Historial de prestamos';
@@ -73,5 +75,10 @@ export class UserLoanHistoryPage implements OnInit {
     if (page >= 1 && page <= this.totalPages()) {
       this.currentPage.set(page);
     }
+  }
+
+  descargarCSV(): void {
+    const fecha = new Date().toISOString().slice(0, 10);
+    this.historialService.descargarCSV(this.loans(), `historial-prestamos-${fecha}.csv`);
   }
 }
