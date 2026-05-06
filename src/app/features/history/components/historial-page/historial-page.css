@@ -21,6 +21,8 @@
   color: #93c5fd;
   background-color: rgba(147, 197, 253, 0.1);
   border: 1px solid rgba(147, 197, 253, 0.25);
+}
+
 .historial-toolbar {
   display: flex;
   justify-content: flex-end;
