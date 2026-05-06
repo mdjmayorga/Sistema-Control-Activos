@@ -16,9 +16,12 @@
 		<p class="devolucion-modal__estado">Estado: {{ isDamaged ? 'Dañado' : 'No dañado' }}</p>
 
 		@if (isDamaged) {
-			<p class="devolucion-modal__whatsapp-msg">
-				Se le enviara un mensaje por WhatsApp para continuar con el proceso.
-			</p>
+          <div class="devolucion-modal__whatsapp-msg">
+            <p>Se requiere evidencia fotográfica del daño. Escanee el siguiente código QR con su celular para abrir el chat de WhatsApp y enviar la foto. Una vez enviada, presione Confirmar devolución.</p>
+            <div class="devolucion-modal__qr-container">
+              <img [src]="qrCodeUrl" alt="Código QR de WhatsApp" class="devolucion-modal__qr">
+            </div>
+          </div>
 		}
 
 		<div class="devolucion-modal__actions">
