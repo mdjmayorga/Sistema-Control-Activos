@@ -1,3 +1,26 @@
+.filter-input {
+  min-width: 220px;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 12px;
+  text-transform: capitalize;
+}
+
+.status-badge--active {
+  color: #34d399;
+  background-color: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.status-badge--returned {
+  color: #93c5fd;
+  background-color: rgba(147, 197, 253, 0.1);
+  border: 1px solid rgba(147, 197, 253, 0.25);
 .historial-toolbar {
   display: flex;
   justify-content: flex-end;

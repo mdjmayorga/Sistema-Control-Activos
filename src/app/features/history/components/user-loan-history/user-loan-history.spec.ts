@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HistorialPageUsuario } from './historial-page-usuario';
+import { UserLoanHistoryPage } from './user-loan-history';
 
-describe('HistorialPageUsuario', () => {
-  let component: HistorialPageUsuario;
-  let fixture: ComponentFixture<HistorialPageUsuario>;
+describe('UserLoanHistoryPage', () => {
+  let component: UserLoanHistoryPage;
+  let fixture: ComponentFixture<UserLoanHistoryPage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HistorialPageUsuario]
+      imports: [UserLoanHistoryPage]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HistorialPageUsuario);
+    fixture = TestBed.createComponent(UserLoanHistoryPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-return-modal',
@@ -9,24 +10,34 @@ import { CommonModule } from '@angular/common';
   styleUrl: './return-modal.css',
 })
 export class ReturnModal {
-  @Input() abierto = false;
-  @Output() cerrar = new EventEmitter<void>();
-  @Output() confirmar = new EventEmitter<{ productoDanado: boolean }>();
-  productoDanado = false;
+  @Input() open = false;
+  @Input() loanId: string = '';
+  @Output() close = new EventEmitter<void>();
+  @Output() confirm = new EventEmitter<{ isDamaged: boolean }>();
+  isDamaged = false;
+  numeroBotWhatsapp = environment.numeroBotWhatsapp;
 
-  onCerrar(): void {
-    this.productoDanado = false;
-    this.cerrar.emit();
+  get whatsappDeepLink(): string {
+    const mensaje = encodeURIComponent(`Reportar Daño ${this.loanId}`);
+    return `https://wa.me/${this.numeroBotWhatsapp}?text=${mensaje}`;
   }
 
-  onCambioDanado(event: Event): void {
+  get qrCodeUrl(): string {
+    return `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(this.whatsappDeepLink)}`;
+  }
+
+  onClose(): void {
+    this.isDamaged = false;
+    this.close.emit();
+  }
+
+  onDamagedChange(event: Event): void {
     const target = event.target as HTMLInputElement;
-    this.productoDanado = target.checked;
+    this.isDamaged = target.checked;
   }
 
-  onConfirmar(): void {
-    this.confirmar.emit({ productoDanado: this.productoDanado });
-    this.productoDanado = false;
+  onConfirm(): void {
+    this.confirm.emit({ isDamaged: this.isDamaged });
+    this.isDamaged = false;
   }
-
 }
