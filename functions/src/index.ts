@@ -16,7 +16,7 @@ export const notificarDanoActivo = onDocumentWritten(
       console.log("No hay datos después del write. Fin.");
       return;
     }
-    
+
     const beforeDanio = beforeData?.danoConfirmado === true;
     const afterDanio = afterData.danoConfirmado === true;
 
@@ -45,9 +45,9 @@ export const notificarDanoActivo = onDocumentWritten(
     );
     const cuadrilla = fieldOrNA(afterData.cuadrilla ?? afterData.crew);
     const grupoCuadrilla =
-      grupo === "N/A" && cuadrilla === "N/A"
-        ? "N/A"
-        : `${grupo} / ${cuadrilla}`;
+      grupo === "N/A" && cuadrilla === "N/A" ?
+        "N/A" :
+        `${grupo} / ${cuadrilla}`;
     const razonPrestamo = fieldOrNA(
       afterData.razonPrestamo ?? afterData.razon ?? afterData.reason
     );
@@ -62,11 +62,13 @@ export const notificarDanoActivo = onDocumentWritten(
     );
 
     const payload = {
-      to: "jccoto@itcr.ac.cr",
+      to: ["deyamaradiaga0112@gmail.com"],
       message: {
         subject: `URGENTE: Daño en ${activo}`,
         html: htmlListo,
       },
+      tipo: "reporte-danio",
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 
     if (IS_EMULATOR) {
