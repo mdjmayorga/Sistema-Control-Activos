@@ -1,4 +1,10 @@
 <app-page-layout [title]="title" [description]="description">
+  <div class="historial-toolbar">
+    <button class="btn-csv" type="button" (click)="descargarCSV()">
+      Descargar CSV
+    </button>
+  </div>
+
   @if (loading()) {
     <p class="status-message">Cargando historial...</p>
   } @else if (loans().length === 0) {
