@@ -1,3 +1,110 @@
-<app-page-layout [title]="titulo" [description]="descripcion">
-  <p class="status-message">Aqui podra ver el historial de acciones del administrador.</p>
+<app-page-layout [title]="title" [description]="description">
+  @if (loading()) {
+    <p class="status-message">Cargando historial...</p>
+  } @else if (loans().length === 0) {
+    <p class="status-message">No se encontraron préstamos en el sistema.</p>
+  } @else {
+    <div class="table-panel">
+      <div class="filters">
+        <input
+          type="text"
+          class="filter-input"
+          placeholder="Buscar por nombre de estudiante..."
+          (input)="onNameFilterChange($event)" />
+        <select
+          class="filter-select"
+          (change)="onStatusFilterChange($event)">
+          @for (opt of statusOptions; track opt.value) {
+            <option [value]="opt.value" [selected]="opt.value === filterStatus()">{{ opt.label }}</option>
+          }
+        </select>
+        <label class="filter-label">
+          Fecha préstamo
+          <input type="date" class="filter-input filter-date" (change)="onLoanDateChange($event)" />
+        </label>
+        <label class="filter-label">
+          Fecha devolución
+          <input type="date" class="filter-input filter-date" (change)="onReturnDateChange($event)" />
+        </label>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Estudiante</th>
+              <th>Activo</th>
+              <th>Grupo Topo</th>
+              <th>Cuadrilla</th>
+              <th>Razón</th>
+              <th>Estado</th>
+              <th>Fecha Préstamo</th>
+              <th>Fecha Devolución</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (filteredLoans().length === 0) {
+              <tr>
+                <td colspan="8" class="empty-row">No se encontraron préstamos con los filtros aplicados.</td>
+              </tr>
+            } @else {
+              @for (loan of paginatedLoans(); track loan.id) {
+                <tr>
+                  <td>{{ loan.usuarioNombre }}</td>
+                  <td>{{ loan.activo }}</td>
+                  <td>{{ loan.grupoTopografia }}</td>
+                  <td>{{ loan.cuadrilla }}</td>
+                  <td>{{ loan.razonPrestamo }}</td>
+                  <td>
+                    <span class="status-badge" [class.status-badge--active]="loan.estado === 'activo'" [class.status-badge--returned]="loan.estado === 'devuelto'">
+                      {{ loan.estado === 'activo' ? 'Activo' : 'Devuelto' }}
+                    </span>
+                  </td>
+                  <td>{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ loan.fechaDevolucion ? (loan.fechaDevolucion | date:'dd/MM/yyyy') : '—' }}</td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <div class="pagination__info">
+          <span>{{ startIndex() }}–{{ endIndex() }} de {{ filteredLoans().length }}</span>
+        </div>
+
+        <div class="pagination__controls">
+          <label class="pagination__size">
+            Mostrar
+            <select (change)="onPageSizeChange($event)">
+              @for (option of pageSizeOptions; track option) {
+                <option [value]="option" [selected]="option === pageSize()">{{ option }}</option>
+              }
+            </select>
+          </label>
+          <div class="historial-toolbar">
+          <button class="btn-csv" type="button" (click)="descargarCSV()">
+            Descargar CSV
+          </button>
+        </div>
+          
+
+          <div class="pagination__nav">
+            <button
+              [disabled]="currentPage() === 1"
+              (click)="goToPage(currentPage() - 1)">
+              &laquo;
+            </button>
+            <span class="pagination__page">{{ currentPage() }} / {{ totalPages() }}</span>
+            <button
+              [disabled]="currentPage() === totalPages()"
+              (click)="goToPage(currentPage() + 1)">
+              &raquo;
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
 </app-page-layout>

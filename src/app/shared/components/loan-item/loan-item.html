@@ -7,21 +7,21 @@
 	<div class="prestamo-item__right">
 		<p>Fecha del préstamo: {{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</p>
 
-		@if (mostrarFechaDevolucion) {
+		@if (showReturnDate) {
 			<p>
 				Fecha de devolución:
 				{{ loan.fechaDevolucion ? (loan.fechaDevolucion | date:'dd/MM/yyyy') : 'Pendiente' }}
 			</p>
 		}
 
-		@if (mostrarBotonDevolver) {
-			<app-devolver-button (devolverClick)="abrirModal()"></app-devolver-button>
+		@if (showReturnButton) {
+			<app-devolver-button (returnClick)="openModal()"></app-devolver-button>
 		}
 	</div>
 </article>
 
 <app-return-modal
-	[abierto]="modalAbierto"
-	(cerrar)="cerrarModal()"
-	(confirmar)="confirmarDevolucion($event)">
+	[open]="modalOpen"
+	(close)="closeModal()"
+	(confirm)="confirmReturn($event)">
 </app-return-modal>
