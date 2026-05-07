@@ -70,6 +70,8 @@ function generarCSV(loans: LoanData[]): string {
     .join("\n");
 }
 
+// DV005 - Notificación de daño.
+// Esta función se ejecuta cuando se crea o actualiza un documento en "devoluciones".
 export const notificarDanoActivo = onDocumentWritten(
   "devoluciones/{devolucionId}",
   async (event) => {
@@ -81,6 +83,7 @@ export const notificarDanoActivo = onDocumentWritten(
       return;
     }
 
+    // Evita enviar correos repetidos si el daño ya estaba confirmado.
     const beforeDanio = beforeData?.danoConfirmado === true;
     const afterDanio = afterData.danoConfirmado === true;
 
@@ -89,9 +92,11 @@ export const notificarDanoActivo = onDocumentWritten(
       return;
     }
 
+    // Datos principales del reporte de daño.
     const estudiante = afterData.nombreEstudiante || "Estudiante Desconocido";
     const activo = afterData.nombreActivo || "Activo Desconocido";
-
+    
+    // Devuelve el valor "N/A" si viene vacío.
     const fieldOrNA = (value: unknown): string => {
       if (typeof value === "string" && value.trim()) {
         return value.trim();
@@ -115,7 +120,8 @@ export const notificarDanoActivo = onDocumentWritten(
     const razonPrestamo = fieldOrNA(
       afterData.razonPrestamo ?? afterData.razon ?? afterData.reason
     );
-
+    
+      // La plantilla HTML del correo de daño.
     const htmlListo = getDamageEmailTemplate(
       estudiante,
       activo,
@@ -124,20 +130,25 @@ export const notificarDanoActivo = onDocumentWritten(
       grupoCuadrilla,
       razonPrestamo
     );
-
+    
+     // Documento que se agrega a "mail",  la extensión lo toma y envía el correo.
     const payload = {
-      to: "jccoto@itcr.ac.cr",
+      to: ["jccoto@itcr.ac.cr","deyamaradiaga0112@gmail.com"],
       message: {
         subject: `URGENTE: Daño en ${activo}`,
         html: htmlListo,
       },
+      tipo: "reporte-danio",
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 
+    // Para probar en el emulador
     if (IS_EMULATOR) {
       console.log("EMULADOR: correo simulado");
       console.log(JSON.stringify(payload, null, 2));
     }
 
+  // En la base real crea el documento para que la extensión envíe el correo.
     await admin.firestore().collection("mail").add(payload);
     console.log("Notificación creada en colección mail.");
   }
