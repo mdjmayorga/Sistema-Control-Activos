@@ -1,3 +1,13 @@
 <app-page-layout [title]="titulo" [description]="descripcion">
-  <p class="status-message">Aqui el usuario podra consultar su historial de prestamos.</p>
+  <div class="historial-toolbar">
+    <button class="btn-csv" type="button" (click)="descargarCSV()">
+      Descargar CSV
+    </button>
+  </div>
+
+  <app-prestamos-list
+    [loans]="prestamos"
+    [showReturnButton]="false"
+    [showReturnDate]="true">
+  </app-prestamos-list>
 </app-page-layout>

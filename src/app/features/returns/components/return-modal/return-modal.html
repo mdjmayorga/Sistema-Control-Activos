@@ -1,31 +1,34 @@
-@if (abierto) {
-	<div class="devolucion-modal__backdrop" (click)="onCerrar()"></div>
+@if (open) {
+	<div class="devolucion-modal__backdrop" (click)="onClose()"></div>
 
 	<section class="devolucion-modal" role="dialog" aria-modal="true" aria-labelledby="devolucion-modal-title">
 		<h2 id="devolucion-modal-title">Confirmar devolucion</h2>
 		<p>Esta seguro de registrar la devolucion de este prestamo?</p>
 
-		<label class="devolucion-modal__checkbox" for="productoDanado">
+		<label class="devolucion-modal__checkbox" for="isDamaged">
 			<input
-				id="productoDanado"
+				id="isDamaged"
 				type="checkbox"
-				[checked]="productoDanado"
-				(change)="onCambioDanado($event)">
+				[checked]="isDamaged"
+				(change)="onDamagedChange($event)">
 			<span>El producto esta dañado</span>
 		</label>
-		<p class="devolucion-modal__estado">Estado: {{ productoDanado ? 'Dañado' : 'No dañado' }}</p>
+		<p class="devolucion-modal__estado">Estado: {{ isDamaged ? 'Dañado' : 'No dañado' }}</p>
 
-		@if (productoDanado) {
-			<p class="devolucion-modal__whatsapp-msg">
-				Se le enviara un mensaje por WhatsApp para continuar con el proceso.
-			</p>
+		@if (isDamaged) {
+          <div class="devolucion-modal__whatsapp-msg">
+            <p>Se requiere evidencia fotográfica del daño. Escanee el siguiente código QR con su celular para abrir el chat de WhatsApp y enviar la foto. Una vez enviada, presione Confirmar devolución.</p>
+            <div class="devolucion-modal__qr-container">
+              <img [src]="qrCodeUrl" alt="Código QR de WhatsApp" class="devolucion-modal__qr">
+            </div>
+          </div>
 		}
 
 		<div class="devolucion-modal__actions">
-			<button type="button" class="devolucion-modal__btn devolucion-modal__btn--ghost" (click)="onCerrar()">
+			<button type="button" class="devolucion-modal__btn devolucion-modal__btn--ghost" (click)="onClose()">
 				Cancelar
 			</button>
-			<button type="button" class="devolucion-modal__btn devolucion-modal__btn--confirm" (click)="onConfirmar()">
+			<button type="button" class="devolucion-modal__btn devolucion-modal__btn--confirm" (click)="onConfirm()">
 				Confirmar devolucion
 			</button>
 		</div>
