@@ -9,7 +9,8 @@ import { AuthService } from '../../../core/services/auth.service';
   selector: 'app-navbar',
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
-  styleUrl: './navbar.css'
+  styleUrl: './navbar.css',
+  host: { '[class.mobile-open]': 'mobileOpen()' }
 })
 export class Navbar {
   private readonly router = inject(Router);
@@ -19,7 +20,9 @@ export class Navbar {
 
   readonly username = input<string | null>(null);
   readonly collapsed = input(false);
+  readonly mobileOpen = input(false);
   readonly toggleRequested = output<void>();
+  readonly mobileCloseRequested = output<void>();
   readonly userRole = signal<'usuario' | 'admin'>('usuario');
   readonly sessionUsername = signal('Usuario');
   readonly isAdmin = computed(() => this.userRole() === 'admin');

@@ -1,0 +1,34 @@
+<article class="damaged-loan-card">
+	<header class="damaged-loan-card__media">
+		<img
+			class="damaged-loan-card__image"
+			[src]="loan.imagenUrl ?? '/background-image.png'"
+			[alt]="loan.imagenAlt ?? loan.activo"
+			loading="lazy"
+			tabindex="0"
+			role="button"
+			aria-label="Ver imagen en grande"
+			(click)="openPreview()"
+			(keydown.enter)="openPreview()"
+		/>
+	</header>
+
+	<section class="damaged-loan-card__body">
+		<div class="damaged-loan-card__heading">
+			<h3>{{ loan.activo }}</h3>
+			<p>Usuario: {{ loan.usuarioNombre }} · {{ loan.fechaReporte | date: 'dd/MM/yyyy' }}</p>
+		</div>
+
+		<div class="damaged-loan-card__actions">
+			<button type="button" class="damaged-loan-card__button damaged-loan-card__button--resolve" (click)="emitResolve()">
+				Resolver
+			</button>
+		</div>
+	</section>
+</article>
+
+@if (showPreview) {
+	<div class="damaged-loan-card__overlay" (click)="closePreview()" (keydown)="onPreviewKeydown($event)" tabindex="0" role="dialog" aria-modal="true">
+		<img class="damaged-loan-card__overlay-image" [src]="loan.imagenUrl ?? '/background-image.png'" [alt]="loan.imagenAlt ?? loan.activo"/>
+	</div>
+}

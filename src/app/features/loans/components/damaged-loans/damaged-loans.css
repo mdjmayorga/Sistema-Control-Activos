@@ -1,0 +1,22 @@
+:host {
+	display: block;
+	height: 100%;
+}
+
+.damaged-loans-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 400px));
+	gap: 18px;
+	justify-content: center;
+	justify-items: center;
+	align-items: start;
+	padding: 6px 0 12px;
+	width: 100%;
+}
+
+@media (max-width: 520px) {
+	.damaged-loans-grid {
+		grid-template-columns: 1fr;
+		justify-content: stretch;
+	}
+}
