@@ -2,7 +2,7 @@
 	<header class="damaged-loan-card__media">
 		<img
 			class="damaged-loan-card__image"
-			[src]="loan.imagenUrl ?? '/background-image.png'"
+			[src]="loan.imagenUrl ?? '/damaged-loan-placeholder.png'"
 			[alt]="loan.imagenAlt ?? loan.activo"
 			loading="lazy"
 			tabindex="0"
@@ -29,6 +29,6 @@
 
 @if (showPreview) {
 	<div class="damaged-loan-card__overlay" (click)="closePreview()" (keydown)="onPreviewKeydown($event)" tabindex="0" role="dialog" aria-modal="true">
-		<img class="damaged-loan-card__overlay-image" [src]="loan.imagenUrl ?? '/background-image.png'" [alt]="loan.imagenAlt ?? loan.activo"/>
+		<img class="damaged-loan-card__overlay-image" [src]="loan.imagenUrl ?? '/damaged-loan-placeholder.png'" [alt]="loan.imagenAlt ?? loan.activo"/>
 	</div>
 }

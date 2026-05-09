@@ -1,10 +1,10 @@
 <app-page-layout [title]="titulo" [description]="descripcion">
 	@if (loading()) {
-		<p class="damaged-loans__status">Cargando préstamos dañados...</p>
+		<p class="status-message">Cargando préstamos dañados...</p>
 	} @else if (error()) {
-		<p class="damaged-loans__status damaged-loans__status--error">{{ error() }}</p>
+		<p class="status-message status-message--error">{{ error() }}</p>
 	} @else if (damagedLoans().length === 0) {
-		<p class="damaged-loans__status">No hay préstamos con daño reportado.</p>
+		<p class="status-message">No hay préstamos con daño reportado.</p>
 	} @else {
 		<div class="damaged-loans-grid">
 			@for (damagedLoan of damagedLoans(); track damagedLoan.id) {
@@ -16,3 +16,14 @@
 		</div>
 	}
 </app-page-layout>
+
+<app-confirm-modal
+	[abierto]="modalAbierto()"
+	titulo="Resolver préstamo dañado"
+	mensaje="¿Confirma que el daño de este préstamo ha sido resuelto?"
+	textoConfirmar="Resolver"
+	[cargando]="modalCargando()"
+	[deshabilitado]="modalCargando()"
+	(confirmar)="onConfirmarResolucion()"
+	(cerrar)="onCerrarModal()"
+/>
