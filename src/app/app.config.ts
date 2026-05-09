@@ -8,6 +8,7 @@ import { provideRouter } from '@angular/router';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideFirestore, getFirestore, connectFirestoreEmulator } from '@angular/fire/firestore';
 import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
+import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fire/storage';
 
 import { routes } from './app.routes';
 import { firebaseConfig } from './firebase.config';
@@ -31,6 +32,13 @@ export const appConfig: ApplicationConfig = {
         connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
       }
       return auth;
+    }),
+    provideStorage(() => {
+      const storage = getStorage();
+      if (isDevMode()) {
+        connectStorageEmulator(storage, 'localhost', 9199);
+      }
+      return storage;
     }),
   ],
 };

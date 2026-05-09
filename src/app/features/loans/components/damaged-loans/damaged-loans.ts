@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { PageLayout } from '../../../../layout/components/page-layout/page-layout';
 import { DamagedLoanCard, DamagedLoanCardData } from '../damaged-loan-card/damaged-loan-card';
+import { DamagedLoansService } from '../../services/damaged-loans.service';
 
 @Component({
   selector: 'app-damaged-loans',
@@ -9,58 +10,30 @@ import { DamagedLoanCard, DamagedLoanCardData } from '../damaged-loan-card/damag
   templateUrl: './damaged-loans.html',
   styleUrl: './damaged-loans.css',
 })
-export class DamagedLoansPage {
-  titulo = 'Prestamos dañados';
-  descripcion = 'Consulte los prestamos devueltos con daño reportado';
+export class DamagedLoansPage implements OnInit {
+  private readonly damagedLoansService = inject(DamagedLoansService);
 
-  damagedLoans: DamagedLoanCardData[] = [
-    {
-      id: '1',
-      activo: 'Trípode de Aluminio',
-      usuarioNombre: 'Mario Rojas',
-      fechaReporte: '2026-02-05',
-      descripcionDanio: 'Pata izquierda doblada, no soporta peso. Tornillo de ajuste roto.',
-      severidad: 'severo',
-      imagenUrl: '/background-image.png',
-      imagenAlt: 'Fotografía del trípode de aluminio dañado',
-    },
-    {
-      id: '2',
-      activo: 'Estación Total Topcon',
-      usuarioNombre: 'Ana Quirós',
-      fechaReporte: '2026-04-28',
-      descripcionDanio: 'Pantalla con rayones visibles. Funciona pero la lectura es difícil bajo el sol.',
-      severidad: 'moderado',
-      imagenUrl: '/background-image.png',
-      imagenAlt: 'Fotografía de la estación total dañada',
-    },
-    {
-      id: '2',
-      activo: 'Estación Total Topcon',
-      usuarioNombre: 'Ana Quirós',
-      fechaReporte: '2026-04-28',
-      descripcionDanio: 'Pantalla con rayones visibles. Funciona pero la lectura es difícil bajo el sol.',
-      severidad: 'moderado',
-      imagenUrl: '/background-image.png',
-      imagenAlt: 'Fotografía de la estación total dañada',
-    },
-    {
-      id: '2',
-      activo: 'Estación Total Topcon',
-      usuarioNombre: 'Ana Quirós',
-      fechaReporte: '2026-04-28',
-      descripcionDanio: 'Pantalla con rayones visibles. Funciona pero la lectura es difícil bajo el sol.',
-      severidad: 'moderado',
-      imagenUrl: '/background-image.png',
-      imagenAlt: 'Fotografía de la estación total dañada',
-    },
-  ];
+  titulo = 'Préstamos dañados';
+  descripcion = 'Consulte los préstamos devueltos con daño reportado';
+
+  damagedLoans = signal<DamagedLoanCardData[]>([]);
+  loading = signal(true);
+  error = signal<string | null>(null);
+
+  ngOnInit(): void {
+    this.damagedLoansService.obtenerPrestamosDanados().subscribe({
+      next: (data: DamagedLoanCardData[]) => {
+        this.damagedLoans.set(data);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.error.set('No se pudieron cargar los préstamos dañados.');
+        this.loading.set(false);
+      },
+    });
+  }
 
   onResolver(item: DamagedLoanCardData): void {
     console.log('Resolver reporte:', item.id);
-  }
-
-  onDescartar(item: DamagedLoanCardData): void {
-    console.log('Descartar reporte:', item.id);
   }
 }
