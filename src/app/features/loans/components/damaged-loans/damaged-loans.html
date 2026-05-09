@@ -1,11 +1,18 @@
 <app-page-layout [title]="titulo" [description]="descripcion">
-	<div class="damaged-loans-grid">
-		@for (damagedLoan of damagedLoans; track damagedLoan.id) {
-			<app-damaged-loan-card
-				[loan]="damagedLoan"
-				(resolver)="onResolver($event)">
-
-			</app-damaged-loan-card>
-		}
-	</div>
+	@if (loading()) {
+		<p class="damaged-loans__status">Cargando préstamos dañados...</p>
+	} @else if (error()) {
+		<p class="damaged-loans__status damaged-loans__status--error">{{ error() }}</p>
+	} @else if (damagedLoans().length === 0) {
+		<p class="damaged-loans__status">No hay préstamos con daño reportado.</p>
+	} @else {
+		<div class="damaged-loans-grid">
+			@for (damagedLoan of damagedLoans(); track damagedLoan.id) {
+				<app-damaged-loan-card
+					[loan]="damagedLoan"
+					(resolver)="onResolver($event)">
+				</app-damaged-loan-card>
+			}
+		</div>
+	}
 </app-page-layout>
