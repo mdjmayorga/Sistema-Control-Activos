@@ -9,7 +9,7 @@
 				<span class="prestamo-item__date-value">{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</span>
 			</div>
 
-			@if (mostrarFechaDevolucion) {
+			@if (showReturnDate) {
 				<div class="prestamo-item__date-col">
 					<span class="prestamo-item__date-label">DEVOLUCIÓN</span>
 					<span class="prestamo-item__date-value">
@@ -20,24 +20,16 @@
 		</div>
 	</div>
 
-	<div class="prestamo-item__right">
-		<p>Fecha del préstamo: {{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</p>
-
-		@if (showReturnDate) {
-			<p>
-				Fecha de devolución:
-				{{ loan.fechaDevolucion ? (loan.fechaDevolucion | date:'dd/MM/yyyy') : 'Pendiente' }}
-			</p>
-		}
-
-		@if (showReturnButton) {
+	@if (showReturnButton) {
+		<div class="prestamo-item__right">
 			<app-devolver-button (returnClick)="openModal()"></app-devolver-button>
-		}
-	</div>
+		</div>
+	}
 </article>
 
 <app-return-modal
 	[open]="modalOpen"
+	[loanId]="loan.id ?? ''"
 	(close)="closeModal()"
 	(confirm)="confirmReturn($event)">
 </app-return-modal>
