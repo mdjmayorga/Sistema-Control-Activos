@@ -5,18 +5,21 @@
 
 .damaged-loans-grid {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 400px));
-	gap: 18px;
-	justify-content: center;
-	justify-items: center;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 8px;
 	align-items: start;
 	padding: 6px 0 12px;
 	width: 100%;
 }
 
-@media (max-width: 520px) {
+@media (max-width: 900px) {
+	.damaged-loans-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 560px) {
 	.damaged-loans-grid {
 		grid-template-columns: 1fr;
-		justify-content: stretch;
 	}
 }

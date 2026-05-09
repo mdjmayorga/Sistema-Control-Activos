@@ -11,7 +11,7 @@ import { AuthService } from '../../../../core/services/auth.service';
   standalone: true,
   imports: [LoansList, PageLayout],
   templateUrl: './user-dashboard.html',
-  styleUrl: './user-dashboard.css'
+  styleUrls: ['../../../../shared/styles/data-table.css', './user-dashboard.css'],
 })
 export class UserDashboardComponent implements OnInit {
   title = 'Mis prestamos';
@@ -25,15 +25,8 @@ export class UserDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const currentUser = this.authService.getCurrentUser();
-
-    if (!currentUser) {
-      this.loans = [];
-      this.loading = false;
-      return;
-    }
-
-    this.loanService.obtenerPrestamosActivosByID(currentUser.uid).subscribe({
+    const uid = this.authService.getCurrentUser()!.uid;
+    this.loanService.obtenerPrestamosActivosByID(uid).subscribe({
       next: (data) => {
         this.loans = data.sort((a, b) => b.fechaPrestamo.localeCompare(a.fechaPrestamo));
         this.loading = false;
@@ -41,7 +34,7 @@ export class UserDashboardComponent implements OnInit {
       error: (error) => {
         console.error('Error fetching active loans:', error);
         this.loading = false;
-      }
+      },
     });
   }
 

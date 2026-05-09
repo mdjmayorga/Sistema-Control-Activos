@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, collectionData, query, where } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, query, updateDoc, where } from '@angular/fire/firestore';
 import { Storage, ref, getDownloadURL } from '@angular/fire/storage';
 import { Observable, from, of, switchMap, forkJoin, map, catchError } from 'rxjs';
 import { DamagedLoanCardData } from '../components/damaged-loan-card/damaged-loan-card';
@@ -32,6 +32,11 @@ export class DamagedLoansService {
         return forkJoin(cards$);
       })
     );
+  }
+
+  resolverPrestamoDanado(id: string): Observable<void> {
+    const docRef = doc(this.firestore, 'devoluciones', id);
+    return from(updateDoc(docRef, { danoConfirmado: false }));
   }
 
   private toCard(doc: Devolucion, imagenUrl: string | undefined): DamagedLoanCardData {
