@@ -1,9 +1,9 @@
 <app-page-layout [title]="title" [description]="description">
   @if (loading) {
-    <p class="status-message">Cargando prestamos...</p>
-  }
-
-  @if (!loading) {
+    <p class="status-message">Cargando préstamos...</p>
+  } @else if (loans.length === 0) {
+    <p class="status-message">No tienes préstamos activos.</p>
+  } @else {
     <app-prestamos-list
       [loans]="loans"
       [showReturnButton]="true"

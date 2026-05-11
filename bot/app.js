@@ -143,9 +143,9 @@ client.on('message_create', async message => {
             });
 
             // Actualizar Firestore
-            await admin.firestore().collection('devoluciones').doc(loanId).update({
+            await admin.firestore().collection('devoluciones').doc(loanId).set({
                 fotoSubida: true
-            });
+            }, { merge: true });
 
             // Limpiar sesión
             delete sessions[from];

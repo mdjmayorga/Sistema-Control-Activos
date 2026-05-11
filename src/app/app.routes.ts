@@ -9,6 +9,7 @@ import { ConfiguracionesPageUsuario } from './features/settings/components/confi
 import { HistorialPage } from './features/history/components/historial-page/historial-page';
 import { ConfiguracionesPage } from './features/settings/components/configuraciones-page/configuraciones-page';
 import { AuthenticatedLayout } from './layout/components/authenticated-layout/authenticated-layout';
+import { DamagedLoansPage } from './features/loans/components/damaged-loans/damaged-loans';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -59,6 +60,7 @@ export const routes: Routes = [
       { path: 'mis-prestamos', component: UserDashboardComponent },
       { path: 'prestamos-activos', component: ActiveLoansPage },
       { path: 'mi-historial', component: UserLoanHistoryPage },
+      { path: 'prestamos-danados', component: DamagedLoansPage },
       { path: 'historial', component: HistorialPage },
       { path: 'configuraciones', component: ConfiguracionesPage },
     ],
