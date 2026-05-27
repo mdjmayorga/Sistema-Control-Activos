@@ -1,7 +1,9 @@
-import {onDocumentWritten} from "firebase-functions/v2/firestore";
+import {
+  onDocumentWritten, onDocumentCreated} from "firebase-functions/v2/firestore";
 import {onSchedule} from "firebase-functions/v2/scheduler";
 import * as admin from "firebase-admin";
-import {getDamageEmailTemplate, getHistorialMensualTemplate} from "./emailTemplate";
+import {
+  getDamageEmailTemplate, getHistorialMensualTemplate, getPrestamoCreadoEmailTemplate} from "./emailTemplate";
 
 admin.initializeApp();
 
@@ -95,7 +97,7 @@ export const notificarDanoActivo = onDocumentWritten(
     // Datos principales del reporte de daño.
     const estudiante = afterData.nombreEstudiante || "Estudiante Desconocido";
     const activo = afterData.nombreActivo || "Activo Desconocido";
-    
+
     // Devuelve el valor "N/A" si viene vacío.
     const fieldOrNA = (value: unknown): string => {
       if (typeof value === "string" && value.trim()) {
@@ -120,8 +122,8 @@ export const notificarDanoActivo = onDocumentWritten(
     const razonPrestamo = fieldOrNA(
       afterData.razonPrestamo ?? afterData.razon ?? afterData.reason
     );
-    
-      // La plantilla HTML del correo de daño.
+
+    // La plantilla HTML del correo de daño.
     const htmlListo = getDamageEmailTemplate(
       estudiante,
       activo,
@@ -130,10 +132,10 @@ export const notificarDanoActivo = onDocumentWritten(
       grupoCuadrilla,
       razonPrestamo
     );
-    
-     // Documento que se agrega a "mail",  la extensión lo toma y envía el correo.
+
+    // Documento que se agrega a "mail",  la extensión lo toma y envía el correo.
     const payload = {
-      to: ["jccoto@itcr.ac.cr","deyamaradiaga0112@gmail.com"],
+      to: ["jccoto@itcr.ac.cr", "deyamaradiaga0112@gmail.com"],
       message: {
         subject: `URGENTE: Daño en ${activo}`,
         html: htmlListo,
@@ -148,7 +150,7 @@ export const notificarDanoActivo = onDocumentWritten(
       console.log(JSON.stringify(payload, null, 2));
     }
 
-  // En la base real crea el documento para que la extensión envíe el correo.
+    // En la base real crea el documento para que la extensión envíe el correo.
     await admin.firestore().collection("mail").add(payload);
     console.log("Notificación creada en colección mail.");
   }
@@ -235,5 +237,82 @@ export const enviarHistorialMensual = onSchedule(
 
     await admin.firestore().collection("mail").add(payload);
     console.log(`Historial mensual enviado. Mes: ${mesLabel}, Préstamos: ${loans.length}`);
+  }
+);
+
+// PR004 - Correo automático al usuario cuando crea un préstamo.
+export const notificarPrestamoCreado = onDocumentCreated(
+  "prestamos/{prestamoId}",
+  async (event) => {
+    const prestamo = event.data?.data();
+
+    if (!prestamo) {
+      console.log("No hay datos del préstamo.");
+      return;
+    }
+
+    const fieldOrNA = (value: unknown): string => {
+      if (typeof value === "string" && value.trim()) {
+        return value.trim();
+      }
+
+      return "N/A";
+    };
+
+    const correoUsuario = fieldOrNA(
+      prestamo.correoInstitucional
+    );
+
+    const activo = fieldOrNA(
+      prestamo.activo
+    );
+
+    const grupo = fieldOrNA(
+      prestamo.grupoTopografia
+    );
+
+    const cuadrilla = fieldOrNA(
+      prestamo.cuadrilla
+    );
+
+    const fechaPrestamo = fieldOrNA(
+      prestamo.fechaPrestamo
+    );
+
+    if (correoUsuario === "N/A") {
+      console.log("El préstamo no tiene correo.");
+      return;
+    }
+
+    const htmlListo = getPrestamoCreadoEmailTemplate(
+      activo,
+      grupo,
+      cuadrilla,
+      fechaPrestamo
+    );
+
+    const payload = {
+      to: [correoUsuario],
+
+      message: {
+        subject: `Confirmación de préstamo registrado - ${activo}`,
+        html: htmlListo,
+      },
+
+      tipo: "confirmacion-prestamo",
+
+      prestamoId: event.params.prestamoId,
+
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    };
+
+    if (IS_EMULATOR) {
+      console.log("Correo de préstamo generado:");
+      console.log(JSON.stringify(payload, null, 2));
+    }
+
+    await admin.firestore().collection("mail").add(payload);
+
+    console.log(`Correo creado para ${correoUsuario}`);
   }
 );
