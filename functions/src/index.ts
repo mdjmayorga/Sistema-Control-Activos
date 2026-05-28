@@ -241,6 +241,7 @@ export const enviarHistorialMensual = onSchedule(
 );
 
 // PR004 - Correo automático al usuario cuando crea un préstamo.
+// Se ejecuta cuando se crea un documento en "prestamos".
 export const notificarPrestamoCreado = onDocumentCreated(
   "prestamos/{prestamoId}",
   async (event) => {
@@ -250,7 +251,8 @@ export const notificarPrestamoCreado = onDocumentCreated(
       console.log("No hay datos del préstamo.");
       return;
     }
-
+    
+    // Devuelve el valor del campo o "N/A" si no existe.
     const fieldOrNA = (value: unknown): string => {
       if (typeof value === "string" && value.trim()) {
         return value.trim();
@@ -259,6 +261,7 @@ export const notificarPrestamoCreado = onDocumentCreated(
       return "N/A";
     };
 
+    // Datos necesarios para el correo.
     const correoUsuario = fieldOrNA(
       prestamo.correoInstitucional
     );
@@ -284,6 +287,7 @@ export const notificarPrestamoCreado = onDocumentCreated(
       return;
     }
 
+    // Genera el HTML usando la plantilla.
     const htmlListo = getPrestamoCreadoEmailTemplate(
       activo,
       grupo,
@@ -291,6 +295,7 @@ export const notificarPrestamoCreado = onDocumentCreated(
       fechaPrestamo
     );
 
+    // Construye el documento que se guardará en "mail".
     const payload = {
       to: [correoUsuario],
 
@@ -311,6 +316,7 @@ export const notificarPrestamoCreado = onDocumentCreated(
       console.log(JSON.stringify(payload, null, 2));
     }
 
+    // Guarda el correo en la colección "mail".
     await admin.firestore().collection("mail").add(payload);
 
     console.log(`Correo creado para ${correoUsuario}`);
