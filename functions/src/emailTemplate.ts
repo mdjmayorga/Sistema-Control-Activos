@@ -221,3 +221,113 @@ export const getDamageEmailTemplate = (
 </div>
   `;
 };
+export const getPrestamoCreadoEmailTemplate = (
+  activo: string,
+  grupo: string,
+  cuadrilla: string,
+  fechaPrestamo: string,
+): string => {
+  return `
+<!-- ══ EMAIL: Confirmación de Préstamo - CIVCO/TEC ══ -->
+<div style="margin:0;padding:32px 16px;background-color:#f0f2f5;font-family:Arial,Helvetica,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;">
+
+    <div style="background-color:#00205b;border-radius:12px 12px 0 0;padding:32px 36px 24px;border-bottom:3px solid #f5a623;">
+
+      <div style="display:inline-block;background-color:#003d00;border:1px solid #4caf50;border-radius:5px;padding:4px 12px;margin-bottom:12px;">
+        <span style="font-size:10px;font-weight:700;color:#4caf50;letter-spacing:1.5px;text-transform:uppercase;">
+          ● Confirmación Automática
+        </span>
+      </div>
+
+      <div style="font-size:20px;font-weight:700;color:#ffffff;line-height:1.35;">
+        Confirmación de <span style="color:#f5a623;">Préstamo Registrado</span>
+      </div>
+    </div>
+
+    <div style="background-color:#f7f8fc;padding:32px 36px;">
+
+      <p style="font-size:15px;font-weight:600;color:#1a2340;margin:0 0 10px 0;">
+        Estimado/a usuario,
+      </p>
+
+      <p style="font-size:14px;color:#4a5568;line-height:1.7;margin:0 0 28px 0;padding:14px 18px;background-color:#e8ecf7;border-left:4px solid #00205b;">
+        Se le informa que su solicitud de préstamo fue registrada correctamente
+        en el Sistema de Control de Activos CIVCO.
+      </p>
+
+      <div style="font-size:10px;font-weight:700;color:#00205b;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;border-bottom:1px solid #d0d8ee;padding-bottom:6px;">
+        Detalles del préstamo
+      </div>
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0"
+        style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:24px;">
+
+        <tr>
+          <td width="42%"
+            style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
+            <span style="font-size:12px;font-weight:600;color:#4a5568;">Activo</span>
+          </td>
+
+          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
+            <span style="font-size:12px;color:#a0aec0;font-style:italic;">
+              ${activo}
+            </span>
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
+            <span style="font-size:12px;font-weight:600;color:#4a5568;">Grupo</span>
+          </td>
+
+          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
+            <span style="font-size:12px;color:#a0aec0;font-style:italic;">
+              ${grupo}
+            </span>
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
+            <span style="font-size:12px;font-weight:600;color:#4a5568;">Cuadrilla</span>
+          </td>
+
+          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
+            <span style="font-size:12px;color:#a0aec0;font-style:italic;">
+              ${cuadrilla}
+            </span>
+          </td>
+        </tr>
+
+        <tr>
+          <td
+            style="padding:11px 14px;background-color:#eef1fb;border-right:1px solid #e8edf7;">
+            <span style="font-size:12px;font-weight:600;color:#4a5568;">Fecha</span>
+          </td>
+
+          <td style="padding:11px 14px;background-color:#ffffff;">
+            <span style="font-size:12px;color:#a0aec0;font-style:italic;">
+              ${fechaPrestamo}
+            </span>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div style="background-color:#001540;border-radius:0 0 12px 12px;padding:22px 36px;border-top:2px solid #f5a623;text-align:center;">
+
+      <p style="font-size:12px;color:#7a8fa8;line-height:1.6;margin:0;">
+        Este es un mensaje automático generado por el
+        Sistema de Control de Activos CIVCO.
+      </p>
+
+    </div>
+
+  </div>
+</div>
+  `;
+};

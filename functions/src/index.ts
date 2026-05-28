@@ -1,8 +1,10 @@
-import {onDocumentWritten} from "firebase-functions/v2/firestore";
+import {
+  onDocumentWritten, onDocumentCreated} from "firebase-functions/v2/firestore";
 import {onSchedule} from "firebase-functions/v2/scheduler";
 import {onRequest} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
-import {getDamageEmailTemplate, getHistorialMensualTemplate} from "./emailTemplate";
+import {
+  getDamageEmailTemplate, getHistorialMensualTemplate, getPrestamoCreadoEmailTemplate} from "./emailTemplate";
 
 admin.initializeApp();
 
@@ -96,7 +98,7 @@ export const notificarDanoActivo = onDocumentWritten(
     // Datos principales del reporte de daño.
     const estudiante = afterData.nombreEstudiante || "Estudiante Desconocido";
     const activo = afterData.nombreActivo || "Activo Desconocido";
-    
+
     // Devuelve el valor "N/A" si viene vacío.
     const fieldOrNA = (value: unknown): string => {
       if (typeof value === "string" && value.trim()) {
@@ -121,8 +123,8 @@ export const notificarDanoActivo = onDocumentWritten(
     const razonPrestamo = fieldOrNA(
       afterData.razonPrestamo ?? afterData.razon ?? afterData.reason
     );
-    
-      // La plantilla HTML del correo de daño.
+
+    // La plantilla HTML del correo de daño.
     const htmlListo = getDamageEmailTemplate(
       estudiante,
       activo,
@@ -131,10 +133,10 @@ export const notificarDanoActivo = onDocumentWritten(
       grupoCuadrilla,
       razonPrestamo
     );
-    
-     // Documento que se agrega a "mail",  la extensión lo toma y envía el correo.
+
+    // Documento que se agrega a "mail",  la extensión lo toma y envía el correo.
     const payload = {
-      to: ["jccoto@itcr.ac.cr","deyamaradiaga0112@gmail.com"],
+      to: ["jccoto@itcr.ac.cr", "deyamaradiaga0112@gmail.com"],
       message: {
         subject: `URGENTE: Daño en ${activo}`,
         html: htmlListo,
@@ -149,7 +151,7 @@ export const notificarDanoActivo = onDocumentWritten(
       console.log(JSON.stringify(payload, null, 2));
     }
 
-  // En la base real crea el documento para que la extensión envíe el correo.
+    // En la base real crea el documento para que la extensión envíe el correo.
     await admin.firestore().collection("mail").add(payload);
     console.log("Notificación creada en colección mail.");
   }
@@ -239,6 +241,75 @@ export const enviarHistorialMensual = onSchedule(
   }
 );
 
+// PR004 - Correo automático al usuario cuando crea un préstamo.
+// Se ejecuta cuando se crea un documento en "prestamos".
+export const notificarPrestamoCreado = onDocumentCreated(
+  "prestamos/{prestamoId}",
+  async (event) => {
+    const prestamo = event.data?.data();
+
+    if (!prestamo) {
+      console.log("No hay datos del préstamo.");
+      return;
+    }
+
+    // Devuelve el valor del campo o "N/A" si no existe.
+    const fieldOrNA = (value: unknown): string => {
+      if (typeof value === "string" && value.trim()) {
+        return value.trim();
+      }
+
+      return "N/A";
+    };
+
+    // Datos necesarios para el correo.
+    const correoUsuario = fieldOrNA(prestamo.correoInstitucional);
+    const activo = fieldOrNA(prestamo.activo);
+    const grupo = fieldOrNA(prestamo.grupoTopografia);
+    const cuadrilla = fieldOrNA(prestamo.cuadrilla);
+    const fechaPrestamo = fieldOrNA(prestamo.fechaPrestamo);
+
+    if (correoUsuario === "N/A") {
+      console.log("El préstamo no tiene correo.");
+      return;
+    }
+
+    // Genera el HTML usando la plantilla.
+    const htmlListo = getPrestamoCreadoEmailTemplate(
+      activo,
+      grupo,
+      cuadrilla,
+      fechaPrestamo
+    );
+
+    // Construye el documento que se guardará en "mail".
+    const payload = {
+      to: [correoUsuario],
+
+      message: {
+        subject: `Confirmación de préstamo registrado - ${activo}`,
+        html: htmlListo,
+      },
+
+      tipo: "confirmacion-prestamo",
+
+      prestamoId: event.params.prestamoId,
+
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    };
+
+    if (IS_EMULATOR) {
+      console.log("Correo de préstamo generado:");
+      console.log(JSON.stringify(payload, null, 2));
+    }
+
+    // Guarda el correo en la colección "mail".
+    await admin.firestore().collection("mail").add(payload);
+
+    console.log(`Correo creado para ${correoUsuario}`);
+  }
+);
+
 // ── AD001: Limpieza periódica de Storage ─────────────────────────────────────
 
 interface ResultadoLimpieza {
@@ -299,8 +370,6 @@ async function ejecutarLimpiezaStorage(
         console.log(`[AD001] Archivo no encontrado (ya eliminado): ${filePath}`);
       }
 
-      // Marcar documento independientemente de si existía el archivo,
-      // para no volver a procesarlo en la próxima ejecución.
       refsActualizar.push(doc.ref);
     } catch (error) {
       console.error(`[AD001] Error procesando ${filePath}:`, error);
@@ -308,7 +377,6 @@ async function ejecutarLimpiezaStorage(
     }
   }
 
-  // Actualizar Firestore en lotes (máximo 500 por batch).
   for (let i = 0; i < refsActualizar.length; i += 500) {
     const lote = db.batch();
     refsActualizar.slice(i, i + 500).forEach((ref) => {
@@ -357,7 +425,6 @@ export const limpiarAlmacenamientoManual = onRequest(
     }
 
     const diasParam = Number(req.query.dias ?? "0");
-    // dias=0 fuerza limpieza inmediata (útil para tests); valor por defecto 30.
     const diasAntiguedad = diasParam >= 0 ? diasParam : 30;
 
     console.log(`[AD001] Limpieza manual iniciada — diasAntiguedad=${diasAntiguedad}`);
