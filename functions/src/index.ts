@@ -1,5 +1,6 @@
 import {onDocumentWritten} from "firebase-functions/v2/firestore";
 import {onSchedule} from "firebase-functions/v2/scheduler";
+import {onRequest} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 import {getDamageEmailTemplate, getHistorialMensualTemplate} from "./emailTemplate";
 
@@ -235,5 +236,137 @@ export const enviarHistorialMensual = onSchedule(
 
     await admin.firestore().collection("mail").add(payload);
     console.log(`Historial mensual enviado. Mes: ${mesLabel}, Préstamos: ${loans.length}`);
+  }
+);
+
+// ── AD001: Limpieza periódica de Storage ─────────────────────────────────────
+
+interface ResultadoLimpieza {
+  examinados: number;
+  eliminados: number;
+  omitidos: number;
+  errores: number;
+}
+
+async function ejecutarLimpiezaStorage(
+  diasAntiguedad: number
+): Promise<ResultadoLimpieza> {
+  const db = admin.firestore();
+  const bucket = admin.storage().bucket();
+
+  const ahora = new Date();
+  const fechaLimite = new Date(ahora);
+  fechaLimite.setDate(fechaLimite.getDate() - diasAntiguedad);
+  const fechaLimiteISO = fechaLimite.toISOString();
+
+  const snapshot = await db
+    .collection("devoluciones")
+    .where("fotoSubida", "==", true)
+    .get();
+
+  let eliminados = 0;
+  let omitidos = 0;
+  let errores = 0;
+  const refsActualizar: admin.firestore.DocumentReference[] = [];
+
+  for (const doc of snapshot.docs) {
+    const data = doc.data();
+
+    // Saltar archivos ya limpiados en ejecuciones anteriores.
+    if (data.archivoLimpiado === true) {
+      omitidos++;
+      continue;
+    }
+
+    // Saltar préstamos devueltos hace menos de diasAntiguedad días.
+    const fechaDevolucion = data.fechaDevolucion as string | undefined;
+    if (!fechaDevolucion || fechaDevolucion > fechaLimiteISO) {
+      omitidos++;
+      continue;
+    }
+
+    const filePath = `damages/${doc.id}/evidence.jpg`;
+
+    try {
+      const file = bucket.file(filePath);
+      const [exists] = await file.exists();
+
+      if (exists) {
+        await file.delete();
+        console.log(`[AD001] Archivo eliminado: ${filePath}`);
+        eliminados++;
+      } else {
+        console.log(`[AD001] Archivo no encontrado (ya eliminado): ${filePath}`);
+      }
+
+      // Marcar documento independientemente de si existía el archivo,
+      // para no volver a procesarlo en la próxima ejecución.
+      refsActualizar.push(doc.ref);
+    } catch (error) {
+      console.error(`[AD001] Error procesando ${filePath}:`, error);
+      errores++;
+    }
+  }
+
+  // Actualizar Firestore en lotes (máximo 500 por batch).
+  for (let i = 0; i < refsActualizar.length; i += 500) {
+    const lote = db.batch();
+    refsActualizar.slice(i, i + 500).forEach((ref) => {
+      lote.update(ref, {
+        archivoLimpiado: true,
+        fechaLimpieza: ahora.toISOString(),
+      });
+    });
+    await lote.commit();
+  }
+
+  return {
+    examinados: snapshot.size,
+    eliminados,
+    omitidos,
+    errores,
+  };
+}
+
+// Corre a las 3 AM (hora Costa Rica) el día 1 de cada mes (~30 días).
+export const limpiarAlmacenamientoPeriodico = onSchedule(
+  {
+    schedule: "0 3 1 * *",
+    timeZone: "America/Costa_Rica",
+  },
+  async () => {
+    console.log("[AD001] Iniciando limpieza periódica de almacenamiento...");
+    const resultado = await ejecutarLimpiezaStorage(30);
+    console.log(
+      `[AD001] Limpieza completada — examinados: ${resultado.examinados}, ` +
+      `eliminados: ${resultado.eliminados}, ` +
+      `omitidos: ${resultado.omitidos}, ` +
+      `errores: ${resultado.errores}`
+    );
+  }
+);
+
+// Endpoint HTTP para disparar la limpieza manualmente desde el emulador.
+// En producción responde 403 para evitar ejecuciones no autorizadas.
+export const limpiarAlmacenamientoManual = onRequest(
+  {region: "us-central1"},
+  async (req, res) => {
+    if (!IS_EMULATOR) {
+      res.status(403).json({error: "Solo disponible en el emulador."});
+      return;
+    }
+
+    const diasParam = Number(req.query.dias ?? "0");
+    // dias=0 fuerza limpieza inmediata (útil para tests); valor por defecto 30.
+    const diasAntiguedad = diasParam >= 0 ? diasParam : 30;
+
+    console.log(`[AD001] Limpieza manual iniciada — diasAntiguedad=${diasAntiguedad}`);
+    const resultado = await ejecutarLimpiezaStorage(diasAntiguedad);
+
+    res.status(200).json({
+      mensaje: "Limpieza completada",
+      diasAntiguedad,
+      ...resultado,
+    });
   }
 );
