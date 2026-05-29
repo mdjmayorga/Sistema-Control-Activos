@@ -158,32 +158,30 @@ export const notificarDanoActivo = onDocumentWritten(
 );
 
 // ── HI007: Historial mensual por correo ──────────────────────────────────────
-// Corre a las 11 PM hora Costa Rica los días 28-31. Dentro de la función se
-// verifica si efectivamente es el último día del mes antes de enviar.
+// Corre el día 1 de cada mes a las 6 AM hora Costa Rica.
+// Envía el historial completo del mes anterior (ej: el 1 de junio envía mayo).
 export const enviarHistorialMensual = onSchedule(
   {
-    schedule: "0 23 28-31 * *",
+    schedule: "0 6 1 * *",
     timeZone: "America/Costa_Rica",
   },
   async () => {
-    // Hora actual en Costa Rica (UTC-6, sin DST)
-    const CR_OFFSET_MS = -6 * 60 * 60 * 1000;
-    const crNow = new Date(Date.now() + CR_OFFSET_MS);
+    const ahora = new Date();
 
-    // VERIFICACIÓN TEMPORAL: deshabilitada para pruebas — restaurar después
-    // const tomorrow = new Date(crNow);
-    // tomorrow.setUTCDate(tomorrow.getUTCDate() + 1);
-    // if (tomorrow.getUTCDate() !== 1) {
-    //   console.log(`No es el último día del mes. Fecha CR: ${crNow.toISOString()}`);
-    //   return;
-    // }
+    // Mes anterior: si estamos en enero (0), retrocede a diciembre (11) del año previo.
+    const mesAnterior = ahora.getMonth() === 0 ? 11 : ahora.getMonth() - 1;
+    const yearMesAnterior = ahora.getMonth() === 0
+      ? ahora.getFullYear() - 1
+      : ahora.getFullYear();
 
-    const year = crNow.getUTCFullYear();
-    const month = crNow.getUTCMonth(); // 0-indexed
+    // Rango ISO del mes anterior completo.
+    const inicioMes = new Date(Date.UTC(yearMesAnterior, mesAnterior, 1)).toISOString();
+    const finMes = new Date(
+      Date.UTC(yearMesAnterior, mesAnterior + 1, 0, 23, 59, 59, 999)
+    ).toISOString();
 
-    // Rango ISO del mes completo (UTC)
-    const inicioMes = new Date(Date.UTC(year, month, 1)).toISOString();
-    const finMes = new Date(Date.UTC(year, month + 1, 0, 23, 59, 59, 999)).toISOString();
+    const year = yearMesAnterior;
+    const month = mesAnterior;
 
     const snapshot = await admin
       .firestore()
@@ -238,6 +236,59 @@ export const enviarHistorialMensual = onSchedule(
 
     await admin.firestore().collection("mail").add(payload);
     console.log(`Historial mensual enviado. Mes: ${mesLabel}, Préstamos: ${loans.length}`);
+  }
+);
+
+// HI007 — Endpoint HTTP para probar el historial mensual (solo emulador).
+// Acepta ?mes=5&year=2026 para simular cualquier mes.
+export const enviarHistorialManual = onRequest(
+  {region: "us-central1"},
+  async (req, res) => {
+    if (!IS_EMULATOR) {
+      res.status(403).json({error: "Solo disponible en el emulador."});
+      return;
+    }
+
+    const mesParam = Number(req.query.mes ?? new Date().getMonth() + 1);
+    const yearParam = Number(req.query.year ?? new Date().getFullYear());
+    const month = mesParam - 1; // 0-indexed
+
+    const inicioMes = new Date(Date.UTC(yearParam, month, 1)).toISOString();
+    const finMes = new Date(
+      Date.UTC(yearParam, month + 1, 0, 23, 59, 59, 999)
+    ).toISOString();
+
+    const snapshot = await admin
+      .firestore()
+      .collection("prestamos")
+      .where("fechaPrestamo", ">=", inicioMes)
+      .where("fechaPrestamo", "<=", finMes)
+      .orderBy("fechaPrestamo", "asc")
+      .get();
+
+    const loans = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as LoanData),
+    }));
+
+    const meses = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
+    ];
+    const mesLabel = `${meses[month]} ${yearParam}`;
+
+    res.status(200).json({
+      mensaje: "Historial generado (prueba)",
+      mes: mesLabel,
+      rango: {inicio: inicioMes, fin: finMes},
+      prestamosEncontrados: loans.length,
+      prestamos: loans.map((l) => ({
+        activo: l.activo,
+        usuario: l.usuarioNombre,
+        estado: l.estado,
+        fechaPrestamo: l.fechaPrestamo,
+      })),
+    });
   }
 );
 
