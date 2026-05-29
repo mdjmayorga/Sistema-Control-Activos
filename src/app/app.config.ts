@@ -16,6 +16,7 @@ import {
 import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
 import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fire/storage';
 import { provideAnalytics, getAnalytics } from '@angular/fire/analytics';
+import { providePerformance, getPerformance } from '@angular/fire/performance';
 
 import { routes } from './app.routes';
 import { firebaseConfig } from './firebase.config';
@@ -53,5 +54,6 @@ export const appConfig: ApplicationConfig = {
       return storage;
     }),
     provideAnalytics(() => getAnalytics()),
+    providePerformance(() => getPerformance()),
   ],
 };
