@@ -56,13 +56,13 @@
             } @else {
               @for (loan of paginatedLoans(); track loan.id) {
                 <tr>
-                  <td>{{ loan.usuarioNombre }}</td>
-                  <td>{{ loan.activo }}</td>
-                  <td>{{ loan.grupoTopografia }}</td>
-                  <td>{{ loan.cuadrilla }}</td>
-                  <td>{{ loan.razonPrestamo }}</td>
-                  <td>{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</td>
-                  <td>
+                  <td data-label="Estudiante">{{ loan.usuarioNombre }}</td>
+                  <td data-label="Activo">{{ loan.activo }}</td>
+                  <td data-label="Grupo Topo">{{ loan.grupoTopografia }}</td>
+                  <td data-label="Cuadrilla">{{ loan.cuadrilla }}</td>
+                  <td data-label="Razón">{{ loan.razonPrestamo }}</td>
+                  <td data-label="Fecha Préstamo">{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</td>
+                  <td data-label="Acciones">
                     <button class="btn-return" (click)="openReturnModal(loan.id ?? '')">
                       Devolver
                     </button>
