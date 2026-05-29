@@ -4,7 +4,11 @@ import {onSchedule} from "firebase-functions/v2/scheduler";
 import {onRequest} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
 import {
-  getDamageEmailTemplate, getHistorialMensualTemplate, getPrestamoCreadoEmailTemplate} from "./emailTemplate";
+  getAlertaMonitoreoTemplate,
+  getDamageEmailTemplate,
+  getHistorialMensualTemplate,
+  getPrestamoCreadoEmailTemplate,
+} from "./emailTemplate";
 
 admin.initializeApp();
 
@@ -565,6 +569,200 @@ export const respaldarFirestoreManual = onRequest(
 
     res.status(200).json({
       mensaje: "Respaldo completado",
+      ...resultado,
+    });
+  }
+);
+
+// ── AD002: Monitoreo y alertas del sistema ─────────────────────────────────
+
+interface MetricasSistema {
+  usuarios: number;
+  prestamosActivos: number;
+  devoluciones: number;
+  correosEnCola: number;
+  errorCount: number;
+}
+
+async function ejecutarChequeoSalud(): Promise<{
+  metricas: MetricasSistema;
+  problemas: string[];
+  saludable: boolean;
+}> {
+  const db = admin.firestore();
+  const problemas: string[] = [];
+
+  let usuarios = 0;
+  let prestamosActivos = 0;
+  let devoluciones = 0;
+  let correosEnCola = 0;
+  let errorCount = 0;
+
+  // 1. Verificar acceso a Firestore y obtener métricas.
+  try {
+    const usersSnap = await db.collection("users").count().get();
+    usuarios = usersSnap.data().count;
+  } catch (error) {
+    problemas.push("No se pudo acceder a la colección 'users' de Firestore.");
+    console.error("[AD002] Error accediendo a users:", error);
+  }
+
+  try {
+    const prestamosSnap = await db
+      .collection("prestamos")
+      .where("estado", "==", "activo")
+      .count()
+      .get();
+    prestamosActivos = prestamosSnap.data().count;
+  } catch (error) {
+    problemas.push("No se pudo consultar préstamos activos.");
+    console.error("[AD002] Error consultando préstamos:", error);
+  }
+
+  try {
+    const devSnap = await db.collection("devoluciones").count().get();
+    devoluciones = devSnap.data().count;
+  } catch (error) {
+    problemas.push("No se pudo acceder a la colección 'devoluciones'.");
+    console.error("[AD002] Error accediendo a devoluciones:", error);
+  }
+
+  // 2. Verificar cola de correos (documentos en 'mail' pendientes de envío).
+  try {
+    const pendientesSnap = await db
+      .collection("mail")
+      .where("delivery.state", "==", "PENDING")
+      .count()
+      .get();
+    correosEnCola = pendientesSnap.data().count;
+
+    if (correosEnCola > 20) {
+      problemas.push(
+        `Hay ${correosEnCola} correos pendientes de envío en la cola.`
+      );
+    }
+  } catch {
+    // La colección mail puede no tener el campo delivery si usa otra extensión.
+    correosEnCola = 0;
+  }
+
+  // 3. Verificar errores de entrega de correo (últimas 24h).
+  try {
+    const hace24h = new Date();
+    hace24h.setHours(hace24h.getHours() - 24);
+
+    const erroresSnap = await db
+      .collection("mail")
+      .where("delivery.state", "==", "ERROR")
+      .where("delivery.endTime", ">=", admin.firestore.Timestamp.fromDate(hace24h))
+      .count()
+      .get();
+    errorCount = erroresSnap.data().count;
+
+    if (errorCount > 0) {
+      problemas.push(
+        `Se detectaron ${errorCount} errores de entrega de correo en las últimas 24 horas.`
+      );
+    }
+  } catch {
+    errorCount = 0;
+  }
+
+  // 4. Verificar acceso a Storage.
+  try {
+    const bucket = admin.storage().bucket();
+    if (IS_EMULATOR) {
+      // El emulador no soporta getMetadata() en el bucket; listar archivos sí funciona.
+      await bucket.getFiles({maxResults: 1});
+    } else {
+      await bucket.getMetadata();
+    }
+  } catch (error) {
+    problemas.push("No se pudo acceder a Firebase Storage.");
+    console.error("[AD002] Error accediendo a Storage:", error);
+  }
+
+  const metricas: MetricasSistema = {
+    usuarios,
+    prestamosActivos,
+    devoluciones,
+    correosEnCola,
+    errorCount,
+  };
+
+  console.log(`[AD002] Chequeo completado — ` +
+    `usuarios: ${usuarios}, ` +
+    `préstamos activos: ${prestamosActivos}, ` +
+    `devoluciones: ${devoluciones}, ` +
+    `correos en cola: ${correosEnCola}, ` +
+    `errores correo: ${errorCount}, ` +
+    `problemas: ${problemas.length}`
+  );
+
+  return {metricas, problemas, saludable: problemas.length === 0};
+}
+
+// Chequeo diario a las 7 AM hora Costa Rica.
+export const monitoreoSistemaDiario = onSchedule(
+  {
+    schedule: "0 7 * * *",
+    timeZone: "America/Costa_Rica",
+  },
+  async () => {
+    console.log("[AD002] Iniciando chequeo de salud diario...");
+    const {metricas, problemas, saludable} = await ejecutarChequeoSalud();
+
+    if (saludable) {
+      console.log("[AD002] Sistema saludable. No se envía alerta.");
+      return;
+    }
+
+    const ahora = new Date().toLocaleString("es-CR", {
+      timeZone: "America/Costa_Rica",
+    });
+
+    const html = getAlertaMonitoreoTemplate(problemas, metricas, ahora);
+
+    const payload = {
+      to: ["jccoto@itcr.ac.cr", "deyamaradiaga0112@gmail.com"],
+      message: {
+        subject: `ALERTA: Problemas en el Sistema CIVCO (${problemas.length})`,
+        html,
+      },
+      tipo: "alerta-monitoreo",
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    };
+
+    if (IS_EMULATOR) {
+      console.log("[AD002] EMULADOR: alerta simulada");
+      console.log(JSON.stringify({
+        problemas,
+        metricas,
+      }, null, 2));
+      return;
+    }
+
+    await admin.firestore().collection("mail").add(payload);
+    console.log(`[AD002] Alerta enviada con ${problemas.length} problema(s).`);
+  }
+);
+
+// Endpoint HTTP para ejecutar el chequeo manualmente (solo emulador).
+export const monitoreoSistemaManual = onRequest(
+  {region: "us-central1"},
+  async (req, res) => {
+    if (!IS_EMULATOR) {
+      res.status(403).json({error: "Solo disponible en el emulador."});
+      return;
+    }
+
+    console.log("[AD002] Chequeo manual iniciado...");
+    const resultado = await ejecutarChequeoSalud();
+
+    res.status(200).json({
+      mensaje: resultado.saludable ?
+        "Sistema saludable" :
+        "Problemas detectados",
       ...resultado,
     });
   }
