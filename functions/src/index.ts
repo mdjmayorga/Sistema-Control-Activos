@@ -437,3 +437,83 @@ export const limpiarAlmacenamientoManual = onRequest(
     });
   }
 );
+
+// ── DP004: Respaldo automático de Firestore ─────────────────────────────────
+
+const COLECCIONES_RESPALDO = [
+  "users",
+  "prestamos",
+  "devoluciones",
+  "activos",
+];
+
+async function ejecutarRespaldo(): Promise<{
+  colecciones: number;
+  documentos: number;
+  archivoRuta: string;
+}> {
+  const db = admin.firestore();
+  const bucket = admin.storage().bucket();
+
+  const ahora = new Date();
+  const stamp = ahora.toISOString().replace(/[:.]/g, "-");
+  const archivoRuta = `backups/firestore-backup-${stamp}.json`;
+
+  const respaldo: Record<string, Record<string, admin.firestore.DocumentData>> = {};
+  let totalDocs = 0;
+
+  for (const nombre of COLECCIONES_RESPALDO) {
+    const snapshot = await db.collection(nombre).get();
+    respaldo[nombre] = {};
+    for (const doc of snapshot.docs) {
+      respaldo[nombre][doc.id] = doc.data();
+      totalDocs++;
+    }
+  }
+
+  const contenido = JSON.stringify(respaldo, null, 2);
+  const file = bucket.file(archivoRuta);
+  await file.save(contenido, {contentType: "application/json"});
+
+  console.log(
+    `[DP004] Respaldo completado — ${COLECCIONES_RESPALDO.length} colecciones, ` +
+    `${totalDocs} documentos, archivo: ${archivoRuta}`
+  );
+
+  return {
+    colecciones: COLECCIONES_RESPALDO.length,
+    documentos: totalDocs,
+    archivoRuta,
+  };
+}
+
+// Respaldo semanal: domingos a las 2 AM hora Costa Rica.
+export const respaldarFirestoreSemanal = onSchedule(
+  {
+    schedule: "0 2 * * 0",
+    timeZone: "America/Costa_Rica",
+  },
+  async () => {
+    console.log("[DP004] Iniciando respaldo semanal de Firestore...");
+    await ejecutarRespaldo();
+  }
+);
+
+// Endpoint HTTP para disparar el respaldo manualmente (solo emulador).
+export const respaldarFirestoreManual = onRequest(
+  {region: "us-central1"},
+  async (req, res) => {
+    if (!IS_EMULATOR) {
+      res.status(403).json({error: "Solo disponible en el emulador."});
+      return;
+    }
+
+    console.log("[DP004] Respaldo manual iniciado...");
+    const resultado = await ejecutarRespaldo();
+
+    res.status(200).json({
+      mensaje: "Respaldo completado",
+      ...resultado,
+    });
+  }
+);
