@@ -221,6 +221,107 @@ export const getDamageEmailTemplate = (
 </div>
   `;
 };
+export const getAlertaMonitoreoTemplate = (
+  problemas: string[],
+  metricas: {
+    usuarios: number;
+    prestamosActivos: number;
+    devoluciones: number;
+    correosEnCola: number;
+    errorCount: number;
+  },
+  timestamp: string,
+): string => {
+  const listaProblemas = problemas
+    .map((p) => `<li style="margin-bottom:6px;font-size:13px;color:#c0392b;">${p}</li>`)
+    .join("");
+
+  return `
+<!-- ══ EMAIL: Alerta de Monitoreo - CIVCO/TEC ══ -->
+<div style="margin:0;padding:32px 16px;background-color:#f0f2f5;font-family:Arial,Helvetica,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;">
+
+    <div style="background-color:#00205b;border-radius:12px 12px 0 0;padding:32px 36px 24px;border-bottom:3px solid #c0392b;">
+      <div style="display:inline-block;background-color:#5c0000;border:1px solid #c0392b;border-radius:5px;padding:4px 12px;margin-bottom:12px;">
+        <span style="font-size:10px;font-weight:700;color:#e74c3c;letter-spacing:1.5px;text-transform:uppercase;">Alerta de Sistema</span>
+      </div>
+      <div style="font-size:20px;font-weight:700;color:#ffffff;line-height:1.35;">
+        Problemas detectados en el <span style="color:#e74c3c;">Sistema CIVCO</span>
+      </div>
+    </div>
+
+    <div style="background-color:#f7f8fc;padding:32px 36px;">
+      <p style="font-size:15px;font-weight:600;color:#1a2340;margin:0 0 10px 0;">
+        Estimado administrador,
+      </p>
+      <p style="font-size:14px;color:#4a5568;line-height:1.7;margin:0 0 20px 0;padding:14px 18px;background-color:#fdeaea;border-left:4px solid #c0392b;">
+        El chequeo de salud del sistema detect&oacute; los siguientes problemas:
+      </p>
+
+      <ul style="padding-left:20px;margin:0 0 24px 0;">${listaProblemas}</ul>
+
+      <div style="font-size:10px;font-weight:700;color:#00205b;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;border-bottom:1px solid #d0d8ee;padding-bottom:6px;">
+        M&eacute;tricas del Sistema
+      </div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:24px;">
+        <tr>
+          <td width="50%" style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
+            <span style="font-size:12px;font-weight:600;color:#4a5568;">Usuarios registrados</span>
+          </td>
+          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
+            <span style="font-size:14px;font-weight:700;color:#00205b;">${metricas.usuarios}</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
+            <span style="font-size:12px;font-weight:600;color:#4a5568;">Pr&eacute;stamos activos</span>
+          </td>
+          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
+            <span style="font-size:14px;font-weight:700;color:#00205b;">${metricas.prestamosActivos}</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
+            <span style="font-size:12px;font-weight:600;color:#4a5568;">Devoluciones totales</span>
+          </td>
+          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
+            <span style="font-size:14px;font-weight:700;color:#00205b;">${metricas.devoluciones}</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
+            <span style="font-size:12px;font-weight:600;color:#4a5568;">Correos en cola (pendientes)</span>
+          </td>
+          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
+            <span style="font-size:14px;font-weight:700;color:${metricas.correosEnCola > 10 ? "#c0392b" : "#00205b"};">${metricas.correosEnCola}</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:11px 14px;background-color:#eef1fb;border-right:1px solid #e8edf7;">
+            <span style="font-size:12px;font-weight:600;color:#4a5568;">Errores de entrega de correo</span>
+          </td>
+          <td style="padding:11px 14px;background-color:#ffffff;">
+            <span style="font-size:14px;font-weight:700;color:${metricas.errorCount > 0 ? "#c0392b" : "#00205b"};">${metricas.errorCount}</span>
+          </td>
+        </tr>
+      </table>
+
+      <p style="font-size:11px;color:#718096;margin:0;">
+        Revisi&oacute;n ejecutada: ${timestamp}
+      </p>
+    </div>
+
+    <div style="background-color:#001540;border-radius:0 0 12px 12px;padding:22px 36px;border-top:2px solid #c0392b;text-align:center;">
+      <p style="font-size:12px;color:#7a8fa8;line-height:1.6;margin:0;">
+        Este es un mensaje autom&aacute;tico del Sistema de Control de Activos CIVCO.
+      </p>
+    </div>
+
+  </div>
+</div>
+  `;
+};
+
 export const getPrestamoCreadoEmailTemplate = (
   activo: string,
   grupo: string,
