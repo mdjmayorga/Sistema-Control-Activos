@@ -42,6 +42,15 @@ __screenshots__/
 /emulator-data
 *-debug.log
 
+# Firebase service account keys — NUNCA commitear
+serviceAccountKey.json
+serviceAccount*.json
+**/serviceAccountKey.json
+*.serviceaccount.json
+.env
+.env.*
+!.env.example
+
 # System files
 .DS_Store
 Thumbs.db
