@@ -169,10 +169,11 @@ export const enviarHistorialMensual = onSchedule(
     const ahora = new Date();
 
     // Mes anterior: si estamos en enero (0), retrocede a diciembre (11) del año previo.
-    const mesAnterior = ahora.getMonth() === 0 ? 11 : ahora.getMonth() - 1;
-    const yearMesAnterior = ahora.getMonth() === 0
-      ? ahora.getFullYear() - 1
-      : ahora.getFullYear();
+    const esEnero = ahora.getMonth() === 0;
+    const mesAnterior = esEnero ? 11 : ahora.getMonth() - 1;
+    const yearMesAnterior = esEnero ?
+      ahora.getFullYear() - 1 :
+      ahora.getFullYear();
 
     // Rango ISO del mes anterior completo.
     const inicioMes = new Date(Date.UTC(yearMesAnterior, mesAnterior, 1)).toISOString();
