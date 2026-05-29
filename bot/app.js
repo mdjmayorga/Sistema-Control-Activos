@@ -14,7 +14,7 @@ if (existsSync(serviceAccountPath)) {
     const serviceAccount = JSON.parse(readFileSync(serviceAccountPath, 'utf8'));
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        storageBucket: process.env.FIREBASE_STORAGE_BUCKET || 'civco-a947d.appspot.com',
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET || 'civco-a947d.firebasestorage.app',
         projectId: 'civco-a947d'
     });
     console.log(' Firebase Admin inicializado con serviceAccountKey.');
@@ -26,7 +26,7 @@ if (existsSync(serviceAccountPath)) {
 
     admin.initializeApp({
         projectId: 'civco-a947d',
-        storageBucket: process.env.FIREBASE_STORAGE_BUCKET || 'civco-a947d.appspot.com'
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET || 'civco-a947d.firebasestorage.app'
     });
 }
 const bucket = admin.storage().bucket();

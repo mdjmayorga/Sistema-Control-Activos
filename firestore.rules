@@ -35,26 +35,17 @@ service cloud.firestore {
 
     // Préstamos de equipos
     match /prestamos/{prestamoId} {
-      // REGLAS ORIGINALES
-      // allow read:   if isAuthenticated() && hasInstitutionalEmail();
-      // allow create: if isAuthenticated() && hasInstitutionalEmail();
-      // allow update: if isAuthenticated() && hasInstitutionalEmail();
-
-      // REGLAS TEMPORALES PARA DESARROLLO EN EMULATOR
-      allow read:   if true;
-      allow create: if true;
-      allow update: if true;
-
+      allow read:   if isAuthenticated() && hasInstitutionalEmail();
+      allow create: if isAuthenticated() && hasInstitutionalEmail();
+      allow update: if isAuthenticated() && hasInstitutionalEmail();
       allow delete: if false;
     }
 
     // Devoluciones de equipos
     match /devoluciones/{devolucionId} {
-      // REGLAS TEMPORALES PARA DESARROLLO EN EMULATOR
-      allow read:   if true;
-      allow create: if true;
-      allow update: if true;
-
+      allow read:   if isAuthenticated() && hasInstitutionalEmail();
+      allow create: if isAuthenticated() && hasInstitutionalEmail();
+      allow update: if isAuthenticated() && hasInstitutionalEmail();
       allow delete: if false;
     }
 

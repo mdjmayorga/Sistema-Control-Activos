@@ -1,8 +1,27 @@
 rules_version = '2';
+
 service firebase.storage {
   match /b/{bucket}/o {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function hasInstitutionalEmail() {
+      return request.auth.token.email.matches('.*@estudiantec\\.cr$')
+          || request.auth.token.email.matches('.*@itcr\\.ac\\.cr$');
+    }
+
+    // Evidencias de daño — sube el bot vía Admin SDK (bypassa rules).
+    // El frontend solo necesita lectura para mostrar la imagen al admin.
+    match /damages/{loanId}/{fileName} {
+      allow read:  if isAuthenticated() && hasInstitutionalEmail();
+      allow write: if false;
+    }
+
+    // Cualquier otra ruta queda cerrada por defecto.
     match /{allPaths=**} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
   }
 }
