@@ -7,10 +7,11 @@
 }
 
 .form-panel {
-  width: 910px;
+  width: 100%;
+  max-width: 910px;
   background: #0f1729;
   border: 1px solid var(--line);
-  box-shadow: 
+  box-shadow:
     -12px 0 24px rgba(0, 0, 0, 0.4),
     12px 0 24px rgba(0, 0, 0, 0.4),
     0 12px 24px rgba(0, 0, 0, 0.4),
@@ -152,4 +153,39 @@ input.ng-invalid.ng-touched {
 
 .btn:active {
   transform: translateY(1px);
+}
+
+@media (max-width: 768px) {
+  .form-panel {
+    padding: 36px 48px 28px 48px;
+  }
+}
+
+@media (max-width: 600px) {
+  .loan-form-wrapper {
+    padding-top: 12px;
+    padding-bottom: 16px;
+  }
+
+  .form-panel {
+    padding: 28px 20px 24px 20px;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+
+  .two-cols {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 320px;
+  }
 }
