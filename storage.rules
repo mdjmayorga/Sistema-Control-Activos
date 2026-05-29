@@ -19,6 +19,13 @@ service firebase.storage {
       allow write: if false;
     }
 
+    // DP004 — Respaldos de Firestore (escritos vía Admin SDK).
+    // Solo lectura para administradores autenticados.
+    match /backups/{fileName} {
+      allow read:  if isAuthenticated() && hasInstitutionalEmail();
+      allow write: if false;
+    }
+
     // Cualquier otra ruta queda cerrada por defecto.
     match /{allPaths=**} {
       allow read, write: if false;
