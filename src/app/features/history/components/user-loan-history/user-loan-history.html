@@ -20,12 +20,12 @@
           <tbody>
             @for (loan of paginatedLoans(); track loan.id) {
               <tr>
-                <td>{{ loan.activo }}</td>
-                <td>{{ loan.grupoTopografia }}</td>
-                <td>{{ loan.cuadrilla }}</td>
-                <td>{{ loan.razonPrestamo }}</td>
-                <td>{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</td>
-                <td>{{ loan.fechaDevolucion | date:'dd/MM/yyyy' }}</td>
+                <td data-label="Activo">{{ loan.activo }}</td>
+                <td data-label="Grupo">{{ loan.grupoTopografia }}</td>
+                <td data-label="Cuadrilla">{{ loan.cuadrilla }}</td>
+                <td data-label="Razón">{{ loan.razonPrestamo }}</td>
+                <td data-label="Fecha Préstamo">{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</td>
+                <td data-label="Fecha Devolución">{{ loan.fechaDevolucion | date:'dd/MM/yyyy' }}</td>
               </tr>
             }
           </tbody>
