@@ -50,18 +50,18 @@
             } @else {
               @for (loan of paginatedLoans(); track loan.id) {
                 <tr>
-                  <td>{{ loan.usuarioNombre }}</td>
-                  <td>{{ loan.activo }}</td>
-                  <td>{{ loan.grupoTopografia }}</td>
-                  <td>{{ loan.cuadrilla }}</td>
-                  <td>{{ loan.razonPrestamo }}</td>
-                  <td>
+                  <td data-label="Estudiante">{{ loan.usuarioNombre }}</td>
+                  <td data-label="Activo">{{ loan.activo }}</td>
+                  <td data-label="Grupo Topo">{{ loan.grupoTopografia }}</td>
+                  <td data-label="Cuadrilla">{{ loan.cuadrilla }}</td>
+                  <td data-label="Razón">{{ loan.razonPrestamo }}</td>
+                  <td data-label="Estado">
                     <span class="status-badge" [class.status-badge--active]="loan.estado === 'activo'" [class.status-badge--returned]="loan.estado === 'devuelto'">
                       {{ loan.estado === 'activo' ? 'Activo' : 'Devuelto' }}
                     </span>
                   </td>
-                  <td>{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</td>
-                  <td>{{ loan.fechaDevolucion ? (loan.fechaDevolucion | date:'dd/MM/yyyy') : '—' }}</td>
+                  <td data-label="Fecha Préstamo">{{ loan.fechaPrestamo | date:'dd/MM/yyyy' }}</td>
+                  <td data-label="Fecha Devolución">{{ loan.fechaDevolucion ? (loan.fechaDevolucion | date:'dd/MM/yyyy') : '—' }}</td>
                 </tr>
               }
             }
