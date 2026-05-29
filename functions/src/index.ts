@@ -690,7 +690,8 @@ async function ejecutarChequeoSalud(): Promise<{
     errorCount,
   };
 
-  console.log(`[AD002] Chequeo completado — ` +
+  console.log(
+    "[AD002] Chequeo completado — " +
     `usuarios: ${usuarios}, ` +
     `préstamos activos: ${prestamosActivos}, ` +
     `devoluciones: ${devoluciones}, ` +
