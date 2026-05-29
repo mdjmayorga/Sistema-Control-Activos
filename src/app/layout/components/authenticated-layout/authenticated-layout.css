@@ -88,14 +88,9 @@
 }
 
 @media (max-width: 768px) {
-  :host {
-    overflow: visible;
-  }
-
   .admin-layout {
     grid-template-columns: 1fr;
     grid-template-rows: 56px 1fr;
-    overflow: visible;
   }
 
   .admin-layout.nav-collapsed {

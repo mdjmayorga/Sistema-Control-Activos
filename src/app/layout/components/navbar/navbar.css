@@ -325,7 +325,7 @@
 
   .sidebar {
     height: 100vh;
-    overflow-y: auto;
+    overflow-y: hidden;
   }
 
   .sidebar__toggle {
@@ -337,12 +337,16 @@
   }
 
   .sidebar__nav {
+    flex: 1;
     flex-direction: column;
     flex-wrap: nowrap;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .sidebar__settings {
-    margin-top: auto;
+    margin-top: 0;
     margin-bottom: 14px;
+    flex-shrink: 0;
   }
 }
