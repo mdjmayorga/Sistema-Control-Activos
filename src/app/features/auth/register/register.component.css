@@ -1,5 +1,11 @@
 /* ─── Page Layout ──────────────────────────────────────────────────────────── */
 
+:host {
+  display: block;
+  height: 100%;
+  overflow-y: auto;
+}
+
 .register-page {
   display: flex;
   align-items: center;
