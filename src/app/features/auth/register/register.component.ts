@@ -37,7 +37,7 @@ export class RegisterComponent {
       confirmPassword: ['', [Validators.required]],
       acceptTerms: [false, [Validators.requiredTrue]],
     },
-    { validators: passwordMatchValidator },
+    { validators: passwordMatchValidator() },
   );
 
   protected readonly emailDomains = EMAIL_DOMAINS;

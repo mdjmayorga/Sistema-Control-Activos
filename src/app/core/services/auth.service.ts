@@ -6,6 +6,9 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   user,
+  updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
 } from '@angular/fire/auth';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 import { UserProfile, UserRole, } from '../models/user.model';
@@ -62,5 +65,15 @@ export class AuthService {
 
   logout() {
     return signOut(this.auth);
+  }
+
+  async changePassword(currentPassword: string, newPassword: string): Promise<void> {
+    const currentUser = this.auth.currentUser;
+    if (!currentUser || !currentUser.email) {
+      throw new Error('No hay usuario autenticado.');
+    }
+    const credential = EmailAuthProvider.credential(currentUser.email, currentPassword);
+    await reauthenticateWithCredential(currentUser, credential);
+    await updatePassword(currentUser, newPassword);
   }
 }
