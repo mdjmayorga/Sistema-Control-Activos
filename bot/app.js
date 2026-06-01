@@ -116,6 +116,9 @@ client.on('qr', (qr) => {
     console.log(' ESCANEA ESTE CÓDIGO QR EN TU WHATSAPP:');
     console.log('======================================================\n');
     qrcode.generate(qr, { small: true });
+    console.log('\n⚠️ Si el código de arriba sale deformado por el espaciado de Render, copia la siguiente línea de texto y pégala en cualquier generador de QR (ej. https://es.qr-code-generator.com/ eligiendo la opción "Texto"):');
+    console.log(qr);
+    console.log('======================================================\n');
 });
 
 client.on('ready', () => {
