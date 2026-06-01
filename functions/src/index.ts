@@ -1,12 +1,15 @@
 import {
   onDocumentWritten, onDocumentCreated} from "firebase-functions/v2/firestore";
 import {onSchedule} from "firebase-functions/v2/scheduler";
-import {onRequest} from "firebase-functions/v2/https";
+import {onRequest, onCall, HttpsError} from "firebase-functions/v2/https";
 import * as admin from "firebase-admin";
+import {FieldValue} from "firebase-admin/firestore";
+import * as crypto from "crypto";
 import {
   getAlertaMonitoreoTemplate,
   getDamageEmailTemplate,
   getHistorialMensualTemplate,
+  getPasswordResetEmailTemplate,
   getPrestamoCreadoEmailTemplate,
 } from "./emailTemplate";
 
@@ -766,5 +769,69 @@ export const monitoreoSistemaManual = onRequest(
         "Problemas detectados",
       ...resultado,
     });
+  }
+);
+
+// ── Restablecer contraseña ──────────────────────────────────────────────────
+
+function generarContrasenaAleatoria(longitud = 16): string {
+  const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%&*";
+  const bytes = crypto.randomBytes(longitud);
+  let resultado = "";
+  for (let i = 0; i < longitud; i++) {
+    resultado += chars[bytes[i] % chars.length];
+  }
+  return resultado;
+}
+
+export const restablecerContrasena = onCall(
+  {region: "us-central1"},
+  async (request) => {
+    const email = request.data?.email;
+
+    if (!email || typeof email !== "string") {
+      throw new HttpsError("invalid-argument", "El correo es obligatorio.");
+    }
+
+    const trimmedEmail = email.trim().toLowerCase();
+
+    let userRecord;
+    try {
+      userRecord = await admin.auth().getUserByEmail(trimmedEmail);
+    } catch {
+      throw new HttpsError(
+        "not-found",
+        "No existe una cuenta con este correo."
+      );
+    }
+
+    const nuevaContrasena = generarContrasenaAleatoria();
+
+    await admin.auth().updateUser(userRecord.uid, {
+      password: nuevaContrasena,
+    });
+
+    const htmlContent = getPasswordResetEmailTemplate(nuevaContrasena);
+
+    const payload = {
+      to: [trimmedEmail],
+      message: {
+        subject: "Restablecimiento de contraseña — Sistema CIVCO",
+        html: htmlContent,
+      },
+      tipo: "restablecimiento-contrasena",
+      createdAt: FieldValue.serverTimestamp(),
+    };
+
+    if (IS_EMULATOR) {
+      console.log("EMULADOR: correo de restablecimiento simulado");
+      console.log(JSON.stringify({...payload, nuevaContrasena}, null, 2));
+    }
+
+    await admin.firestore().collection("mail").add(payload);
+    console.log(`Contraseña restablecida para ${trimmedEmail}`);
+
+    return {message: "Se ha enviado una nueva contraseña a su correo."};
   }
 );

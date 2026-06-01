@@ -322,6 +322,64 @@ export const getAlertaMonitoreoTemplate = (
   `;
 };
 
+export const getPasswordResetEmailTemplate = (
+  nuevaContrasena: string,
+): string => {
+  return `
+<!-- ══ EMAIL: Restablecimiento de Contraseña - CIVCO/TEC ══ -->
+<div style="margin:0;padding:32px 16px;background-color:#f0f2f5;font-family:Arial,Helvetica,sans-serif;">
+  <div style="max-width:600px;margin:0 auto;">
+
+    <div style="background-color:#00205b;border-radius:12px 12px 0 0;padding:32px 36px 24px;border-bottom:3px solid #f5a623;">
+      <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:20px;">
+        <tr>
+          <td style="background-color:#0a2d6e;border:1px solid #1e4080;border-radius:8px;padding:8px 16px;text-align:center;">
+            <div style="font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:700;color:#ffffff;letter-spacing:3px;">CIVCO</div>
+          </td>
+        </tr>
+      </table>
+      <div style="display:inline-block;background-color:#003d5c;border:1px solid #2196f3;border-radius:5px;padding:4px 12px;margin-bottom:12px;">
+        <span style="font-family:Arial,Helvetica,sans-serif;font-size:10px;font-weight:700;color:#64b5f6;letter-spacing:1.5px;text-transform:uppercase;">Seguridad de Cuenta</span>
+      </div>
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:20px;font-weight:700;color:#ffffff;line-height:1.35;">
+        Restablecimiento de <span style="color:#f5a623;">Contraseña</span>
+      </div>
+    </div>
+
+    <div style="background-color:#f7f8fc;padding:32px 36px;">
+      <p style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:600;color:#1a2340;margin:0 0 10px 0;">
+        Estimado/a usuario,
+      </p>
+      <p style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#4a5568;line-height:1.7;margin:0 0 28px 0;padding:14px 18px;background-color:#e8ecf7;border-left:4px solid #00205b;">
+        Se ha restablecido su contraseña en el Sistema de Control de Activos CIVCO.
+        A continuación encontrará su nueva contraseña temporal.
+      </p>
+
+      <div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;font-weight:700;color:#00205b;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;border-bottom:1px solid #d0d8ee;padding-bottom:6px;">
+        Nueva Contraseña
+      </div>
+      <div style="background-color:#ffffff;border:2px solid #00205b;border-radius:8px;padding:16px 20px;margin-bottom:24px;text-align:center;">
+        <code style="font-family:'Courier New',Courier,monospace;font-size:18px;font-weight:700;color:#00205b;letter-spacing:1px;">${nuevaContrasena}</code>
+      </div>
+
+      <p style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#718096;line-height:1.6;margin:0;">
+        Le recomendamos cambiar esta contraseña desde la sección de <strong>Configuraciones</strong> una vez que inicie sesión.
+      </p>
+    </div>
+
+    <div style="background-color:#001540;border-radius:0 0 12px 12px;padding:22px 36px;border-top:2px solid #f5a623;text-align:center;">
+      <p style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#7a8fa8;line-height:1.6;margin:0;">
+        Este es un mensaje automático generado por el<br>
+        <strong style="color:#aac0d8;">Sistema de Control de Activos CIVCO</strong>.<br>
+        Por favor no responda a este correo directamente.
+      </p>
+    </div>
+
+  </div>
+</div>
+  `;
+};
+
 export const getPrestamoCreadoEmailTemplate = (
   activo: string,
   grupo: string,
