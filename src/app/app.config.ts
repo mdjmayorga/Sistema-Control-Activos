@@ -15,6 +15,7 @@ import {
 } from '@angular/fire/firestore';
 import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
 import { provideStorage, getStorage, connectStorageEmulator } from '@angular/fire/storage';
+import { provideFunctions, getFunctions, connectFunctionsEmulator } from '@angular/fire/functions';
 import { provideAnalytics, getAnalytics } from '@angular/fire/analytics';
 import { providePerformance, getPerformance } from '@angular/fire/performance';
 
@@ -52,6 +53,13 @@ export const appConfig: ApplicationConfig = {
         connectStorageEmulator(storage, 'localhost', 9199);
       }
       return storage;
+    }),
+    provideFunctions(() => {
+      const functions = getFunctions();
+      if (isDevMode()) {
+        connectFunctionsEmulator(functions, 'localhost', 5001);
+      }
+      return functions;
     }),
     provideAnalytics(() => getAnalytics()),
     providePerformance(() => getPerformance()),

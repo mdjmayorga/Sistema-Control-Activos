@@ -10,6 +10,7 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
 } from '@angular/fire/auth';
+import { Functions, httpsCallable } from '@angular/fire/functions';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 import { UserProfile, UserRole, } from '../models/user.model';
 
@@ -17,6 +18,7 @@ import { UserProfile, UserRole, } from '../models/user.model';
 export class AuthService {
   private auth = inject(Auth);
   private firestore = inject(Firestore);
+  private functions = inject(Functions);
 
   /** AU004 - Observable del usuario de Firebase Authentication. */
   readonly currentUser$ = user(this.auth);
@@ -65,6 +67,15 @@ export class AuthService {
 
   logout() {
     return signOut(this.auth);
+  }
+
+  async resetPassword(email: string): Promise<string> {
+    const callable = httpsCallable<{ email: string }, { message: string }>(
+      this.functions,
+      'restablecerContrasena'
+    );
+    const result = await callable({ email });
+    return result.data.message;
   }
 
   async changePassword(currentPassword: string, newPassword: string): Promise<void> {
