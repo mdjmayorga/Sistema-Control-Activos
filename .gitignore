@@ -55,5 +55,10 @@ serviceAccount*.json
 .DS_Store
 Thumbs.db
 
+# Bot
+bot/serviceAccountKey.json
+bot/.wwebjs_auth/
+bot/.wwebjs_cache/
+bot/*.zip
 firestore-debug.log
 firebase-debug.log
