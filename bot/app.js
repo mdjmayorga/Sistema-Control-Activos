@@ -190,6 +190,7 @@ async function startBot() {
         await client.initialize();
         isInitializing = false;
     } catch (e) {
+        console.error('❌ Error al iniciar el bot:', e);
         try { await client.destroy(); } catch (_) {}
         isInitializing = false;
         setTimeout(startBot, 3000);
