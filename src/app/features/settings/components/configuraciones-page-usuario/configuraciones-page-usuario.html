@@ -3,6 +3,14 @@
     <ul class="settings-list__items">
       <li>
         <app-settings-item
+          title="Cambiar contraseña"
+          description="Actualiza tu contraseña de acceso al sistema."
+          actionLabel="Cambiar"
+          (actionTriggered)="abrirModalCambio()"
+        ></app-settings-item>
+      </li>
+      <li>
+        <app-settings-item
           title="Cerrar sesion"
           description="Finaliza la sesion actual y regresa a la pantalla de inicio de sesion."
           actionLabel="Cerrar"
@@ -22,4 +30,102 @@
     (cerrar)="cancelarLogout()"
     (confirmar)="confirmarLogout()"
   ></app-confirm-modal>
+
+  @if (modalCambioAbierto) {
+    <div class="modal-overlay" (click)="cerrarModalCambio()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2 class="modal-title">Cambiar contraseña</h2>
+          <button type="button" class="modal-close" (click)="cerrarModalCambio()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="cambioForm" (ngSubmit)="submitCambioContrasena()">
+            <div class="form-group">
+              <label for="currentPassword" class="form-label">Contraseña actual</label>
+              <div class="input-wrapper">
+                <input
+                  id="currentPassword"
+                  [type]="showCurrentPassword ? 'text' : 'password'"
+                  formControlName="currentPassword"
+                  class="form-input"
+                  placeholder="Tu contraseña actual"
+                  autocomplete="current-password"
+                />
+                <button type="button" class="toggle-password" (click)="showCurrentPassword = !showCurrentPassword" tabindex="-1">
+                  @if (showCurrentPassword) {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                  }
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="newPassword" class="form-label">Nueva contraseña</label>
+              <div class="input-wrapper">
+                <input
+                  id="newPassword"
+                  [type]="showNewPassword ? 'text' : 'password'"
+                  formControlName="newPassword"
+                  class="form-input"
+                  placeholder="Minimo 8 caracteres"
+                  autocomplete="new-password"
+                />
+                <button type="button" class="toggle-password" (click)="showNewPassword = !showNewPassword" tabindex="-1">
+                  @if (showNewPassword) {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                  }
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="confirmNewPassword" class="form-label">Confirmar nueva contraseña</label>
+              <div class="input-wrapper">
+                <input
+                  id="confirmNewPassword"
+                  [type]="showConfirmNewPassword ? 'text' : 'password'"
+                  formControlName="confirmNewPassword"
+                  class="form-input"
+                  placeholder="Repite la nueva contraseña"
+                  autocomplete="new-password"
+                />
+                <button type="button" class="toggle-password" (click)="showConfirmNewPassword = !showConfirmNewPassword" tabindex="-1">
+                  @if (showConfirmNewPassword) {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
+                  } @else {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
+                  }
+                </button>
+              </div>
+            </div>
+            @if (cambioError) {
+              <div class="alert alert-error">
+                <span>{{ cambioError }}</span>
+              </div>
+            }
+            @if (cambioExito) {
+              <div class="alert alert-success">
+                <span>{{ cambioExito }}</span>
+              </div>
+            }
+            <button type="submit" class="btn-submit" [disabled]="cambioLoading">
+              @if (cambioLoading) {
+                <span class="spinner"></span>
+                Cambiando...
+              } @else {
+                Cambiar contraseña
+              }
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  }
 </app-page-layout>

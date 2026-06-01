@@ -1,15 +1,20 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
-/**
- * Cross-field validator that checks if `password` and `confirmPassword` match.
- */
-export function passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
-  const password = group.get('password')?.value;
-  const confirmPassword = group.get('confirmPassword')?.value;
+export function passwordMatchValidator(
+  passwordField?: string,
+  confirmField?: string,
+): ValidatorFn {
+  const pwKey = passwordField ?? 'password';
+  const cfKey = confirmField ?? 'confirmPassword';
 
-  if (!password || !confirmPassword) {
-    return null;
-  }
+  return (group: AbstractControl): ValidationErrors | null => {
+    const password = group.get(pwKey)?.value;
+    const confirmPassword = group.get(cfKey)?.value;
 
-  return password === confirmPassword ? null : { passwordMismatch: true };
+    if (!password || !confirmPassword) {
+      return null;
+    }
+
+    return password === confirmPassword ? null : { passwordMismatch: true };
+  };
 }

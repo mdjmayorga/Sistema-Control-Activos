@@ -90,6 +90,19 @@ const users: SeedUser[] = [
       createdAt: Timestamp.now(),
     },
   },
+  {
+    uid: 'user-004',
+    email: 'mamayorga@estudiantec.cr',
+    password: 'User123!',
+    displayName: 'Mariano Mayorga',
+    firestoreData: {
+      fullName: 'Mariano Mayorga',
+      studentId: '2023987654',
+      email: 'mamayorga@estudiantec.cr',
+      role: 'user',
+      createdAt: Timestamp.now(),
+    },
+  },
 ];
 
 interface SeedActivo {
@@ -283,7 +296,8 @@ async function main() {
   console.log('  Admin:  jccoto@itcr.ac.cr / Admin123!');
   console.log('  User 1: estudiante1@estudiantec.cr / User123!');
   console.log('  User 2: estudiante2@estudiantec.cr / User123!');
-  console.log('  User 3: docente1@itcr.ac.cr / User123!\n');
+  console.log('  User 3: docente1@itcr.ac.cr / User123!');
+  console.log('  User 4: mamayorga@estudiantec.cr / User123!\n');
 
   process.exit(0);
 }
