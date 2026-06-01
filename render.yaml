@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: civco-bot-whatsapp
+    runtime: node
+    rootDir: bot
+    buildCommand: npm install
+    startCommand: node app.js
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: FIREBASE_STORAGE_BUCKET
+        value: civco-a947d.appspot.com
+      - key: FIREBASE_SERVICE_ACCOUNT_JSON
+        sync: false
