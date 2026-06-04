@@ -8,7 +8,7 @@ import { ZipArchive } from 'archiver';
 import sharp from 'sharp';
 import unzipper from 'unzipper';
 
-import { makeWASocket, useMultiFileAuthState, downloadContentFromMessage, fetchLatestWaWebVersion, proto } from '@whiskeysockets/baileys';
+import { makeWASocket, useMultiFileAuthState, downloadContentFromMessage, fetchLatestWaWebVersion } from '@whiskeysockets/baileys';
 import pino from 'pino';
 
 // ═══════════════════════════════════════════════════════════════════
@@ -137,7 +137,6 @@ async function restoreAuthFromFirebase() {
 // ═══════════════════════════════════════════════════════════════════
 let isInitializing = false;
 let reconnectAttempt = 0;
-let pairingCodeRequested = false;
 
 function getReconnectDelay() {
     const base = process.env.NODE_ENV === 'production' ? 120000 : 5000;
@@ -151,7 +150,6 @@ async function startBot() {
         return;
     }
     isInitializing = true;
-    pairingCodeRequested = false;
     console.log(`🚀 Iniciando bot de WhatsApp (Baileys) — intento #${reconnectAttempt + 1}...`);
 
     try {
@@ -189,37 +187,9 @@ async function startBot() {
             auth: state,
             printQRInTerminal: false,
             logger: pino({ level: 'warn' }),
-            browser: ['Windows', 'Desktop', '10.0.0'],
-            // Use WINDOWS platform in UserAgent so server treats us as a
-            // desktop companion client (via pairing code) instead of web QR mode
-            companionPlatform: !state.creds.registered
-                ? proto.ClientPayload.UserAgent.Platform.WINDOWS
-                : undefined,
-            syncFullHistory: true
+            browser: ['CIVCO Bot', 'Chrome', '10.0.0']
         });
         console.log('🔌 Socket de WhatsApp creado.');
-
-        // === INSTRUMENTATION: Log ALL IQ responses from server ===
-        sock.ws?.on('CB:iq', (node) => {
-            const attrs = node.attrs || {};
-            const childTag = Array.isArray(node.content) ? node.content[0]?.tag : '';
-            if (attrs.type === 'error') {
-                const errNode = node.content?.[0];
-                const errAttrs = errNode?.attrs ? JSON.stringify(errNode.attrs) : '';
-                const errText = errNode?.content?.[0]?.content || '';
-                console.log(`[CB:iq] ERROR id=${attrs.id} child=${childTag} attrs=${errAttrs} text=${errText}`);
-            } else if (childTag === 'pair-success' || childTag === 'link_code_companion_reg') {
-                console.log(`[CB:iq] type=${attrs.type} id=${attrs.id} child=${childTag}`);
-            }
-        });
-        // Listen for the async notification response to companion_hello
-        sock.ws?.on('CB:notification', (node) => {
-            const child = Array.isArray(node.content) ? node.content[0] : null;
-            if (child?.tag === 'link_code_companion_reg') {
-                console.log(`[CB:notification] type=${node.attrs?.type} child=link_code_companion_reg stage=${child.attrs?.stage}`);
-            }
-        });
-        // ==========================================================
 
         sock.ev.on('creds.update', saveCreds);
 
@@ -227,7 +197,10 @@ async function startBot() {
             const { connection, lastDisconnect, qr, isNewLogin } = update;
 
             if (qr) {
-                console.log(`📱 QR recibido (ignorado, se usa código de vinculación).`);
+                const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(qr)}`;
+                console.log(`\n📱 ESCANEA ESTE CÓDIGO QR DESDE WHATSAPP:`);
+                console.log(`   ${qrUrl}`);
+                console.log(`   Abre WhatsApp → Dispositivos vinculados → Vincular con QR\n`);
             }
             if (isNewLogin) {
                 console.log('🔐 isNewLogin = true');
@@ -238,7 +211,6 @@ async function startBot() {
                 isConnected = true;
                 isInitializing = false;
                 reconnectAttempt = 0;
-                pairingCodeRequested = false;
                 console.log('☁️ Respaldando sesión inicial en Firebase Storage...');
                 await backupAuthToFirebase();
             }
@@ -265,31 +237,6 @@ async function startBot() {
                 setTimeout(startBot, delay);
             }
         });
-
-        // Request pairing code after a short delay so the noise handshake completes.
-        // With deferAuthPayload, validateConnection skips start_reg/LOGIN,
-        // so companion_hello is the first auth message the server sees.
-        if (!state.creds.registered) {
-            setTimeout(async () => {
-                console.log(`🔌 WebSocket type=${typeof sock.ws} exists=${!!sock.ws} isOpen=${sock.ws?.isOpen} readyState=${sock.ws?.readyState}`);
-                for (let i = 0; i < 10; i++) {
-                    try {
-                        let code = await sock.requestPairingCode('50687716817');
-                        code = code?.match(/.{1,4}/g)?.join('-') || code;
-                        console.log(`\n🔑 Código de vinculación: ${code}`);
-                        console.log('   Abre WhatsApp → Dispositivos vinculados → Vincular con número');
-                        console.log(`   Ingresa el código: ${code}\n`);
-                        if (i > 0) console.log(`   (requirió ${i + 1} intentos)`);
-                        return;
-                    } catch (e) {
-                        if (i === 0) console.log('⏳ Solicitando código de vinculación...');
-                        console.log(`   Intento ${i + 1} falló: ${e?.message || e}`);
-                        await new Promise(r => setTimeout(r, 500));
-                    }
-                }
-                console.log('⚠️ No se pudo obtener código de vinculación.');
-            }, 200);
-        }
 
         sock.ev.on('messages.upsert', async ({ messages }) => {
             for (const msg of messages) {

@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "dev": "node --watch app.js",
-    "postinstall": "patch-package"
+    "dev": "node --watch app.js"
   },
   "dependencies": {
     "@whiskeysockets/baileys": "^6.7.0",
