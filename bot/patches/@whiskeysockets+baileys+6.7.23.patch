@@ -1,27 +1,13 @@
-diff --git a/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js b/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js
-index c819745..51fb5cd 100644
---- a/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js
-+++ b/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js
-@@ -154,7 +154,10 @@ export const makeSocket = (config) => {
-         logger.trace({ handshake }, 'handshake recv from WA');
-         const keyEnc = await noise.processHandshake(handshake, creds.noiseKey);
-         let node;
--        if (!creds.me) {
-+        if (config.deferAuthPayload) {
-+            logger.info({ defer: true }, 'auth payload deferred for pairing code');
-+        }
-+        else if (!creds.me) {
-             node = generateRegistrationNode(creds, config);
-             logger.info({ node }, 'not logged in, attempting registration...');
-         }
-@@ -162,7 +165,9 @@ export const makeSocket = (config) => {
-             node = generateLoginNode(creds.me.id, config);
-             logger.info({ node }, 'logging in...');
-         }
--        const payloadEnc = noise.encrypt(proto.ClientPayload.encode(node).finish());
-+        const payloadEnc = node
-+            ? noise.encrypt(proto.ClientPayload.encode(node).finish())
-+            : noise.encrypt(new Uint8Array(0));
-         await sendRawMessage(proto.HandshakeMessage.encode({
-             clientFinish: {
-                 static: keyEnc,
+diff --git a/node_modules/@whiskeysockets/baileys/lib/Utils/validate-connection.js b/node_modules/@whiskeysockets/baileys/lib/Utils/validate-connection.js
+index ba7f9b4..a9f9d60 100644
+--- a/node_modules/@whiskeysockets/baileys/lib/Utils/validate-connection.js
++++ b/node_modules/@whiskeysockets/baileys/lib/Utils/validate-connection.js
+@@ -13,7 +13,7 @@ const getUserAgent = (config) => {
+             secondary: config.version[1],
+             tertiary: config.version[2]
+         },
+-        platform: proto.ClientPayload.UserAgent.Platform.WEB,
++        platform: config.companionPlatform ?? proto.ClientPayload.UserAgent.Platform.WEB,
+         releaseChannel: proto.ClientPayload.UserAgent.ReleaseChannel.RELEASE,
+         osVersion: '0.1',
+         device: 'Desktop',

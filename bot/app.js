@@ -8,7 +8,7 @@ import { ZipArchive } from 'archiver';
 import sharp from 'sharp';
 import unzipper from 'unzipper';
 
-import { makeWASocket, useMultiFileAuthState, downloadContentFromMessage, fetchLatestWaWebVersion } from '@whiskeysockets/baileys';
+import { makeWASocket, useMultiFileAuthState, downloadContentFromMessage, fetchLatestWaWebVersion, proto } from '@whiskeysockets/baileys';
 import pino from 'pino';
 
 // ═══════════════════════════════════════════════════════════════════
@@ -189,10 +189,13 @@ async function startBot() {
             auth: state,
             printQRInTerminal: false,
             logger: pino({ level: 'warn' }),
-            browser: ['CIVCO Bot', 'Chrome', '10.0.0'],
-            // Skip auth payload in noise handshake so companion_hello
-            // is the first auth message the server sees (no QR mode conflict)
-            deferAuthPayload: !state.creds.registered
+            browser: ['Windows', 'Desktop', '10.0.0'],
+            // Use WINDOWS platform in UserAgent so server treats us as a
+            // desktop companion client (via pairing code) instead of web QR mode
+            companionPlatform: !state.creds.registered
+                ? proto.ClientPayload.UserAgent.Platform.WINDOWS
+                : undefined,
+            syncFullHistory: true
         });
         console.log('🔌 Socket de WhatsApp creado.');
 
