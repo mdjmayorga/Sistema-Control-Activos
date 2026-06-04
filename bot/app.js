@@ -164,6 +164,14 @@ async function startBot() {
 
         const { state, saveCreds } = await useMultiFileAuthState(AUTH_DIR);
 
+        // If not registered, clear stale creds.me left from a previous failed pairing
+        // so validateConnection sends REGISTRATION (not LOGIN with a fake JID).
+        if (!state.creds.registered && state.creds.me) {
+            state.creds.me = undefined;
+            await saveCreds();
+            console.log('🧹 Credenciales obsoletas limpiadas antes de conectar.');
+        }
+
         let waVersion;
         try {
             const { version, isLatest } = await fetchLatestWaWebVersion();
@@ -180,7 +188,7 @@ async function startBot() {
             version: waVersion,
             auth: state,
             printQRInTerminal: false,
-            logger: pino({ level: 'error' }),
+            logger: pino({ level: 'warn' }),
             browser: ['CIVCO Bot', 'Chrome', '10.0.0']
         });
         console.log('🔌 Socket de WhatsApp creado.');
@@ -188,7 +196,14 @@ async function startBot() {
         sock.ev.on('creds.update', saveCreds);
 
         sock.ev.on('connection.update', async (update) => {
-            const { connection, lastDisconnect } = update;
+            const { connection, lastDisconnect, qr, isNewLogin } = update;
+
+            if (qr) {
+                console.log(`📱 QR recibido (ignorado, se usa código de vinculación).`);
+            }
+            if (isNewLogin) {
+                console.log('🔐 isNewLogin = true');
+            }
 
             if (connection === 'open') {
                 console.log('\n🤖 ¡Bot de WhatsApp conectado y listo!\n');
@@ -234,9 +249,11 @@ async function startBot() {
                         console.log(`\n🔑 Código de vinculación: ${code}`);
                         console.log('   Abre WhatsApp → Dispositivos vinculados → Vincular con número');
                         console.log(`   Ingresa el código: ${code}\n`);
+                        if (i > 0) console.log(`   (requirió ${i + 1} intentos)`);
                         return;
                     } catch (e) {
                         if (i === 0) console.log('⏳ Solicitando código de vinculación...');
+                        console.log(`   Intento ${i + 1} falló: ${e?.message || e}`);
                         await new Promise(r => setTimeout(r, 500));
                     }
                 }
