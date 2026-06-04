@@ -193,6 +193,26 @@ async function startBot() {
         });
         console.log('🔌 Socket de WhatsApp creado.');
 
+        // === INSTRUMENTATION: Log ALL IQ responses from server ===
+        sock.ws?.on('CB:iq', (node) => {
+            const attrs = node.attrs || {};
+            const childTag = Array.isArray(node.content) ? node.content[0]?.tag : (typeof node.content === 'string' ? node.content.substring(0, 80) : '');
+            if (attrs.type === 'error' || childTag === 'pair-success' || childTag === 'link_code_companion_reg') {
+                console.log(`[CB:iq] type=${attrs.type} id=${attrs.id} child=${childTag}`);
+                if (attrs.type === 'error' && node.content?.[0]?.content?.[0]?.attrs) {
+                    console.log(`   error: ${JSON.stringify(node.content[0].content[0].attrs)}`);
+                }
+            }
+        });
+        // Listen for the async notification response to companion_hello
+        sock.ws?.on('CB:notification', (node) => {
+            const child = Array.isArray(node.content) ? node.content[0] : null;
+            if (child?.tag === 'link_code_companion_reg') {
+                console.log(`[CB:notification] type=${node.attrs?.type} child=link_code_companion_reg stage=${child.attrs?.stage}`);
+            }
+        });
+        // ==========================================================
+
         sock.ev.on('creds.update', saveCreds);
 
         sock.ev.on('connection.update', async (update) => {
@@ -242,6 +262,7 @@ async function startBot() {
         // start_reg (QR mode) first, then companion_reg switches to pairing mode.
         if (!state.creds.registered) {
             setTimeout(async () => {
+                console.log(`🔌 WebSocket readyState antes de requestPairingCode: ${sock.ws?.readyState}`);
                 for (let i = 0; i < 10; i++) {
                     try {
                         let code = await sock.requestPairingCode('50687716817');
