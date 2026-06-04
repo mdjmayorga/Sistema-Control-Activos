@@ -1,0 +1,27 @@
+diff --git a/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js b/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js
+index c819745..b6ec5f4 100644
+--- a/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js
++++ b/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js
+@@ -154,7 +154,10 @@ export const makeSocket = (config) => {
+         logger.trace({ handshake }, 'handshake recv from WA');
+         const keyEnc = await noise.processHandshake(handshake, creds.noiseKey);
+         let node;
+-        if (!creds.me) {
++        if (config.deferAuthPayload) {
++            logger.info({ defer: true }, 'auth payload deferred for pairing code');
++        }
++        else if (!creds.me) {
+             node = generateRegistrationNode(creds, config);
+             logger.info({ node }, 'not logged in, attempting registration...');
+         }
+@@ -162,7 +165,9 @@ export const makeSocket = (config) => {
+             node = generateLoginNode(creds.me.id, config);
+             logger.info({ node }, 'logging in...');
+         }
+-        const payloadEnc = noise.encrypt(proto.ClientPayload.encode(node).finish());
++        const payloadEnc = node
++            ? noise.encrypt(proto.ClientPayload.encode(node).finish())
++            : new Uint8Array(0);
+         await sendRawMessage(proto.HandshakeMessage.encode({
+             clientFinish: {
+                 static: keyEnc,

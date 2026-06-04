@@ -189,7 +189,10 @@ async function startBot() {
             auth: state,
             printQRInTerminal: false,
             logger: pino({ level: 'warn' }),
-            browser: ['CIVCO Bot', 'Chrome', '10.0.0']
+            browser: ['CIVCO Bot', 'Chrome', '10.0.0'],
+            // Skip auth payload in noise handshake so companion_hello
+            // is the first auth message the server sees (no QR mode conflict)
+            deferAuthPayload: !state.creds.registered
         });
         console.log('🔌 Socket de WhatsApp creado.');
 
@@ -260,8 +263,9 @@ async function startBot() {
             }
         });
 
-        // Request pairing code after a short delay so validateConnection sends
-        // start_reg (QR mode) first, then companion_reg switches to pairing mode.
+        // Request pairing code after a short delay so the noise handshake completes.
+        // With deferAuthPayload, validateConnection skips start_reg/LOGIN,
+        // so companion_hello is the first auth message the server sees.
         if (!state.creds.registered) {
             setTimeout(async () => {
                 console.log(`🔌 WebSocket type=${typeof sock.ws} exists=${!!sock.ws} isOpen=${sock.ws?.isOpen} readyState=${sock.ws?.readyState}`);
@@ -281,7 +285,7 @@ async function startBot() {
                     }
                 }
                 console.log('⚠️ No se pudo obtener código de vinculación.');
-            }, 2000);
+            }, 1000);
         }
 
         sock.ev.on('messages.upsert', async ({ messages }) => {
