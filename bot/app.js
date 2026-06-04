@@ -196,12 +196,14 @@ async function startBot() {
         // === INSTRUMENTATION: Log ALL IQ responses from server ===
         sock.ws?.on('CB:iq', (node) => {
             const attrs = node.attrs || {};
-            const childTag = Array.isArray(node.content) ? node.content[0]?.tag : (typeof node.content === 'string' ? node.content.substring(0, 80) : '');
-            if (attrs.type === 'error' || childTag === 'pair-success' || childTag === 'link_code_companion_reg') {
+            const childTag = Array.isArray(node.content) ? node.content[0]?.tag : '';
+            if (attrs.type === 'error') {
+                const errNode = node.content?.[0];
+                const errAttrs = errNode?.attrs ? JSON.stringify(errNode.attrs) : '';
+                const errText = errNode?.content?.[0]?.content || '';
+                console.log(`[CB:iq] ERROR id=${attrs.id} child=${childTag} attrs=${errAttrs} text=${errText}`);
+            } else if (childTag === 'pair-success' || childTag === 'link_code_companion_reg') {
                 console.log(`[CB:iq] type=${attrs.type} id=${attrs.id} child=${childTag}`);
-                if (attrs.type === 'error' && node.content?.[0]?.content?.[0]?.attrs) {
-                    console.log(`   error: ${JSON.stringify(node.content[0].content[0].attrs)}`);
-                }
             }
         });
         // Listen for the async notification response to companion_hello
@@ -262,7 +264,7 @@ async function startBot() {
         // start_reg (QR mode) first, then companion_reg switches to pairing mode.
         if (!state.creds.registered) {
             setTimeout(async () => {
-                console.log(`🔌 WebSocket readyState antes de requestPairingCode: ${sock.ws?.readyState}`);
+                console.log(`🔌 WebSocket type=${typeof sock.ws} exists=${!!sock.ws} isOpen=${sock.ws?.isOpen} readyState=${sock.ws?.readyState}`);
                 for (let i = 0; i < 10; i++) {
                     try {
                         let code = await sock.requestPairingCode('50687716817');
