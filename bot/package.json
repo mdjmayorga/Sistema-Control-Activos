@@ -1,25 +1,21 @@
 {
   "name": "bot-reporte-danos",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Bot WhatsApp para recepción de evidencias de daños - CIVCO/TEC",
   "main": "app.js",
   "type": "module",
   "scripts": {
     "start": "node app.js",
-    "dev": "node --watch app.js",
-    "postinstall": "node install.mjs"
+    "dev": "node --watch app.js"
   },
   "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.0",
     "archiver": "^8.0.0",
-    "axios": "^1.7.0",
     "dotenv": "^16.4.5",
     "express": "^4.22.2",
     "firebase-admin": "^12.0.0",
-    "fs-extra": "^11.3.5",
-    "puppeteer": "^25.1.0",
-    "qrcode-terminal": "^0.12.0",
+    "pino": "^9.6.0",
     "sharp": "^0.33.2",
-    "unzipper": "^0.12.3",
-    "whatsapp-web.js": "github:pedroslopez/whatsapp-web.js#main"
+    "unzipper": "^0.12.3"
   }
 }

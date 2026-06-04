@@ -62,3 +62,5 @@ bot/.wwebjs_cache/
 bot/*.zip
 firestore-debug.log
 firebase-debug.log
+
+civco-a947d-firebase-adminsdk-fbsvc-a511374a46.json
