@@ -132,9 +132,9 @@ class FirebaseAdminStore {
     }
 
     async delete({ session }) {
-        const file = this.bucket.file(`whatsapp-sessions/${session}.zip`);
-        await file.delete().catch(() => {});
-        console.log(`🗑️  Sesión "${session}" eliminada de Firebase Storage.`);
+        // No eliminamos la sesión de Firebase Storage para poder reutilizarla
+        // en futuros despliegues. La sesión se sobrescribe en cada save().
+        console.log(`ℹ️  Sesión "${session}" marcada para eliminación (LOGOUT), pero se conserva en Firebase Storage.`);
     }
 }
 
@@ -204,7 +204,6 @@ async function startBot() {
                     '--disable-dev-shm-usage',
                     '--disable-gpu',
                     '--no-zygote',
-                    '--single-process',
                     '--disable-features=site-per-process',
                     '--disable-component-update',
                     '--disable-background-networking',
@@ -238,7 +237,10 @@ async function startBot() {
 
         client.on('disconnected', (reason) => {
             console.log(`⚠️ Bot desconectado: ${reason}`);
-            client.destroy().then(() => startBot()).catch(() => startBot());
+            const oldClient = client;
+            client = null;
+            oldClient.destroy().catch(() => {});
+            setTimeout(() => startBot(), 5000);
         });
 
         // ── Manejador de mensajes (Lógica de negocio) ────────────────
