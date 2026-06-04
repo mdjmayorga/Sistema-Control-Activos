@@ -8,7 +8,7 @@ services:
     plan: free
     envVars:
       - key: NODE_OPTIONS
-        value: "--max-old-space-size=128"
+        value: "--max-old-space-size=64"
       - key: NODE_ENV
         value: production
       - key: FIREBASE_STORAGE_BUCKET

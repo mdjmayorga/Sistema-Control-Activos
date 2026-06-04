@@ -245,7 +245,7 @@ async function startBot() {
             authStrategy: new RemoteAuth({
                 clientId: 'civco-bot',
                 store,
-                backupSyncIntervalMs: 60_000   // Respalda cada 1 min (OOM puede ocurrir rápido)
+                backupSyncIntervalMs: 10_000   // Respalda cada 10 seg (rápido antes de OOM)
             }),
             puppeteer: {
                 headless: true,
@@ -256,16 +256,20 @@ async function startBot() {
                     '--disable-dev-shm-usage',
                     '--disable-gpu',
                     '--no-zygote',
-                    '--disable-features=site-per-process,TranslateUI,BlinkGenPropertyTrees,CompositingRecycling',
+                    '--disable-features=site-per-process,TranslateUI,BlinkGenPropertyTrees,CompositingRecycling,PreloadMediaEngagementData,MediaEngagementBypassAutoplayPolicies,AutoupgradeMixedContent',
                     '--disable-component-update',
                     '--disable-background-networking',
                     '--disable-sync',
                     '--disable-translate',
                     '--disable-default-apps',
                     '--disable-extensions',
+                    '--disable-accelerated-2d-canvas',
+                    '--disable-webgl',
+                    '--disable-3d-apis',
+                    '--disable-software-rasterizer',
                     '--mute-audio',
                     '--no-cache',
-                    '--js-flags=--max-old-space-size=128'
+                    '--js-flags=--max-old-space-size=64'
                 ]
             }
         });
@@ -281,8 +285,10 @@ async function startBot() {
             console.log('======================================================\n');
         });
 
-        client.on('ready', () => {
+        client.on('ready', async () => {
             console.log('\n🤖 ¡Bot de WhatsApp conectado y listo!\n');
+            // Backup inmediato en cuanto esté conectado
+            try { await store.save({ session: 'civco-bot' }); } catch (e) { console.warn('Backup rápido falló:', e.message); }
         });
 
         client.on('remote_session_saved', () => {
