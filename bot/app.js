@@ -6,8 +6,9 @@ import puppeteer from 'puppeteer';
 import admin from 'firebase-admin';
 import express from 'express';
 import { readFileSync, existsSync, readdirSync, writeFileSync, mkdirSync } from 'fs';
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
 import { execSync } from 'child_process';
+import { fileURLToPath } from 'url';
 
 // ═══════════════════════════════════════════════════════════════════
 // FIREBASE — Inicialización
@@ -40,44 +41,77 @@ admin.initializeApp({
 const bucket = admin.storage().bucket();
 
 // ═══════════════════════════════════════════════════════════════════
-// CHROME PATH — Resolución robusta para Render y entornos serverless
+// CHROME PATH — Busca chrome-headless-shell (ahorro ~40% RAM) o Chrome
 // ═══════════════════════════════════════════════════════════════════
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+function findInCache(browserSubdir, binaryName) {
+    const searchRoots = [
+        resolve(__dirname, '.cache'),
+        resolve(__dirname, '..', '.cache'),
+        process.env.HOME ? resolve(process.env.HOME, '.cache', 'puppeteer') : null,
+        '/opt/render/project/src/.cache',
+        '/opt/render/.cache/puppeteer',
+    ].filter(Boolean);
+
+    for (const root of searchRoots) {
+        const dir = resolve(root, browserSubdir);
+        if (!existsSync(dir)) continue;
+        try {
+            const platforms = readdirSync(dir);
+            for (const platform of platforms) {
+                const pDir = resolve(dir, platform);
+                if (!existsSync(pDir)) continue;
+                const versions = readdirSync(pDir);
+                for (const version of versions) {
+                    const candidate = resolve(pDir, version, binaryName);
+                    if (existsSync(candidate)) return candidate;
+                }
+            }
+        } catch { }
+    }
+    return null;
+}
+
 async function findChromePath() {
-    // 1. Si el usuario definió explícitamente la variable de entorno, la respetamos
     if (process.env.PUPPETEER_EXECUTABLE_PATH) {
-        const explicitPath = process.env.PUPPETEER_EXECUTABLE_PATH;
-        if (existsSync(explicitPath)) {
-            return explicitPath;
-        }
-        console.warn(`⚠️ PUPPETEER_EXECUTABLE_PATH apunta a "${explicitPath}" pero no existe. Buscando alternativas...`);
+        const p = process.env.PUPPETEER_EXECUTABLE_PATH;
+        if (existsSync(p)) return p;
     }
 
-    // 2. Puppeteer puede tener su propio Chrome cacheado
+    // 1) chrome-headless-shell — mucho más ligero (~40% menos RAM)
+    let binary = findInCache('chrome-headless-shell', 'chrome-headless-shell');
+    if (binary) {
+        console.log(`🔍 Usando chrome-headless-shell (ahorro de RAM): ${binary}`);
+        return binary;
+    }
+
+    // 2) Full Chrome
+    binary = findInCache('chrome', 'chrome');
+    if (binary) {
+        console.log(`🔍 Chrome encontrado en: ${binary}`);
+        return binary;
+    }
+
+    // 3) Puppeteer built-in resolution
     try {
         const path = await puppeteer.executablePath();
         if (existsSync(path)) return path;
     } catch { }
 
-    // 3. Fallback: Render / Ubuntu comunes
+    // 4) System Chrome/Chromium
     const candidates = [
-        '/usr/bin/google-chrome',
-        '/usr/bin/google-chrome-stable',
-        '/usr/bin/chromium-browser',
-        '/usr/bin/chromium',
-        '/snap/bin/chromium',
+        '/usr/bin/google-chrome', '/usr/bin/google-chrome-stable',
+        '/usr/bin/chromium-browser', '/usr/bin/chromium', '/snap/bin/chromium',
     ];
-    for (const candidate of candidates) {
-        if (existsSync(candidate)) {
-            console.log(`✅ Chrome encontrado en fallback: ${candidate}`);
-            return candidate;
-        }
-    }
+    for (const c of candidates) { if (existsSync(c)) return c; }
 
-    // 4. Buscar en el PATH del sistema
+    // 5) which
     try {
-        const whichPath = execSync('which google-chrome chromium-browser chromium 2>/dev/null || echo ""', { encoding: 'utf8' }).trim();
-        if (whichPath && existsSync(whichPath.split('\n')[0])) {
-            return whichPath.split('\n')[0].trim();
+        const out = execSync('which google-chrome chromium-browser chromium 2>/dev/null || true', { encoding: 'utf8' }).trim();
+        if (out) {
+            const first = out.split('\n')[0].trim();
+            if (existsSync(first)) return first;
         }
     } catch { }
 
@@ -211,7 +245,8 @@ async function startBot() {
                     '--disable-translate',
                     '--disable-default-apps',
                     '--mute-audio',
-                    '--no-cache'
+                    '--no-cache',
+                    '--js-flags=--max-old-space-size=128'
                 ]
             }
         });
@@ -235,12 +270,20 @@ async function startBot() {
             console.log('☁️  Sesión remota guardada exitosamente.');
         });
 
-        client.on('disconnected', (reason) => {
+        client.on('disconnected', async (reason) => {
             console.log(`⚠️ Bot desconectado: ${reason}`);
             const oldClient = client;
             client = null;
-            oldClient.destroy().catch(() => {});
-            setTimeout(() => startBot(), 5000);
+            if (oldClient) {
+                try {
+                    await oldClient.destroy();
+                } catch (e) {
+                    console.error('Error al destruir cliente:', e.message);
+                }
+            }
+            // Espera 15s para que Chrome libere toda la memoria antes de relanzar
+            await new Promise(r => setTimeout(r, 15000));
+            startBot();
         });
 
         // ── Manejador de mensajes (Lógica de negocio) ────────────────
