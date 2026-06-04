@@ -268,17 +268,19 @@ async function startBot() {
             }
         });
 
-        sock.ev.on('messages.upsert', async ({ messages }) => {
+        sock.ev.on('messages.upsert', async ({ messages, type }) => {
+            console.log(`📩 messages.upsert (type=${type}): ${messages.length} msgs`);
             for (const msg of messages) {
-                if (msg.key.remoteJid.endsWith('@g.us')) continue;
-                if (msg.key.remoteJid === 'status@broadcast') continue;
-                if (msg.key.fromMe) continue;
+                if (msg.key.remoteJid.endsWith('@g.us')) { console.log('   ↳ skip @g.us'); continue; }
+                if (msg.key.remoteJid === 'status@broadcast') { console.log('   ↳ skip status'); continue; }
+                if (msg.key.fromMe) { console.log('   ↳ skip fromMe'); continue; }
 
                 const from = msg.key.remoteJid;
                 const messageType = Object.keys(msg.message || {})[0];
                 const msgBody = msg.message?.conversation
                     || msg.message?.extendedTextMessage?.text
                     || '';
+                console.log(`   📨 from=${from} type=${messageType} body="${msgBody.slice(0, 100)}"`);
 
                 if (msgBody.includes('Entendido. Por favor, envía') || msgBody.includes('Ocurrió un error')) continue;
 
