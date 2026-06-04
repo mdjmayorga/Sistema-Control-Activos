@@ -4,7 +4,7 @@ import express from 'express';
 import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync, createWriteStream } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import archiver from 'archiver';
+import { ZipArchive } from 'archiver';
 import sharp from 'sharp';
 import unzipper from 'unzipper';
 
@@ -79,7 +79,7 @@ async function backupAuthToFirebase() {
     const zipPath = resolve('./baileys-auth-temp.zip');
     try {
         const output = createWriteStream(zipPath);
-        const archive = archiver('zip', { zlib: { level: 9 } });
+        const archive = new ZipArchive({ zlib: { level: 9 } });
         archive.pipe(output);
         archive.directory(AUTH_DIR, false);
         await archive.finalize();
