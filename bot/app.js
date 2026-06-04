@@ -6,9 +6,10 @@ import puppeteer from 'puppeteer';
 import admin from 'firebase-admin';
 import express from 'express';
 import { readFileSync, existsSync, readdirSync, writeFileSync, mkdirSync } from 'fs';
-import { resolve, dirname } from 'path';
+import { resolve, dirname, sep } from 'path';
 import { execSync } from 'child_process';
 import { fileURLToPath } from 'url';
+import os from 'os';
 
 // ═══════════════════════════════════════════════════════════════════
 // FIREBASE — Inicialización
@@ -44,31 +45,48 @@ const bucket = admin.storage().bucket();
 // CHROME PATH — Busca chrome-headless-shell (ahorro ~40% RAM) o Chrome
 // ═══════════════════════════════════════════════════════════════════
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const __projectRoot = resolve(__dirname, '..'); // /opt/render/project/src
+
+function searchCacheDir(baseDir, browserSubdir, binaryName) {
+    const dir = resolve(baseDir, browserSubdir);
+    if (!existsSync(dir)) return null;
+    try {
+        const platforms = readdirSync(dir);
+        for (const platform of platforms) {
+            const pDir = resolve(dir, platform);
+            if (!existsSync(pDir)) continue;
+            const entries = readdirSync(pDir);
+            for (const entry of entries) {
+                const candidate = resolve(pDir, entry, binaryName);
+                if (existsSync(candidate)) return candidate;
+            }
+        }
+    } catch { }
+    return null;
+}
 
 function findInCache(browserSubdir, binaryName) {
-    const searchRoots = [
+    const cacheRoots = [
+        // Our install.mjs puts browsers here: /opt/render/project/src/bot/.cache/
         resolve(__dirname, '.cache'),
-        resolve(__dirname, '..', '.cache'),
-        process.env.HOME ? resolve(process.env.HOME, '.cache', 'puppeteer') : null,
+        // Old postinstall used project root: /opt/render/project/src/.cache/
+        resolve(__projectRoot, '.cache'),
+        // @puppeteer/browsers CLI default when run from bot dir
+        process.cwd().endsWith(sep + 'bot') ? resolve(process.cwd(), '.cache') : null,
+        // Puppeteer's default: ~/.cache/puppeteer/
+        resolve(os.homedir(), '.cache', 'puppeteer'),
+        // Hardcoded Render paths (belt and suspenders)
         '/opt/render/project/src/.cache',
         '/opt/render/.cache/puppeteer',
     ].filter(Boolean);
 
-    for (const root of searchRoots) {
-        const dir = resolve(root, browserSubdir);
-        if (!existsSync(dir)) continue;
-        try {
-            const platforms = readdirSync(dir);
-            for (const platform of platforms) {
-                const pDir = resolve(dir, platform);
-                if (!existsSync(pDir)) continue;
-                const versions = readdirSync(pDir);
-                for (const version of versions) {
-                    const candidate = resolve(pDir, version, binaryName);
-                    if (existsSync(candidate)) return candidate;
-                }
-            }
-        } catch { }
+    // Remove duplicates
+    const seen = new Set();
+    const unique = cacheRoots.filter(r => { const k = r.toLowerCase(); return seen.has(k) ? false : seen.add(k); });
+
+    for (const root of unique) {
+        const result = searchCacheDir(root, browserSubdir, binaryName);
+        if (result) return result;
     }
     return null;
 }

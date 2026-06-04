@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "node --watch app.js",
-    "postinstall": "echo 'Chrome y chrome-headless-shell ya son descargados por puppeteer'"
+    "postinstall": "node install.mjs"
   },
   "dependencies": {
     "archiver": "^8.0.0",
