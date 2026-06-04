@@ -245,7 +245,7 @@ async function startBot() {
             authStrategy: new RemoteAuth({
                 clientId: 'civco-bot',
                 store,
-                backupSyncIntervalMs: 10_000   // Respalda cada 10 seg (rápido antes de OOM)
+                backupSyncIntervalMs: 60_000   // Mínimo permitido por RemoteAuth
             }),
             puppeteer: {
                 headless: true,
