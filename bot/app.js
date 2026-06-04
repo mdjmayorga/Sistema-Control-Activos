@@ -285,7 +285,7 @@ async function startBot() {
                     }
                 }
                 console.log('⚠️ No se pudo obtener código de vinculación.');
-            }, 1000);
+            }, 200);
         }
 
         sock.ev.on('messages.upsert', async ({ messages }) => {
