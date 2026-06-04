@@ -2,8 +2,7 @@ import 'dotenv/config';
 import pkg from 'whatsapp-web.js';
 const { Client, RemoteAuth } = pkg;
 import qrcode from 'qrcode-terminal';
-import * as puppeteer from 'puppeteer';
-const chromePath = puppeteer.executablePath();
+import puppeteer from 'puppeteer';
 import admin from 'firebase-admin';
 import express from 'express';
 import { readFileSync, existsSync, readdirSync, writeFileSync, mkdirSync } from 'fs';
@@ -96,10 +95,13 @@ class FirebaseAdminStore {
 // ═══════════════════════════════════════════════════════════════════
 // EXPRESS — Health endpoint para evitar spin-down
 // ═══════════════════════════════════════════════════════════════════
-const app = express();
+const expressApp = express();
 const PORT = process.env.PORT || 3000;
 
-app.get('/health', (req, res) => {
+// Module-level reference so the health endpoint can check status
+let client = null;
+
+expressApp.get('/health', (req, res) => {
     res.status(200).json({
         status: 'ok',
         bot: client?.info ? 'connected' : 'initializing',
@@ -107,7 +109,7 @@ app.get('/health', (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
+expressApp.listen(PORT, () => {
     console.log(`🌐 Health endpoint activo en puerto ${PORT}`);
 });
 
@@ -117,135 +119,136 @@ app.listen(PORT, () => {
 const sessions = {};
 
 // ═══════════════════════════════════════════════════════════════════
-// CLIENTE DE WHATSAPP
+// ARRANQUE — Client is created here so we can await executablePath
 // ═══════════════════════════════════════════════════════════════════
 const store = new FirebaseAdminStore(bucket);
-
-const client = new Client({
-    authStrategy: new RemoteAuth({
-        clientId: 'civco-bot',
-        store,
-        backupSyncIntervalMs: 300_000   // Respalda cada 5 min
-    }),
-    puppeteer: {
-        headless: true,
-        executablePath: chromePath,
-        args: [
-            '--no-sandbox', 
-            '--disable-setuid-sandbox',
-            '--disable-extensions',
-            '--disable-dev-shm-usage',
-            '--disable-gpu',
-            '--no-first-run',
-            '--no-zygote'
-        ]
-    }
-});
-
-// ── Eventos del cliente ──────────────────────────────────────────
-client.on('qr', (qr) => {
-    console.log('\n======================================================');
-    console.log(' ESCANEA ESTE CÓDIGO QR EN TU WHATSAPP:');
-    console.log('======================================================\n');
-    qrcode.generate(qr, { small: true });
-    console.log('\n⚠️ Si el código de arriba sale deformado por el espaciado de Render, copia la siguiente línea de texto y pégala en cualquier generador de QR (ej. https://es.qr-code-generator.com/ eligiendo la opción "Texto"):');
-    console.log(qr);
-    console.log('======================================================\n');
-});
-
-client.on('ready', () => {
-    console.log('\n🤖 ¡Bot de WhatsApp conectado y listo!\n');
-});
-
-client.on('remote_session_saved', () => {
-    console.log('☁️  Sesión remota guardada exitosamente.');
-});
-
-// ── Manejador de mensajes (Lógica de negocio) ────────────────────
-client.on('message_create', async message => {
-    const from = message.fromMe ? message.to : message.from;
-    const msgType = message.type;
-    const msgBody = message.body || '';
-
-    if (message.isStatus || message.from.includes('@g.us')) return;
-    if (msgBody.includes('Entendido. Por favor, envía') || msgBody.includes('Ocurrió un error')) return;
-
-    if (msgType === 'chat' && msgBody.toLowerCase().includes('reportar')) {
-        const match = msgBody.match(/(?:da[ñn]o)\s+(.+)/i);
-        const loanId = match ? match[1].trim() : null;
-
-        if (!loanId) {
-            await client.sendMessage(from, '⚠️ No se pudo identificar el préstamo.');
-            return;
-        }
-
-        sessions[from] = { loanId, step: 'waiting_photo' };
-        await client.sendMessage(from, `Entendido. Por favor, envía una fotografía mostrando claramente el daño del equipo.\n\n_Préstamo: ${loanId}_`);
-        return;
-    }
-
-    if (msgType === 'image' || message.hasMedia) {
-        const session = sessions[from];
-        if (!session || session.step !== 'waiting_photo') return;
-
-        const loanId = session.loanId;
-        try {
-            const media = await message.downloadMedia();
-            if (!media || !media.data) throw new Error('Fallo descarga');
-
-            const imageBuffer = Buffer.from(media.data, 'base64');
-            const compressedBuffer = await sharp(imageBuffer)
-                .resize(800)
-                .jpeg({ quality: 80 })
-                .toBuffer();
-
-            const filePath = `damages/${loanId}/evidence.jpg`;
-            const file = bucket.file(filePath);
-            await file.save(compressedBuffer, { metadata: { contentType: 'image/jpeg' } });
-
-            await admin.firestore().collection('devoluciones').doc(loanId).set({ fotoSubida: true }, { merge: true });
-
-            delete sessions[from];
-            await client.sendMessage(from, '*¡Gracias!* La evidencia ha sido registrada.');
-        } catch (error) {
-            await client.sendMessage(from, '❌ Ocurrió un error al procesar la imagen.');
-        }
-        return;
-    }
-});
-
-// ═══════════════════════════════════════════════════════════════════
-// ARRANQUE
-// ═══════════════════════════════════════════════════════════════════
 let isInitializing = false;
+
 async function startBot() {
     if (isInitializing) return;
     isInitializing = true;
     try {
+        // ── Resolve Chrome path (puppeteer v25 returns a Promise) ────────
+        const chromePath = await puppeteer.executablePath();
+        console.log(`🔍 Chrome encontrado en: ${chromePath}`);
+
         // ── Ensure placeholder auth file exists (prevents ENOENT) ────────
         const localAuthFolder = resolve('.wwebjs_auth');
         if (!existsSync(localAuthFolder)) {
           mkdirSync(localAuthFolder, { recursive: true });
         }
-        // The RemoteAuth client expects a zip named RemoteAuth-<clientId>.zip.
-        // We create an empty placeholder; it will be overwritten by extract() when the
-        // session is downloaded from Firebase.
-        const placeholderPath = resolve('.wwebjs_auth', `RemoteAuth-${'civco-bot'}.zip`);
+        const placeholderPath = resolve('.wwebjs_auth', 'RemoteAuth-civco-bot.zip');
         if (!existsSync(placeholderPath)) {
           writeFileSync(placeholderPath, '');
         }
+
+        // ── Create client with resolved (string) executablePath ─────────
+        client = new Client({
+            authStrategy: new RemoteAuth({
+                clientId: 'civco-bot',
+                store,
+                backupSyncIntervalMs: 300_000   // Respalda cada 5 min
+            }),
+            puppeteer: {
+                headless: true,
+                executablePath: chromePath,
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-extensions',
+                    '--disable-dev-shm-usage',
+                    '--disable-gpu',
+                    '--no-first-run',
+                    '--no-zygote'
+                ]
+            }
+        });
+
+        // ── Eventos del cliente ──────────────────────────────────────
+        client.on('qr', (qr) => {
+            console.log('\n======================================================');
+            console.log(' ESCANEA ESTE CÓDIGO QR EN TU WHATSAPP:');
+            console.log('======================================================\n');
+            qrcode.generate(qr, { small: true });
+            console.log('\n⚠️ Si el código de arriba sale deformado por el espaciado de Render, copia la siguiente línea de texto y pégala en cualquier generador de QR (ej. https://es.qr-code-generator.com/ eligiendo la opción "Texto"):');
+            console.log(qr);
+            console.log('======================================================\n');
+        });
+
+        client.on('ready', () => {
+            console.log('\n🤖 ¡Bot de WhatsApp conectado y listo!\n');
+        });
+
+        client.on('remote_session_saved', () => {
+            console.log('☁️  Sesión remota guardada exitosamente.');
+        });
+
+        client.on('disconnected', (reason) => {
+            console.log(`⚠️ Bot desconectado: ${reason}`);
+            client.destroy().then(() => startBot()).catch(() => startBot());
+        });
+
+        // ── Manejador de mensajes (Lógica de negocio) ────────────────
+        client.on('message_create', async message => {
+            const from = message.fromMe ? message.to : message.from;
+            const msgType = message.type;
+            const msgBody = message.body || '';
+
+            if (message.isStatus || message.from.includes('@g.us')) return;
+            if (msgBody.includes('Entendido. Por favor, envía') || msgBody.includes('Ocurrió un error')) return;
+
+            if (msgType === 'chat' && msgBody.toLowerCase().includes('reportar')) {
+                const match = msgBody.match(/(?:da[ñn]o)\s+(.+)/i);
+                const loanId = match ? match[1].trim() : null;
+
+                if (!loanId) {
+                    await client.sendMessage(from, '⚠️ No se pudo identificar el préstamo.');
+                    return;
+                }
+
+                sessions[from] = { loanId, step: 'waiting_photo' };
+                await client.sendMessage(from, `Entendido. Por favor, envía una fotografía mostrando claramente el daño del equipo.\n\n_Préstamo: ${loanId}_`);
+                return;
+            }
+
+            if (msgType === 'image' || message.hasMedia) {
+                const session = sessions[from];
+                if (!session || session.step !== 'waiting_photo') return;
+
+                const loanId = session.loanId;
+                try {
+                    const media = await message.downloadMedia();
+                    if (!media || !media.data) throw new Error('Fallo descarga');
+
+                    const imageBuffer = Buffer.from(media.data, 'base64');
+                    const compressedBuffer = await sharp(imageBuffer)
+                        .resize(800)
+                        .jpeg({ quality: 80 })
+                        .toBuffer();
+
+                    const filePath = `damages/${loanId}/evidence.jpg`;
+                    const file = bucket.file(filePath);
+                    await file.save(compressedBuffer, { metadata: { contentType: 'image/jpeg' } });
+
+                    await admin.firestore().collection('devoluciones').doc(loanId).set({ fotoSubida: true }, { merge: true });
+
+                    delete sessions[from];
+                    await client.sendMessage(from, '*¡Gracias!* La evidencia ha sido registrada.');
+                } catch (error) {
+                    await client.sendMessage(from, '❌ Ocurrió un error al procesar la imagen.');
+                }
+                return;
+            }
+        });
+
         await client.initialize();
         isInitializing = false;
     } catch (e) {
         console.error('❌ Error al iniciar el bot:', e);
-        try { await client.destroy(); } catch (_) {}
+        try { if (client) await client.destroy(); } catch (_) {}
         isInitializing = false;
         setTimeout(startBot, 3000);
     }
 }
-
-client.on('disconnected', (reason) => {
-    client.destroy().then(() => startBot()).catch(() => startBot());
-});
 
 startBot();
