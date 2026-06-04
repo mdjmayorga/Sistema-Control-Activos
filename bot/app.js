@@ -273,7 +273,10 @@ async function startBot() {
             for (const msg of messages) {
                 if (msg.key.remoteJid.endsWith('@g.us')) { console.log('   ↳ skip @g.us'); continue; }
                 if (msg.key.remoteJid === 'status@broadcast') { console.log('   ↳ skip status'); continue; }
-                if (msg.key.fromMe) { console.log('   ↳ skip fromMe'); continue; }
+                // NOTE: fromMe=true messages can arrive when the user sends a command
+                // from their phone (same WhatsApp account). Baileys sets fromMe=true via
+                // areJidsSameUser. We must NOT skip them — the content-based filters
+                // below prevent infinite loops from bot's own outgoing messages.
 
                 const from = msg.key.remoteJid;
                 const messageType = Object.keys(msg.message || {})[0];
