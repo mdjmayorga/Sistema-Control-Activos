@@ -187,31 +187,6 @@ async function startBot() {
 
         sock.ev.on('creds.update', saveCreds);
 
-        // Request pairing code BEFORE registering connection.update,
-        // so creds.me is set before validateConnection runs.
-        // validateConnection sees creds.me → sends LOGIN instead of REGISTRATION.
-        // The companion_reg sent by requestPairingCode arrives during the noise handshake,
-        // before LOGIN, putting the server in companion mode.
-        if (!state.creds.registered && !pairingCodeRequested) {
-            pairingCodeRequested = true;
-            (async () => {
-                for (let i = 0; i < 50; i++) {
-                    try {
-                        let code = await sock.requestPairingCode('50687716817');
-                        code = code?.match(/.{1,4}/g)?.join('-') || code;
-                        console.log(`\n🔑 Código de vinculación: ${code}`);
-                        console.log('   Abre WhatsApp → Dispositivos vinculados → Vincular con número');
-                        console.log(`   Ingresa el código: ${code}\n`);
-                        return;
-                    } catch (e) {
-                        if (i === 0) console.log('⏳ Solicitando código de vinculación...');
-                        await new Promise(r => setTimeout(r, 200));
-                    }
-                }
-                console.log('⚠️ No se pudo obtener código de vinculación.');
-            })();
-        }
-
         sock.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect } = update;
 
@@ -234,6 +209,12 @@ async function startBot() {
                 if (lastDisconnect?.error?.data) {
                     console.log(`   Datos: ${JSON.stringify(lastDisconnect.error.data)}`);
                 }
+                // Clear incomplete pairing creds so validateConnection sends REGISTRATION on reconnect
+                if (state.creds?.me && !state.creds.registered) {
+                    state.creds.me = undefined;
+                    await saveCreds();
+                    console.log('🧹 Credenciales de vinculación incompleta limpiadas.');
+                }
                 isInitializing = false;
                 const delay = getReconnectDelay();
                 reconnectAttempt++;
@@ -241,6 +222,27 @@ async function startBot() {
                 setTimeout(startBot, delay);
             }
         });
+
+        // Request pairing code after a short delay so validateConnection sends
+        // start_reg (QR mode) first, then companion_reg switches to pairing mode.
+        if (!state.creds.registered) {
+            setTimeout(async () => {
+                for (let i = 0; i < 10; i++) {
+                    try {
+                        let code = await sock.requestPairingCode('50687716817');
+                        code = code?.match(/.{1,4}/g)?.join('-') || code;
+                        console.log(`\n🔑 Código de vinculación: ${code}`);
+                        console.log('   Abre WhatsApp → Dispositivos vinculados → Vincular con número');
+                        console.log(`   Ingresa el código: ${code}\n`);
+                        return;
+                    } catch (e) {
+                        if (i === 0) console.log('⏳ Solicitando código de vinculación...');
+                        await new Promise(r => setTimeout(r, 500));
+                    }
+                }
+                console.log('⚠️ No se pudo obtener código de vinculación.');
+            }, 2000);
+        }
 
         sock.ev.on('messages.upsert', async ({ messages }) => {
             for (const msg of messages) {
