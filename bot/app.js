@@ -1,10 +1,11 @@
+import 'dotenv/config';
 import pkg from 'whatsapp-web.js';
 const { Client, RemoteAuth } = pkg;
 import qrcode from 'qrcode-terminal';
 import sharp from 'sharp';
 import admin from 'firebase-admin';
 import express from 'express';
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, readdirSync } from 'fs';
 import { resolve } from 'path';
 
 // ═══════════════════════════════════════════════════════════════════
@@ -17,11 +18,13 @@ if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
     serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
     console.log('✅ Firebase Admin inicializado desde variable de entorno.');
 } else {
-    const serviceAccountPath = resolve('./serviceAccountKey.json');
+    const serviceAccountPath = resolve('../civco-a947d-firebase-adminsdk-fbsvc-a511374a46.json');
     if (existsSync(serviceAccountPath)) {
-        // Desarrollo local: credenciales desde archivo
+        // Desarrollo local: credenciales desde archivo en raíz del proyecto
         serviceAccount = JSON.parse(readFileSync(serviceAccountPath, 'utf8'));
-        console.log('✅ Firebase Admin inicializado desde serviceAccountKey.json.');
+        console.log('✅ Firebase Admin inicializado desde serviceAccountKey.json (raíz).');
+    } else {
+        console.warn('⚠️ No se encontró serviceAccountKey.json en la raíz del proyecto.');
     }
 }
 
@@ -29,7 +32,7 @@ admin.initializeApp({
     credential: serviceAccount
         ? admin.credential.cert(serviceAccount)
         : admin.credential.applicationDefault(),
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET || 'civco-a947d.appspot.com',
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET || 'civco-a947d.firebasestorage.app',
     projectId: 'civco-a947d'
 });
 
@@ -49,14 +52,24 @@ class FirebaseAdminStore {
         return exists;
     }
 
+
     async save({ session }) {
-        const localZipPath = `./${session}.zip`;
+        // Normalizamos el nombre de la sesión eliminando cualquier extensión .zip que venga incluida
+        const cleanSession = session.replace(/\.zip$/i, '');
+        // RemoteAuth guarda el zip dentro de .wwebjs_auth/RemoteAuth-<clientId>/
+        const zipName = cleanSession.startsWith('RemoteAuth-') ? cleanSession : `RemoteAuth-${cleanSession}`;
+        const localZipPath = resolve('.wwebjs_auth', `${zipName}.zip`);
+        if (!existsSync(localZipPath)) {
+            console.warn(`⚠️  [save] No se encontró el archivo ${localZipPath}, omitiendo subida.`);
+            return;
+        }
         await this.bucket.upload(localZipPath, {
-            destination: `whatsapp-sessions/${session}.zip`,
+            destination: `whatsapp-sessions/${zipName}.zip`,
             metadata: { contentType: 'application/zip' }
         });
-        console.log(`☁️  Sesión "${session}" respaldada en Firebase Storage.`);
+        console.log(`☁️  Sesión "${zipName}" respaldada en Firebase Storage.`);
     }
+
 
     async extract({ session, path }) {
         const file = this.bucket.file(`whatsapp-sessions/${session}.zip`);
@@ -101,6 +114,7 @@ const store = new FirebaseAdminStore(bucket);
 
 const client = new Client({
     authStrategy: new RemoteAuth({
+        clientId: 'civco-bot',
         store,
         backupSyncIntervalMs: 300_000   // Respalda cada 5 min
     }),
