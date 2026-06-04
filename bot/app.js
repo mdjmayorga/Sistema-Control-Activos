@@ -201,11 +201,18 @@ async function startBot() {
                 args: [
                     '--no-sandbox',
                     '--disable-setuid-sandbox',
-                    '--disable-extensions',
                     '--disable-dev-shm-usage',
                     '--disable-gpu',
-                    '--no-first-run',
-                    '--no-zygote'
+                    '--no-zygote',
+                    '--single-process',
+                    '--disable-features=site-per-process',
+                    '--disable-component-update',
+                    '--disable-background-networking',
+                    '--disable-sync',
+                    '--disable-translate',
+                    '--disable-default-apps',
+                    '--mute-audio',
+                    '--no-cache'
                 ]
             }
         });
