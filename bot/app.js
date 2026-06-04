@@ -137,11 +137,34 @@ async function restoreAuthFromFirebase() {
 // ═══════════════════════════════════════════════════════════════════
 let isInitializing = false;
 let reconnectAttempt = 0;
+let reconnectTimer = null;
 
-function getReconnectDelay() {
+process.on('unhandledRejection', (err) => {
+    console.error(`💥 Unhandled rejection: ${err?.message || err}`);
+    console.error(err?.stack || '');
+});
+process.on('uncaughtException', (err) => {
+    console.error(`💥 Uncaught exception: ${err?.message || err}`);
+    console.error(err?.stack || '');
+});
+
+function getReconnectDelay(forceFast) {
+    if (forceFast) return 5000;
     const base = process.env.NODE_ENV === 'production' ? 120000 : 5000;
     const delay = Math.min(base * Math.pow(2, reconnectAttempt), 600000);
     return delay;
+}
+
+function scheduleReconnect(fn, delay) {
+    if (reconnectTimer) {
+        console.log('⏳ Ya hay una reconexión programada, ignorando.');
+        return;
+    }
+    console.log(`🔄 Reconectando en ${Math.round(delay / 1000)}s...`);
+    reconnectTimer = setTimeout(() => {
+        reconnectTimer = null;
+        fn();
+    }, delay);
 }
 
 async function startBot() {
@@ -203,7 +226,7 @@ async function startBot() {
                 console.log(`   Abre WhatsApp → Dispositivos vinculados → Vincular con QR\n`);
             }
             if (isNewLogin) {
-                console.log('🔐 Vinculación exitosa.');
+                console.log(`🔐 Vinculación exitosa. JID: ${state.creds?.me?.id || 'desconocido'}`);
                 // Mark registered so paired creds survive reconnection.
                 // QR flow's configureSuccessfulPairing sets creds.me but NOT registered.
                 state.creds.registered = true;
@@ -223,10 +246,14 @@ async function startBot() {
                 isConnected = false;
                 const statusCode = lastDisconnect?.error?.output?.statusCode;
                 const errorMsg = lastDisconnect?.error?.message || '';
+                const isRestartRequired = statusCode === 515;
                 console.log(`⚠️ Conexión cerrada. Código: ${statusCode || 'desconocido'}`);
                 console.log(`   Detalle: ${errorMsg}`);
                 if (lastDisconnect?.error?.data) {
                     console.log(`   Datos: ${JSON.stringify(lastDisconnect.error.data)}`);
+                }
+                if (isRestartRequired) {
+                    console.log('   ↳ Reinicio requerido tras vinculación. Reconectando rápido...');
                 }
                 // Clear incomplete pairing creds so validateConnection sends REGISTRATION on reconnect
                 if (state.creds?.me && !state.creds.registered) {
@@ -235,10 +262,9 @@ async function startBot() {
                     console.log('🧹 Credenciales de vinculación incompleta limpiadas.');
                 }
                 isInitializing = false;
-                const delay = getReconnectDelay();
                 reconnectAttempt++;
-                console.log(`🔄 Reconectando en ${Math.round(delay / 1000)}s...`);
-                setTimeout(startBot, delay);
+                const delay = getReconnectDelay(isRestartRequired);
+                scheduleReconnect(startBot, delay);
             }
         });
 
@@ -322,10 +348,9 @@ async function startBot() {
     } catch (e) {
         console.error('❌ Error al iniciar el bot:', e);
         isInitializing = false;
-        const delay = getReconnectDelay();
         reconnectAttempt++;
-        console.log(`🔄 Reintentando en ${Math.round(delay / 1000)}s...`);
-        setTimeout(startBot, delay);
+        const delay = getReconnectDelay();
+        scheduleReconnect(startBot, delay);
     }
 }
 
