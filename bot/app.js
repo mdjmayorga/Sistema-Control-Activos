@@ -97,17 +97,17 @@ async function findChromePath() {
         if (existsSync(p)) return p;
     }
 
-    // 1) chrome-headless-shell — mucho más ligero (~40% menos RAM)
-    let binary = findInCache('chrome-headless-shell', 'chrome-headless-shell');
+    // 1) Full Chrome — new headless mode runs single-process, less runtime RAM
+    let binary = findInCache('chrome', 'chrome');
     if (binary) {
-        console.log(`🔍 Usando chrome-headless-shell (ahorro de RAM): ${binary}`);
+        console.log(`🔍 Chrome encontrado en: ${binary}`);
         return binary;
     }
 
-    // 2) Full Chrome
-    binary = findInCache('chrome', 'chrome');
+    // 2) chrome-headless-shell — fallback (old headless, multi-process, more RAM)
+    binary = findInCache('chrome-headless-shell', 'chrome-headless-shell');
     if (binary) {
-        console.log(`🔍 Chrome encontrado en: ${binary}`);
+        console.log(`🔍 Usando chrome-headless-shell (fallback): ${binary}`);
         return binary;
     }
 
@@ -245,7 +245,7 @@ async function startBot() {
             authStrategy: new RemoteAuth({
                 clientId: 'civco-bot',
                 store,
-                backupSyncIntervalMs: 300_000   // Respalda cada 5 min
+                backupSyncIntervalMs: 60_000   // Respalda cada 1 min (OOM puede ocurrir rápido)
             }),
             puppeteer: {
                 headless: true,
@@ -256,12 +256,13 @@ async function startBot() {
                     '--disable-dev-shm-usage',
                     '--disable-gpu',
                     '--no-zygote',
-                    '--disable-features=site-per-process',
+                    '--disable-features=site-per-process,TranslateUI,BlinkGenPropertyTrees,CompositingRecycling',
                     '--disable-component-update',
                     '--disable-background-networking',
                     '--disable-sync',
                     '--disable-translate',
                     '--disable-default-apps',
+                    '--disable-extensions',
                     '--mute-audio',
                     '--no-cache',
                     '--js-flags=--max-old-space-size=128'
