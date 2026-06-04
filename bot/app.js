@@ -8,7 +8,7 @@ import { ZipArchive } from 'archiver';
 import sharp from 'sharp';
 import unzipper from 'unzipper';
 
-import { makeWASocket, useMultiFileAuthState, DisconnectReason, downloadContentFromMessage } from '@whiskeysockets/baileys';
+import { makeWASocket, useMultiFileAuthState, DisconnectReason, downloadContentFromMessage, fetchLatestWaWebVersion } from '@whiskeysockets/baileys';
 import pino from 'pino';
 
 // ═══════════════════════════════════════════════════════════════════
@@ -177,7 +177,20 @@ async function startBot() {
 
         const { state, saveCreds } = await useMultiFileAuthState(AUTH_DIR);
 
+        let waVersion;
+        try {
+            const { version, isLatest } = await fetchLatestWaWebVersion();
+            waVersion = version;
+            if (isLatest) {
+                console.log(`📱 Versión WhatsApp Web: ${waVersion.join('.')}`);
+            }
+        } catch (_) {
+            waVersion = [2, 3000, 1037641644];
+            console.log(`📱 Versión WhatsApp Web (fallback): ${waVersion.join('.')}`);
+        }
+
         const sock = makeWASocket({
+            version: waVersion,
             auth: state,
             printQRInTerminal: false,
             logger: pino({ level: 'error' }),
