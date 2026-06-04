@@ -2,7 +2,8 @@ import 'dotenv/config';
 import pkg from 'whatsapp-web.js';
 const { Client, RemoteAuth } = pkg;
 import qrcode from 'qrcode-terminal';
-import sharp from 'sharp';
+import puppeteer from 'puppeteer';
+
 import admin from 'firebase-admin';
 import express from 'express';
 import { readFileSync, existsSync, readdirSync, writeFileSync, mkdirSync } from 'fs';
@@ -128,9 +129,10 @@ const client = new Client({
     }),
     puppeteer: {
         headless: true,
+        executablePath: puppeteer.executablePath(),
         args: [
             '--no-sandbox', 
-            '--disable-setuid-sandbox', 
+            '--disable-setuid-sandbox',
             '--disable-extensions',
             '--disable-dev-shm-usage',
             '--disable-gpu',
