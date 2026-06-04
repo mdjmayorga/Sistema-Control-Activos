@@ -165,6 +165,7 @@ async function startBot() {
         return;
     }
     isInitializing = true;
+    pairingCodeRequested = false;
     console.log(`🚀 Iniciando bot de WhatsApp (Baileys) — intento #${reconnectAttempt + 1}...`);
 
     try {
@@ -176,6 +177,12 @@ async function startBot() {
         }
 
         const { state, saveCreds } = await useMultiFileAuthState(AUTH_DIR);
+
+        if (!state.creds.registered && state.creds.me) {
+            console.log('🧹 Vinculación incompleta detectada. Eliminando estado previo para nueva vinculación.');
+            state.creds.me = undefined;
+            await saveCreds();
+        }
 
         let waVersion;
         try {
