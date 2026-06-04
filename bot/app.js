@@ -5,7 +5,7 @@ import qrcode from 'qrcode-terminal';
 import sharp from 'sharp';
 import admin from 'firebase-admin';
 import express from 'express';
-import { readFileSync, existsSync, readdirSync } from 'fs';
+import { readFileSync, existsSync, readdirSync, writeFileSync, mkdirSync } from 'fs';
 import { resolve } from 'path';
 
 // ═══════════════════════════════════════════════════════════════════
@@ -47,7 +47,10 @@ class FirebaseAdminStore {
     }
 
     async sessionExists({ session }) {
-        const file = this.bucket.file(`whatsapp-sessions/${session}.zip`);
+        // Normalizamos el nombre de la sesión para que coincida con el nombre usado en save()
+        const cleanSession = session.replace(/\\.zip$/i, '');
+        const zipName = cleanSession.startsWith('RemoteAuth-') ? cleanSession : `RemoteAuth-${cleanSession}`;
+        const file = this.bucket.file(`whatsapp-sessions/${zipName}.zip`);
         const [exists] = await file.exists();
         return exists;
     }
@@ -73,8 +76,13 @@ class FirebaseAdminStore {
 
     async extract({ session, path }) {
         const file = this.bucket.file(`whatsapp-sessions/${session}.zip`);
-        await file.download({ destination: path });
-        console.log(`📥 Sesión "${session}" restaurada desde Firebase Storage.`);
+        try {
+            await file.download({ destination: path });
+            console.log(`📥 Sesión "${session}" restaurada desde Firebase Storage.`);
+        } catch (err) {
+            // If the file does not exist in the bucket, RemoteAuth will fallback to fresh login.
+            console.warn(`⚠️ No se encontró la sesión "${session}" en Firebase Storage: ${err.message}`);
+        }
     }
 
     async delete({ session }) {
@@ -212,6 +220,18 @@ async function startBot() {
     if (isInitializing) return;
     isInitializing = true;
     try {
+        // ── Ensure placeholder auth file exists (prevents ENOENT) ────────
+        const localAuthFolder = resolve('.wwebjs_auth');
+        if (!existsSync(localAuthFolder)) {
+          mkdirSync(localAuthFolder, { recursive: true });
+        }
+        // The RemoteAuth client expects a zip named RemoteAuth-<clientId>.zip.
+        // We create an empty placeholder; it will be overwritten by extract() when the
+        // session is downloaded from Firebase.
+        const placeholderPath = resolve('.wwebjs_auth', `RemoteAuth-${'civco-bot'}.zip`);
+        if (!existsSync(placeholderPath)) {
+          writeFileSync(placeholderPath, '');
+        }
         await client.initialize();
         isInitializing = false;
     } catch (e) {
