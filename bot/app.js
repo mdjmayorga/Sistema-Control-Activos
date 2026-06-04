@@ -129,6 +129,35 @@ async function restoreAuthFromFirebase() {
 // ARRANQUE
 // ═══════════════════════════════════════════════════════════════════
 let isInitializing = false;
+let reconnectAttempt = 0;
+let pairingCodeRequested = false;
+
+function getReconnectDelay() {
+    const base = process.env.NODE_ENV === 'production' ? 10000 : 5000;
+    const delay = Math.min(base * Math.pow(2, reconnectAttempt), 300000);
+    return delay;
+}
+
+async function requestPairingCodeProactively(sock) {
+    if (pairingCodeRequested) return;
+    pairingCodeRequested = true;
+    for (let i = 0; i < 20; i++) {
+        try {
+            let code = await sock.requestPairingCode('50687716817');
+            code = code?.match(/.{1,4}/g)?.join('-') || code;
+            console.log(`\n🔑 Código de vinculación: ${code}`);
+            console.log('   Abre WhatsApp → Dispositivos vinculados → Vincular con número');
+            console.log(`   Ingresa el código: ${code}\n`);
+            return;
+        } catch (e) {
+            if (i === 0) {
+                console.log('⏳ Esperando conexión para solicitar código de vinculación...');
+            }
+            await new Promise(r => setTimeout(r, 1500));
+        }
+    }
+    console.log('⚠️ No se pudo solicitar código de vinculación tras varios intentos.');
+}
 
 async function startBot() {
     if (isInitializing) {
@@ -136,7 +165,7 @@ async function startBot() {
         return;
     }
     isInitializing = true;
-    console.log('🚀 Iniciando bot de WhatsApp (Baileys)...');
+    console.log(`🚀 Iniciando bot de WhatsApp (Baileys) — intento #${reconnectAttempt + 1}...`);
 
     try {
         const restored = await restoreAuthFromFirebase();
@@ -152,35 +181,39 @@ async function startBot() {
             auth: state,
             printQRInTerminal: false,
             logger: pino({ level: 'error' }),
-            browser: ['CIVCO Bot', 'Chrome', '']
+            browser: ['CIVCO Bot', 'Chrome', '10.0.0']
         });
         console.log('🔌 Socket de WhatsApp creado.');
 
         sock.ev.on('creds.update', saveCreds);
 
+        // Proactive pairing code: run in parallel to event loop
+        if (!state.creds.registered) {
+            requestPairingCodeProactively(sock);
+        }
+
         sock.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect, qr } = update;
 
-            if (qr) {
-                console.log('\n======================================================');
-                console.log('📱 CÓDIGO QR (escanear con WhatsApp):');
-                console.log('======================================================\n');
-                console.log(qr);
-                console.log('\n⚠️ Si el QR no se renderiza bien, usa el código de vinculación:');
+            if (qr && !pairingCodeRequested) {
+                pairingCodeRequested = true;
                 try {
-                    const code = await sock.requestPairingCode('50687716817');
-                    console.log(`🔑 Código de vinculación: ${code}`);
-                    console.log('   (WhatsApp → Dispositivos vinculados → Vincular con número)');
-                } catch (_) {
-                    console.log('   (Código de vinculación no disponible en esta versión)');
+                    let code = await sock.requestPairingCode('50687716817');
+                    code = code?.match(/.{1,4}/g)?.join('-') || code;
+                    console.log(`\n🔑 Código de vinculación: ${code}`);
+                    console.log('   Abre WhatsApp → Dispositivos vinculados → Vincular con número');
+                    console.log(`   Ingresa el código: ${code}\n`);
+                } catch (e) {
+                    console.log('⚠️ Error al solicitar código de vinculación:', e.message);
                 }
-                console.log('======================================================\n');
             }
 
             if (connection === 'open') {
                 console.log('\n🤖 ¡Bot de WhatsApp conectado y listo!\n');
                 isConnected = true;
                 isInitializing = false;
+                reconnectAttempt = 0;
+                pairingCodeRequested = false;
                 console.log('☁️ Respaldando sesión inicial en Firebase Storage...');
                 await backupAuthToFirebase();
             }
@@ -188,17 +221,17 @@ async function startBot() {
             if (connection === 'close') {
                 isConnected = false;
                 const statusCode = lastDisconnect?.error?.output?.statusCode;
+                const errorMsg = lastDisconnect?.error?.message || '';
                 console.log(`⚠️ Conexión cerrada. Código: ${statusCode || 'desconocido'}`);
-                if (statusCode === DisconnectReason.loggedOut) {
-                    console.log('❌ Sesión cerrada (LOGOUT). La sesión en Firebase se conserva para reintento.');
-                    isInitializing = false;
-                    console.log('🔄 Reintentando en 5 segundos...');
-                    setTimeout(startBot, 5000);
-                } else {
-                    console.log(`🔄 Desconectado (código ${statusCode}). Reconectando en 5 segundos...`);
-                    isInitializing = false;
-                    setTimeout(startBot, 5000);
+                console.log(`   Detalle: ${errorMsg}`);
+                if (lastDisconnect?.error?.data) {
+                    console.log(`   Datos: ${JSON.stringify(lastDisconnect.error.data)}`);
                 }
+                isInitializing = false;
+                const delay = getReconnectDelay();
+                reconnectAttempt++;
+                console.log(`🔄 Reconectando en ${Math.round(delay / 1000)}s...`);
+                setTimeout(startBot, delay);
             }
         });
 
@@ -282,8 +315,10 @@ async function startBot() {
     } catch (e) {
         console.error('❌ Error al iniciar el bot:', e);
         isInitializing = false;
-        console.log('🔄 Reintentando en 5 segundos...');
-        setTimeout(startBot, 5000);
+        const delay = getReconnectDelay();
+        reconnectAttempt++;
+        console.log(`🔄 Reintentando en ${Math.round(delay / 1000)}s...`);
+        setTimeout(startBot, delay);
     }
 }
 
