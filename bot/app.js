@@ -203,7 +203,11 @@ async function startBot() {
                 console.log(`   Abre WhatsApp → Dispositivos vinculados → Vincular con QR\n`);
             }
             if (isNewLogin) {
-                console.log('🔐 isNewLogin = true');
+                console.log('🔐 Vinculación exitosa.');
+                // Mark registered so paired creds survive reconnection.
+                // QR flow's configureSuccessfulPairing sets creds.me but NOT registered.
+                state.creds.registered = true;
+                await saveCreds();
             }
 
             if (connection === 'open') {
