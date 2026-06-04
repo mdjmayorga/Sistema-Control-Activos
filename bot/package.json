@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "node --watch app.js",
-    "postinstall": "npx puppeteer browsers install chrome"
+    "postinstall": "echo 'Chrome download skipped, using system Chrome'"
   },
   "dependencies": {
     "archiver": "^8.0.0",

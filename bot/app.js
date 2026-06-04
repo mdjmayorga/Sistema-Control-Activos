@@ -7,6 +7,7 @@ import admin from 'firebase-admin';
 import express from 'express';
 import { readFileSync, existsSync, readdirSync, writeFileSync, mkdirSync } from 'fs';
 import { resolve } from 'path';
+import { execSync } from 'child_process';
 
 // ═══════════════════════════════════════════════════════════════════
 // FIREBASE — Inicialización
@@ -37,6 +38,51 @@ admin.initializeApp({
 });
 
 const bucket = admin.storage().bucket();
+
+// ═══════════════════════════════════════════════════════════════════
+// CHROME PATH — Resolución robusta para Render y entornos serverless
+// ═══════════════════════════════════════════════════════════════════
+async function findChromePath() {
+    // 1. Si el usuario definió explícitamente la variable de entorno, la respetamos
+    if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+        const explicitPath = process.env.PUPPETEER_EXECUTABLE_PATH;
+        if (existsSync(explicitPath)) {
+            return explicitPath;
+        }
+        console.warn(`⚠️ PUPPETEER_EXECUTABLE_PATH apunta a "${explicitPath}" pero no existe. Buscando alternativas...`);
+    }
+
+    // 2. Puppeteer puede tener su propio Chrome cacheado
+    try {
+        const path = await puppeteer.executablePath();
+        if (existsSync(path)) return path;
+    } catch { }
+
+    // 3. Fallback: Render / Ubuntu comunes
+    const candidates = [
+        '/usr/bin/google-chrome',
+        '/usr/bin/google-chrome-stable',
+        '/usr/bin/chromium-browser',
+        '/usr/bin/chromium',
+        '/snap/bin/chromium',
+    ];
+    for (const candidate of candidates) {
+        if (existsSync(candidate)) {
+            console.log(`✅ Chrome encontrado en fallback: ${candidate}`);
+            return candidate;
+        }
+    }
+
+    // 4. Buscar en el PATH del sistema
+    try {
+        const whichPath = execSync('which google-chrome chromium-browser chromium 2>/dev/null || echo ""', { encoding: 'utf8' }).trim();
+        if (whichPath && existsSync(whichPath.split('\n')[0])) {
+            return whichPath.split('\n')[0].trim();
+        }
+    } catch { }
+
+    throw new Error('No se encontró Chrome/Chromium en el sistema.');
+}
 
 // ═══════════════════════════════════════════════════════════════════
 // REMOTE AUTH STORE — Guarda la sesión de WhatsApp en Firebase Storage
@@ -129,7 +175,7 @@ async function startBot() {
     isInitializing = true;
     try {
         // ── Resolve Chrome path (puppeteer v25 returns a Promise) ────────
-        const chromePath = await puppeteer.executablePath();
+        const chromePath = await findChromePath();
         console.log(`🔍 Chrome encontrado en: ${chromePath}`);
 
         // ── Ensure placeholder auth file exists (prevents ENOENT) ────────
