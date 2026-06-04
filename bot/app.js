@@ -104,6 +104,13 @@ async function restoreAuthFromFirebase() {
         mkdirSync(AUTH_DIR, { recursive: true });
         console.log('📁 Directorio de autenticación creado:', AUTH_DIR);
     }
+    // Only restore from Firebase if no local creds exist.
+    // Firebase backup may be stale (last uploaded 5min ago → missing fresh pairing state),
+    // so local creds always take precedence.
+    if (existsSync(resolve(AUTH_DIR, 'creds.json'))) {
+        console.log('📂 Usando credenciales locales (más recientes que backup).');
+        return true;
+    }
     const file = bucket.file(FIREBASE_AUTH_PATH);
     const [exists] = await file.exists();
     if (!exists) {
@@ -157,12 +164,6 @@ async function startBot() {
 
         const { state, saveCreds } = await useMultiFileAuthState(AUTH_DIR);
 
-        if (!state.creds.registered && state.creds.me) {
-            console.log('🧹 Vinculación incompleta detectada. Eliminando estado previo para nueva vinculación.');
-            state.creds.me = undefined;
-            await saveCreds();
-        }
-
         let waVersion;
         try {
             const { version, isLatest } = await fetchLatestWaWebVersion();
@@ -186,21 +187,33 @@ async function startBot() {
 
         sock.ev.on('creds.update', saveCreds);
 
-        sock.ev.on('connection.update', async (update) => {
-            const { connection, lastDisconnect, qr } = update;
-
-            if (qr && !pairingCodeRequested) {
-                pairingCodeRequested = true;
-                try {
-                    let code = await sock.requestPairingCode('50687716817');
-                    code = code?.match(/.{1,4}/g)?.join('-') || code;
-                    console.log(`\n🔑 Código de vinculación: ${code}`);
-                    console.log('   Abre WhatsApp → Dispositivos vinculados → Vincular con número');
-                    console.log(`   Ingresa el código: ${code}\n`);
-                } catch (e) {
-                    console.log('⚠️ Error al solicitar código de vinculación:', e.message);
+        // Request pairing code BEFORE registering connection.update,
+        // so creds.me is set before validateConnection runs.
+        // validateConnection sees creds.me → sends LOGIN instead of REGISTRATION.
+        // The companion_reg sent by requestPairingCode arrives during the noise handshake,
+        // before LOGIN, putting the server in companion mode.
+        if (!state.creds.registered && !pairingCodeRequested) {
+            pairingCodeRequested = true;
+            (async () => {
+                for (let i = 0; i < 50; i++) {
+                    try {
+                        let code = await sock.requestPairingCode('50687716817');
+                        code = code?.match(/.{1,4}/g)?.join('-') || code;
+                        console.log(`\n🔑 Código de vinculación: ${code}`);
+                        console.log('   Abre WhatsApp → Dispositivos vinculados → Vincular con número');
+                        console.log(`   Ingresa el código: ${code}\n`);
+                        return;
+                    } catch (e) {
+                        if (i === 0) console.log('⏳ Solicitando código de vinculación...');
+                        await new Promise(r => setTimeout(r, 200));
+                    }
                 }
-            }
+                console.log('⚠️ No se pudo obtener código de vinculación.');
+            })();
+        }
+
+        sock.ev.on('connection.update', async (update) => {
+            const { connection, lastDisconnect } = update;
 
             if (connection === 'open') {
                 console.log('\n🤖 ¡Bot de WhatsApp conectado y listo!\n');
