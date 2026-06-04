@@ -8,7 +8,7 @@ import { ZipArchive } from 'archiver';
 import sharp from 'sharp';
 import unzipper from 'unzipper';
 
-import { makeWASocket, useMultiFileAuthState, DisconnectReason, downloadContentFromMessage, fetchLatestWaWebVersion } from '@whiskeysockets/baileys';
+import { makeWASocket, useMultiFileAuthState, downloadContentFromMessage, fetchLatestWaWebVersion } from '@whiskeysockets/baileys';
 import pino from 'pino';
 
 // ═══════════════════════════════════════════════════════════════════
@@ -133,30 +133,9 @@ let reconnectAttempt = 0;
 let pairingCodeRequested = false;
 
 function getReconnectDelay() {
-    const base = process.env.NODE_ENV === 'production' ? 10000 : 5000;
-    const delay = Math.min(base * Math.pow(2, reconnectAttempt), 300000);
+    const base = process.env.NODE_ENV === 'production' ? 120000 : 5000;
+    const delay = Math.min(base * Math.pow(2, reconnectAttempt), 600000);
     return delay;
-}
-
-async function requestPairingCodeProactively(sock) {
-    if (pairingCodeRequested) return;
-    pairingCodeRequested = true;
-    for (let i = 0; i < 20; i++) {
-        try {
-            let code = await sock.requestPairingCode('50687716817');
-            code = code?.match(/.{1,4}/g)?.join('-') || code;
-            console.log(`\n🔑 Código de vinculación: ${code}`);
-            console.log('   Abre WhatsApp → Dispositivos vinculados → Vincular con número');
-            console.log(`   Ingresa el código: ${code}\n`);
-            return;
-        } catch (e) {
-            if (i === 0) {
-                console.log('⏳ Esperando conexión para solicitar código de vinculación...');
-            }
-            await new Promise(r => setTimeout(r, 1500));
-        }
-    }
-    console.log('⚠️ No se pudo solicitar código de vinculación tras varios intentos.');
 }
 
 async function startBot() {
@@ -206,11 +185,6 @@ async function startBot() {
         console.log('🔌 Socket de WhatsApp creado.');
 
         sock.ev.on('creds.update', saveCreds);
-
-        // Proactive pairing code: run in parallel to event loop
-        if (!state.creds.registered) {
-            requestPairingCodeProactively(sock);
-        }
 
         sock.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect, qr } = update;
