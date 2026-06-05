@@ -136,9 +136,9 @@
         @if (registerForm.controls.password.touched && registerForm.controls.password.invalid) {
           <span class="error-text">
             @if (registerForm.controls.password.hasError('required')) {
-              La contrasena es obligatoria.
+              La contraseña es obligatoria.
             } @else if (registerForm.controls.password.hasError('minlength')) {
-              La contrasena debe tener al menos 8 caracteres.
+              La contraseña debe tener al menos 8 caracteres.
             }
           </span>
         }
@@ -157,7 +157,7 @@
               registerForm.controls.confirmPassword.touched &&
               (registerForm.controls.confirmPassword.invalid || registerForm.hasError('passwordMismatch'))
             "
-            placeholder="Repite tu contrasena"
+            placeholder="Repite tu contraseña"
             autocomplete="new-password"
           />
           <button type="button" class="toggle-password" (click)="toggleConfirmPasswordVisibility()" tabindex="-1">
@@ -177,7 +177,7 @@
           </button>
         </div>
         @if (registerForm.controls.confirmPassword.touched && registerForm.hasError('passwordMismatch')) {
-          <span class="error-text">Las contrasenas no coinciden.</span>
+          <span class="error-text">Las contraseñas no coinciden.</span>
         }
       </div>
 
@@ -188,13 +188,13 @@
           <span class="checkbox-text">
             Acepto los
             <button type="button" class="link-button" (click)="openTermsModal()">
-              terminos y condiciones
+              términos y condiciones
             </button>
             del sistema.
           </span>
         </label>
         @if (registerForm.controls.acceptTerms.touched && registerForm.controls.acceptTerms.invalid) {
-          <span class="error-text">Debes aceptar los terminos y condiciones.</span>
+          <span class="error-text">Debes aceptar los términos y condiciones.</span>
         }
       </div>
 
@@ -222,7 +222,7 @@
   <div class="modal-overlay" (click)="closeTermsModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h2 class="modal-title">Terminos y Condiciones</h2>
+        <h2 class="modal-title">Términos y Condiciones</h2>
         <button type="button" class="modal-close" (click)="closeTermsModal()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18" />
@@ -263,14 +263,14 @@
 
         <h3>5. Sanciones</h3>
         <p>
-          El incumplimiento de estos terminos podra resultar en la suspension temporal o
+          El incumplimiento de estos términos podra resultar en la suspension temporal o
           permanente del acceso al sistema, asi como en las sanciones academicas o
           administrativas que correspondan segun la normativa del ITCR.
         </p>
 
         <h3>6. Modificaciones</h3>
         <p>
-          El CIVCO se reserva el derecho de modificar estos terminos y condiciones en cualquier
+          El CIVCO se reserva el derecho de modificar estos términos y condiciones en cualquier
           momento. Los usuarios seran notificados de cualquier cambio relevante.
         </p>
       </div>

@@ -15,8 +15,8 @@ import { ConfirmModal } from '../../../../shared/components/confirm-modal/confir
   styleUrl: './loan-request.css'
 })
 export class LoanRequestComponent {
-  titulo = 'Solicitar Prestamo';
-  descripcion = 'Complete el formulario para registrar un nuevo prestamo de activo';
+  titulo = 'Solicitar Préstamo';
+  descripcion = 'Complete el formulario para registrar un nuevo préstamo de activo';
   modalConfirmacionAbierto = false;
   procesandoSolicitud = false;
   solicitudCompletada = false;
@@ -107,11 +107,11 @@ export class LoanRequestComponent {
 
   get modalTitulo(): string {
     if (this.solicitudCompletada) {
-      return 'Prestamo realizado';
+      return 'Préstamo realizado';
     }
 
     if (this.procesandoSolicitud) {
-      return 'Registrando prestamo';
+      return 'Registrando préstamo';
     }
 
     return 'Confirmar préstamo';
