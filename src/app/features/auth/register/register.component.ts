@@ -6,7 +6,7 @@ import { FirebaseError } from '@angular/fire/app';
 import { AuthService } from '../services/auth.service';
 import { passwordMatchValidator } from '../../../shared/validators/password-match.validator';
 
-const EMAIL_DOMAINS = ['@estudiantec.cr', '@itcr.ac.cr'] as const;
+const EMAIL_DOMAINS = ['@estudiantec.cr', '@itcr.ac.cr', '@fundatec.ac.cr'] as const;
 type EmailDomain = (typeof EMAIL_DOMAINS)[number];
 
 @Component({
@@ -46,7 +46,7 @@ export class RegisterComponent {
 
   constructor() {
     this.registerForm.controls.emailDomain.valueChanges.subscribe((domain) => {
-      const isStaff = domain === '@itcr.ac.cr';
+      const isStaff = domain === '@itcr.ac.cr' || domain === '@fundatec.ac.cr';
       this.isStaffEmail.set(isStaff);
 
       const studentIdControl = this.registerForm.controls.studentId;

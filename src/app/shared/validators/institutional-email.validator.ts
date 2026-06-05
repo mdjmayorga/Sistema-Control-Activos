@@ -1,6 +1,6 @@
 import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 
-export const INSTITUTIONAL_DOMAINS = ['estudiantec.cr', 'itcr.ac.cr'];
+export const INSTITUTIONAL_DOMAINS = ['estudiantec.cr', 'itcr.ac.cr', 'fundatec.ac.cr'];
 
 /**
  * Validates that the email belongs to an institutional ITCR domain.
