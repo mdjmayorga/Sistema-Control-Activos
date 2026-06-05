@@ -262,8 +262,8 @@ async function startBot() {
                     console.log('🧹 Credenciales de vinculación incompleta limpiadas.');
                 }
                 isInitializing = false;
-                reconnectAttempt++;
                 const delay = getReconnectDelay(isRestartRequired);
+                reconnectAttempt++;
                 scheduleReconnect(startBot, delay);
             }
         });
@@ -353,8 +353,8 @@ async function startBot() {
     } catch (e) {
         console.error('❌ Error al iniciar el bot:', e);
         isInitializing = false;
-        reconnectAttempt++;
         const delay = getReconnectDelay();
+        reconnectAttempt++;
         scheduleReconnect(startBot, delay);
     }
 }
