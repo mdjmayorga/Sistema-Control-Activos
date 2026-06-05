@@ -96,33 +96,33 @@
 }
 
 .devolucion-modal__btn--ghost {
-	border-color: rgba(148, 163, 184, 0.35);
-	background: transparent;
-	color: #cbd5e1;
+	border-color: #2859bb;
+	background: #0f172a;
+	color: #ffffff;
+	font-weight: 500;
+	font-size: 14px;
 }
 
 .devolucion-modal__btn--confirm {
 	border-color: #2859bb;
 	background: #0f172a;
 	color: #ffffff;
+	font-weight: 500;
+	font-size: 14px;
 }
 
 .devolucion-modal__btn--whatsapp {
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
-	border-color: #25d366;
-	background: #25d366;
+	border-color: #2859bb;
+	background: #0f172a;
 	color: #ffffff;
 	text-decoration: none;
-	font-weight: 500;
+	font-weight: 400;
 	font-size: 14px;
 }
 
-.devolucion-modal__btn--whatsapp:hover {
-	background: #1ebe57;
-	border-color: #1ebe57;
-}
 
 .devolucion-modal__qr-container {
 	display: flex;
