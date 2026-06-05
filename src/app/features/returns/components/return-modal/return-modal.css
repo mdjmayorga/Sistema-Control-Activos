@@ -107,6 +107,23 @@
 	color: #ffffff;
 }
 
+.devolucion-modal__btn--whatsapp {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	border-color: #25d366;
+	background: #25d366;
+	color: #ffffff;
+	text-decoration: none;
+	font-weight: 500;
+	font-size: 14px;
+}
+
+.devolucion-modal__btn--whatsapp:hover {
+	background: #1ebe57;
+	border-color: #1ebe57;
+}
+
 .devolucion-modal__qr-container {
 	display: flex;
 	justify-content: center;
