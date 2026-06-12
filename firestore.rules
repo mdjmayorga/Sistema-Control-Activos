@@ -10,7 +10,8 @@ service cloud.firestore {
 
     function hasInstitutionalEmail() {
       return request.auth.token.email.matches('.*@estudiantec\\.cr$')
-          || request.auth.token.email.matches('.*@itcr\\.ac\\.cr$');
+          || request.auth.token.email.matches('.*@itcr\\.ac\\.cr$')
+          || request.auth.token.email.matches('.*@fundatec\\.ac\\.cr$');
     }
 
     function isOwner(userId) {
