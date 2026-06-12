@@ -17,6 +17,26 @@ admin.initializeApp();
 
 const IS_EMULATOR = process.env.FUNCTIONS_EMULATOR === "true";
 
+// ── Helper: correos de administradores ───────────────────────────────────────
+
+async function obtenerCorreosAdmin(): Promise<string[]> {
+  const snapshot = await admin
+    .firestore()
+    .collection("users")
+    .where("role", "==", "admin")
+    .get();
+
+  const correos = snapshot.docs
+    .map((doc) => doc.data().email as string | undefined)
+    .filter((email): email is string => !!email);
+
+  if (correos.length === 0) {
+    console.warn("No se encontraron administradores en Firestore.");
+  }
+
+  return correos;
+}
+
 // ── Helpers CSV ──────────────────────────────────────────────────────────────
 
 interface LoanData {
@@ -141,9 +161,12 @@ export const notificarDanoActivo = onDocumentWritten(
       razonPrestamo
     );
 
+    const destinatarios = await obtenerCorreosAdmin();
+    if (destinatarios.length === 0) return;
+
     // Documento que se agrega a "mail",  la extensión lo toma y envía el correo.
     const payload = {
-      to: ["jccoto@itcr.ac.cr", "deyamaradiaga0112@gmail.com"],
+      to: destinatarios,
       message: {
         subject: `URGENTE: Daño en ${activo}`,
         html: htmlListo,
@@ -213,9 +236,11 @@ export const enviarHistorialMensual = onSchedule(
 
     const csvContent = generarCSV(loans);
     const htmlContent = getHistorialMensualTemplate(mesLabel, loans.length);
+    const destinatarios = await obtenerCorreosAdmin();
+    if (destinatarios.length === 0) return;
 
     const payload = {
-      to: ["jccoto@itcr.ac.cr", "mayorga.halabi@gmail.com"],
+      to: destinatarios,
       message: {
         subject: `Historial mensual de préstamos CIVCO — ${mesLabel}`,
         html: htmlContent,
@@ -726,9 +751,11 @@ export const monitoreoSistemaDiario = onSchedule(
     });
 
     const html = getAlertaMonitoreoTemplate(problemas, metricas, ahora);
+    const destinatarios = await obtenerCorreosAdmin();
+    if (destinatarios.length === 0) return;
 
     const payload = {
-      to: ["jccoto@itcr.ac.cr", "deyamaradiaga0112@gmail.com"],
+      to: destinatarios,
       message: {
         subject: `ALERTA: Problemas en el Sistema CIVCO (${problemas.length})`,
         html,
