@@ -6,6 +6,9 @@ import { LoanService } from '../../services/loan.service';
 import { PageLayout } from '../../../../layout/components/page-layout/page-layout';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ConfirmModal } from '../../../../shared/components/confirm-modal/confirm-modal';
+import { EQUIPMENT_OPTIONS, CREW_OPTIONS, TOPOGRAPHY_GROUP_OPTIONS } from '../../../../core/constants/loan-options';
+
+const SERIAL_PATTERN = /^[A-Za-z0-9-]+$/;
 
 @Component({
   selector: 'app-loan-request',
@@ -22,6 +25,14 @@ export class LoanRequestComponent {
   solicitudCompletada = false;
   loanForm: FormGroup;
 
+  readonly equipmentOptions = EQUIPMENT_OPTIONS;
+  readonly crewOptions = CREW_OPTIONS;
+  readonly groupOptions = TOPOGRAPHY_GROUP_OPTIONS;
+
+  activosSeleccionados: string[] = [];
+  activosTouched = false;
+  numerosSerie: Record<string, string> = {};
+
   constructor(
     private fb: FormBuilder,
     private loanService: LoanService,
@@ -32,13 +43,49 @@ export class LoanRequestComponent {
       grupoTopografia: ['', Validators.required],
       cuadrilla: ['', Validators.required],
       razonPrestamo: ['', Validators.required],
-      activo: ['', Validators.required],
-      numeroSerie: ['', Validators.pattern(/^[A-Za-z0-9-]+$/)]
     });
   }
 
+  get activosInvalid(): boolean {
+    return this.activosTouched && this.activosSeleccionados.length === 0;
+  }
+
+  isActivoSelected(equipo: string): boolean {
+    return this.activosSeleccionados.includes(equipo);
+  }
+
+  toggleActivo(equipo: string, event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (checked) {
+      this.activosSeleccionados.push(equipo);
+    } else {
+      this.activosSeleccionados = this.activosSeleccionados.filter(a => a !== equipo);
+      delete this.numerosSerie[equipo];
+    }
+    this.activosTouched = true;
+  }
+
+  getNumeroSerie(equipo: string): string {
+    return this.numerosSerie[equipo] ?? '';
+  }
+
+  setNumeroSerie(equipo: string, event: Event): void {
+    this.numerosSerie[equipo] = (event.target as HTMLInputElement).value;
+  }
+
+  hasSerialError(equipo: string): boolean {
+    const val = this.numerosSerie[equipo];
+    return !!val && !SERIAL_PATTERN.test(val);
+  }
+
+  private get hasAnySerialError(): boolean {
+    return this.activosSeleccionados.some(a => this.hasSerialError(a));
+  }
+
   onSubmit(): void {
-    if (this.loanForm.invalid) {
+    this.activosTouched = true;
+
+    if (this.loanForm.invalid || this.activosSeleccionados.length === 0 || this.hasAnySerialError) {
       this.loanForm.markAllAsTouched();
       return;
     }
@@ -76,20 +123,35 @@ export class LoanRequestComponent {
       currentUser.email,
     );
 
-    const prestamo = {
-      ...this.loanForm.value,
-      estado: 'activo' as const,
-      fechaPrestamo: new Date().toISOString(),
-      usuarioId: currentUser.uid,
-      usuarioNombre,
-      correoInstitucional: currentUser.email ?? 'N/A',
-    };
+    const fechaPrestamo = new Date().toISOString();
+    const grupoId = crypto.randomUUID();
 
     try {
-      await this.loanService.crearPrestamo(prestamo);
+      const promesas = this.activosSeleccionados.map(activo => {
+        const serie = this.numerosSerie[activo]?.trim() || '';
+        const prestamo = {
+          ...this.loanForm.value,
+          activo,
+          estado: 'activo' as const,
+          fechaPrestamo,
+          usuarioId: currentUser.uid,
+          usuarioNombre,
+          correoInstitucional: currentUser.email ?? 'N/A',
+          grupoPrestamoId: grupoId,
+          activosGrupo: [...this.activosSeleccionados],
+          ...(serie ? { numeroSerie: serie } : {}),
+        };
+        return this.loanService.crearPrestamo(prestamo);
+      });
+
+      await Promise.all(promesas);
+
       this.procesandoSolicitud = false;
       this.solicitudCompletada = true;
       this.loanForm.reset();
+      this.activosSeleccionados = [];
+      this.activosTouched = false;
+      this.numerosSerie = {};
       await this.esperar(900);
 
       const rutaMisPrestamos = this.router.url.startsWith('/admin')
@@ -119,14 +181,16 @@ export class LoanRequestComponent {
 
   get modalMensaje(): string {
     if (this.solicitudCompletada) {
-      return 'Se realizo el préstamo';
+      return 'Se realizó el préstamo';
     }
 
     if (this.procesandoSolicitud) {
       return 'Realizando préstamo...';
     }
 
-    return '¿Desea registrar este préstamo y continuar a Mis préstamos?';
+    const count = this.activosSeleccionados.length;
+    const activos = this.activosSeleccionados.join(', ');
+    return `¿Desea registrar el préstamo de ${count} activo${count > 1 ? 's' : ''}? (${activos})`;
   }
 
   get textoConfirmarModal(): string {
@@ -149,5 +213,8 @@ export class LoanRequestComponent {
 
   onCancel() {
     this.loanForm.reset();
+    this.activosSeleccionados = [];
+    this.activosTouched = false;
+    this.numerosSerie = {};
   }
 }

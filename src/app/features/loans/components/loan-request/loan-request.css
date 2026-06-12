@@ -88,6 +88,95 @@
   margin: 8px 0 18px 0;
 }
 
+.checkbox-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 24px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.checkbox-list.error-border {
+  border: 1px solid #f87171;
+}
+
+.checkbox-group {
+  border-radius: 6px;
+  padding: 2px 0;
+  transition: background 120ms ease;
+}
+
+.checkbox-group.selected {
+  grid-column: 1 / -1;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px 8px;
+  margin: 2px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px 4px;
+  border-radius: 4px;
+  transition: background 120ms ease;
+  font-size: 14px;
+  color: #f8fafc;
+}
+
+.checkbox-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkbox-item span {
+  user-select: none;
+}
+
+.serial-field {
+  padding: 4px 4px 4px 30px;
+}
+
+.serial-input {
+  width: 100%;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f8fafc;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 120ms ease;
+}
+
+.serial-input:focus {
+  border-color: var(--border-focus);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.serial-input::placeholder {
+  color: #a8b0be;
+}
+
+.serial-input.serial-error {
+  border-color: #f87171;
+}
+
 .optional {
   display: inline-block;
   margin-left: 10px;
@@ -187,5 +276,9 @@ input.ng-invalid.ng-touched {
   .btn {
     width: 100%;
     max-width: 320px;
+  }
+
+  .checkbox-list {
+    grid-template-columns: 1fr;
   }
 }

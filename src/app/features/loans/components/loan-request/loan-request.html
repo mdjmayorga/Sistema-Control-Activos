@@ -6,9 +6,9 @@
             <label>GRUPO DE TOPOGRAFÍA</label>
             <select formControlName="grupoTopografia">
               <option value="">seleccione</option>
-              <option value="Grupo de Topografia">Grupo de Topografía</option>
-              <option value="Grupo de Taller">Grupo de Taller</option>
-              <option value="Grupo de Proyecto">Grupo de Proyecto</option>
+              @for (grupo of groupOptions; track grupo) {
+                <option [value]="grupo">{{ grupo }}</option>
+              }
             </select>
 
             <small
@@ -23,17 +23,9 @@
             <label>CUADRILLA</label>
             <select formControlName="cuadrilla">
               <option value="">seleccione</option>
-              <option value="Cuadrilla 1">Cuadrilla 1</option>
-              <option value="Cuadrilla 2">Cuadrilla 2</option>
-              <option value="Cuadrilla 3">Cuadrilla 3</option>
-              <option value="Cuadrilla 4">Cuadrilla 4</option>
-              <option value="Cuadrilla 5">Cuadrilla 5</option>
-              <option value="Cuadrilla 6">Cuadrilla 6</option>
-              <option value="Cuadrilla 7">Cuadrilla 7</option>
-              <option value="Cuadrilla 8">Cuadrilla 8</option>
-              <option value="Cuadrilla 9">Cuadrilla 9</option>
-              <option value="Cuadrilla 10">Cuadrilla 10</option>
-              <option value="Ninguna">Ninguna</option>
+              @for (crew of crewOptions; track crew) {
+                <option [value]="crew">{{ crew }}</option>
+              }
             </select>
 
             <small
@@ -65,50 +57,42 @@
         <div class="divider"></div>
 
         <div class="field">
-          <label>ACTIVO</label>
-          <select formControlName="activo">
-            <option value="">seleccione</option>
-            <option value="Tripode de Aluminio">Trípode de Aluminio</option>
-            <option value="Nivel Automatico">Nivel Automático</option>
-            <option value="Estaciones Totales">Estaciones Totales(Sokkia)</option>
-            <option value="Estacion">Estadias</option>
-            <option value="Baston de Prisma">Bastón de Prisma</option>
-            <option value="Prisma">Prisma</option>
-            <option value="Tripode">Trípode</option>
-            <option value="Cinta metrica de topografia">Cinta métrica de topografía</option>
-            <option value="Odometro">Odómetro</option>
-            <option value="Aplica">Aplica</option>
-          </select>
-
-          <small
-            class="error"
-            *ngIf="loanForm.get('activo')?.invalid && loanForm.get('activo')?.touched"
-          >
-            Este campo es obligatorio
+          <label>ACTIVOS A SOLICITAR</label>
+          <small class="help-text" style="margin-top: 0; margin-bottom: 10px;">
+            Seleccione los activos e ingrese el número de serie si aplica
           </small>
-        </div>
+          <div class="checkbox-list" [class.error-border]="activosInvalid">
+            @for (equipo of equipmentOptions; track equipo) {
+              <div class="checkbox-group" [class.selected]="isActivoSelected(equipo)">
+                <label class="checkbox-item">
+                  <input
+                    type="checkbox"
+                    [value]="equipo"
+                    [checked]="isActivoSelected(equipo)"
+                    (change)="toggleActivo(equipo, $event)" />
+                  <span>{{ equipo }}</span>
+                </label>
 
-        <div class="field">
-          <label>
-            NÚMERO DE SERIE
-            <span class="optional">Opcional</span>
-          </label>
+                @if (isActivoSelected(equipo)) {
+                  <div class="serial-field">
+                    <input
+                      type="text"
+                      class="serial-input"
+                      [placeholder]="'N° serie (opcional)'"
+                      [value]="getNumeroSerie(equipo)"
+                      (input)="setNumeroSerie(equipo, $event)"
+                      [class.serial-error]="hasSerialError(equipo)" />
+                    @if (hasSerialError(equipo)) {
+                      <small class="error">Formato no válido (solo letras, números y guiones)</small>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
 
-          <input
-            type="text"
-            formControlName="numeroSerie"
-            placeholder="Ejemplo: SRV-2021008-01"
-          />
-
-          <small
-            class="error"
-            *ngIf="loanForm.get('numeroSerie')?.invalid && loanForm.get('numeroSerie')?.touched"
-          >
-            El formato del número de serie no es válido
-          </small>
-
-          <small class="help-text">
-            Si el activo no trae su respectivo número de serie omitirlo
+          <small class="error" *ngIf="activosInvalid">
+            Debe seleccionar al menos un activo
           </small>
         </div>
 

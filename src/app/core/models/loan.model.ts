@@ -11,4 +11,6 @@ export interface Loan {
   fechaDevolucion?: string | null;
   usuarioId: string;
   usuarioNombre: string;
+  grupoPrestamoId?: string;
+  activosGrupo?: string[];
 }

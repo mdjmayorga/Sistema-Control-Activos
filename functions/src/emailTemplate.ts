@@ -381,11 +381,28 @@ export const getPasswordResetEmailTemplate = (
 };
 
 export const getPrestamoCreadoEmailTemplate = (
-  activo: string,
+  activos: string[],
   grupo: string,
   cuadrilla: string,
   fechaPrestamo: string,
 ): string => {
+  const activosRows = activos
+    .map(
+      (activo, i) => `
+        <tr>
+          <td width="42%"
+            style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
+            <span style="font-size:12px;font-weight:600;color:#4a5568;">${i === 0 ? "Activos prestados" : ""}</span>
+          </td>
+          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
+            <span style="font-size:12px;color:#1a2340;">
+              ${activo}
+            </span>
+          </td>
+        </tr>`
+    )
+    .join("");
+
   return `
 <!-- ══ EMAIL: Confirmación de Préstamo - CIVCO/TEC ══ -->
 <div style="margin:0;padding:32px 16px;background-color:#f0f2f5;font-family:Arial,Helvetica,sans-serif;">
@@ -412,7 +429,7 @@ export const getPrestamoCreadoEmailTemplate = (
 
       <p style="font-size:14px;color:#4a5568;line-height:1.7;margin:0 0 28px 0;padding:14px 18px;background-color:#e8ecf7;border-left:4px solid #00205b;">
         Se le informa que su solicitud de préstamo fue registrada correctamente
-        en el Sistema de Control de Activos CIVCO.
+        en el Sistema de Control de Activos CIVCO. Se registraron <strong>${activos.length} activo${activos.length > 1 ? "s" : ""}</strong>.
       </p>
 
       <div style="font-size:10px;font-weight:700;color:#00205b;letter-spacing:2px;text-transform:uppercase;margin:0 0 10px 0;border-bottom:1px solid #d0d8ee;padding-bottom:6px;">
@@ -422,18 +439,7 @@ export const getPrestamoCreadoEmailTemplate = (
       <table width="100%" cellpadding="0" cellspacing="0" border="0"
         style="border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:24px;">
 
-        <tr>
-          <td width="42%"
-            style="padding:11px 14px;background-color:#eef1fb;border-bottom:1px solid #e8edf7;border-right:1px solid #e8edf7;">
-            <span style="font-size:12px;font-weight:600;color:#4a5568;">Activo</span>
-          </td>
-
-          <td style="padding:11px 14px;background-color:#ffffff;border-bottom:1px solid #e8edf7;">
-            <span style="font-size:12px;color:#a0aec0;font-style:italic;">
-              ${activo}
-            </span>
-          </td>
-        </tr>
+        ${activosRows}
 
         <tr>
           <td

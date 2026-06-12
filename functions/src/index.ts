@@ -327,6 +327,7 @@ export const enviarHistorialManual = onRequest(
 
 // PR004 - Correo automático al usuario cuando crea un préstamo.
 // Se ejecuta cuando se crea un documento en "prestamos".
+// Solo envía correo para el primer documento de un grupo de préstamos.
 export const notificarPrestamoCreado = onDocumentCreated(
   "prestamos/{prestamoId}",
   async (event) => {
@@ -337,7 +338,6 @@ export const notificarPrestamoCreado = onDocumentCreated(
       return;
     }
 
-    // Devuelve el valor del campo o "N/A" si no existe.
     const fieldOrNA = (value: unknown): string => {
       if (typeof value === "string" && value.trim()) {
         return value.trim();
@@ -346,9 +346,27 @@ export const notificarPrestamoCreado = onDocumentCreated(
       return "N/A";
     };
 
-    // Datos necesarios para el correo.
+    const activosGrupo: string[] = Array.isArray(prestamo.activosGrupo)
+      ? prestamo.activosGrupo
+      : [fieldOrNA(prestamo.activo)];
+    const grupoPrestamoId = prestamo.grupoPrestamoId || null;
+
+    // Si hay grupoPrestamoId, solo el primer documento del grupo envía correo.
+    if (grupoPrestamoId) {
+      const existentes = await admin
+        .firestore()
+        .collection("prestamos")
+        .where("grupoPrestamoId", "==", grupoPrestamoId)
+        .get();
+
+      const ids = existentes.docs.map((d) => d.id).sort();
+      if (ids[0] !== event.params.prestamoId) {
+        console.log("Correo ya enviado por otro documento del grupo.");
+        return;
+      }
+    }
+
     const correoUsuario = fieldOrNA(prestamo.correoInstitucional);
-    const activo = fieldOrNA(prestamo.activo);
     const grupo = fieldOrNA(prestamo.grupoTopografia);
     const cuadrilla = fieldOrNA(prestamo.cuadrilla);
     const fechaPrestamo = fieldOrNA(prestamo.fechaPrestamo);
@@ -358,26 +376,30 @@ export const notificarPrestamoCreado = onDocumentCreated(
       return;
     }
 
-    // Genera el HTML usando la plantilla.
     const htmlListo = getPrestamoCreadoEmailTemplate(
-      activo,
+      activosGrupo,
       grupo,
       cuadrilla,
       fechaPrestamo
     );
 
-    // Construye el documento que se guardará en "mail".
+    const subjectActivos =
+      activosGrupo.length === 1
+        ? activosGrupo[0]
+        : `${activosGrupo.length} activos`;
+
     const payload = {
       to: [correoUsuario],
 
       message: {
-        subject: `Confirmación de préstamo registrado - ${activo}`,
+        subject: `Confirmación de préstamo registrado - ${subjectActivos}`,
         html: htmlListo,
       },
 
       tipo: "confirmacion-prestamo",
 
       prestamoId: event.params.prestamoId,
+      grupoPrestamoId: grupoPrestamoId || event.params.prestamoId,
 
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
@@ -387,7 +409,6 @@ export const notificarPrestamoCreado = onDocumentCreated(
       console.log(JSON.stringify(payload, null, 2));
     }
 
-    // Guarda el correo en la colección "mail".
     await admin.firestore().collection("mail").add(payload);
 
     console.log(`Correo creado para ${correoUsuario}`);

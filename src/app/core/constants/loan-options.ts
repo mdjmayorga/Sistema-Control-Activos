@@ -1,7 +1,13 @@
 export const EQUIPMENT_OPTIONS = [
   'Trípode de Aluminio',
   'Nivel Automático',
-  'Estaciones Totales(Sokkia)',
+  'Estación total: Trimble 1',
+  'Estación total: Trimble 2',
+  'Estación total: Trimble 3',
+  'Estación total: Geomax 1',
+  'Estación total: Geomax 2',
+  'Estación total: Geomax 3',
+  'Otra Estación Total',
   'Estadias',
   'Bastón de Prisma',
   'Prisma',
@@ -26,7 +32,8 @@ export const CREW_OPTIONS = [
 ] as const;
 
 export const TOPOGRAPHY_GROUP_OPTIONS = [
-  'Grupo de Topografía',
+  'Grupo de Topografía Básica',
+  'Grupo de Topografía Aplicada',
   'Grupo de Taller',
   'Grupo de Proyecto',
 ] as const;
