@@ -3,12 +3,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { map } from 'rxjs';
 import { LoanService } from '../../services/loan.service';
 import { PageLayout } from '../../../../layout/components/page-layout/page-layout';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ConfirmModal } from '../../../../shared/components/confirm-modal/confirm-modal';
 import { EQUIPMENT_OPTIONS, CREW_OPTIONS, TOPOGRAPHY_GROUP_OPTIONS } from '../../../../core/constants/loan-options';
-import { AssetService } from '../../../admin/services/asset.service';
 import { Asset } from '../../../../core/models/asset.model';
 
 const SERIAL_PATTERN = /^[A-Za-z0-9-]+$/;
@@ -21,7 +22,7 @@ const SERIAL_PATTERN = /^[A-Za-z0-9-]+$/;
   styleUrl: './loan-request.css'
 })
 export class LoanRequestComponent implements OnInit {
-  private readonly assetService = inject(AssetService);
+  private readonly firestore = inject(Firestore);
   private readonly destroyRef = inject(DestroyRef);
 
   titulo = 'Solicitar Préstamo';
@@ -59,9 +60,12 @@ export class LoanRequestComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.assetService
-      .obtenerActivos()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+    const ref = collection(this.firestore, 'activos');
+    (collectionData(ref, { idField: 'id' }) as import('rxjs').Observable<Asset[]>)
+      .pipe(
+        map((assets) => assets.sort((a, b) => a.nombre.localeCompare(b.nombre))),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe((activos) => {
         this.equipmentAssets = activos.length > 0
           ? activos

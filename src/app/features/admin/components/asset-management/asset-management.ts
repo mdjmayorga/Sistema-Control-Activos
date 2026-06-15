@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Firestore, doc, deleteDoc } from '@angular/fire/firestore';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PageLayout } from '../../../../layout/components/page-layout/page-layout';
 import { ConfirmModal } from '../../../../shared/components/confirm-modal/confirm-modal';
@@ -17,6 +18,7 @@ import { EQUIPMENT_OPTIONS } from '../../../../core/constants/loan-options';
 })
 export class AssetManagementPage implements OnInit {
   private readonly assetService = inject(AssetService);
+  private readonly firestore = inject(Firestore);
   private readonly destroyRef = inject(DestroyRef);
   private seedDone = false;
 
@@ -100,7 +102,8 @@ export class AssetManagementPage implements OnInit {
 
     this.eliminando = true;
     try {
-      await this.assetService.eliminarActivo(this.activoAEliminar.id);
+      const ref = doc(this.firestore, 'activos', this.activoAEliminar.id);
+      await deleteDoc(ref);
     } catch {
       this.errorMensaje = 'Error al eliminar el activo.';
     } finally {

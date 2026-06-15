@@ -4,12 +4,8 @@ import {
   collection,
   collectionData,
   addDoc,
-  deleteDoc,
-  doc,
-  query,
-  orderBy,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Asset } from '../../../core/models/asset.model';
 
 @Injectable({
@@ -21,17 +17,13 @@ export class AssetService {
 
   obtenerActivos(): Observable<Asset[]> {
     const ref = collection(this.firestore, this.collectionName);
-    const q = query(ref, orderBy('nombre'));
-    return collectionData(q, { idField: 'id' }) as Observable<Asset[]>;
+    return (collectionData(ref, { idField: 'id' }) as Observable<Asset[]>).pipe(
+      map((assets) => assets.sort((a, b) => a.nombre.localeCompare(b.nombre)))
+    );
   }
 
   async agregarActivo(asset: Omit<Asset, 'id'>): Promise<void> {
     const ref = collection(this.firestore, this.collectionName);
     await addDoc(ref, asset);
-  }
-
-  async eliminarActivo(id: string): Promise<void> {
-    const ref = doc(this.firestore, this.collectionName, id);
-    await deleteDoc(ref);
   }
 }
