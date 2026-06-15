@@ -63,7 +63,11 @@ export class LoanRequestComponent implements OnInit {
     const ref = collection(this.firestore, 'activos');
     (collectionData(ref, { idField: 'id' }) as import('rxjs').Observable<Asset[]>)
       .pipe(
-        map((assets) => assets.sort((a, b) => a.nombre.localeCompare(b.nombre))),
+        map((assets) =>
+          assets
+            .filter((a) => typeof a.nombre === 'string' && a.nombre.trim() !== '')
+            .sort((a, b) => a.nombre.localeCompare(b.nombre))
+        ),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({

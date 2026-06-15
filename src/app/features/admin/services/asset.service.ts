@@ -18,7 +18,11 @@ export class AssetService {
   obtenerActivos(): Observable<Asset[]> {
     const ref = collection(this.firestore, this.collectionName);
     return (collectionData(ref, { idField: 'id' }) as Observable<Asset[]>).pipe(
-      map((assets) => assets.sort((a, b) => a.nombre.localeCompare(b.nombre)))
+      map((assets) =>
+        assets
+          .filter((a) => typeof a.nombre === 'string' && a.nombre.trim() !== '')
+          .sort((a, b) => a.nombre.localeCompare(b.nombre))
+      )
     );
   }
 
