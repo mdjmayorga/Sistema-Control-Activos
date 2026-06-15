@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, inject, DestroyRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LoanService } from '../../services/loan.service';
 import { PageLayout } from '../../../../layout/components/page-layout/page-layout';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ConfirmModal } from '../../../../shared/components/confirm-modal/confirm-modal';
 import { EQUIPMENT_OPTIONS, CREW_OPTIONS, TOPOGRAPHY_GROUP_OPTIONS } from '../../../../core/constants/loan-options';
+import { AssetService } from '../../../admin/services/asset.service';
+import { Asset } from '../../../../core/models/asset.model';
 
 const SERIAL_PATTERN = /^[A-Za-z0-9-]+$/;
 
@@ -17,7 +20,10 @@ const SERIAL_PATTERN = /^[A-Za-z0-9-]+$/;
   templateUrl: './loan-request.html',
   styleUrl: './loan-request.css'
 })
-export class LoanRequestComponent {
+export class LoanRequestComponent implements OnInit {
+  private readonly assetService = inject(AssetService);
+  private readonly destroyRef = inject(DestroyRef);
+
   titulo = 'Solicitar Préstamo';
   descripcion = 'Complete el formulario para registrar un nuevo préstamo de activo';
   modalConfirmacionAbierto = false;
@@ -25,13 +31,19 @@ export class LoanRequestComponent {
   solicitudCompletada = false;
   loanForm: FormGroup;
 
-  readonly equipmentOptions = EQUIPMENT_OPTIONS;
+  private static readonly defaultAssets: Asset[] = EQUIPMENT_OPTIONS.map((nombre) => ({
+    nombre,
+    esCuantitativo: false,
+  }));
+
+  equipmentAssets: Asset[] = LoanRequestComponent.defaultAssets;
   readonly crewOptions = CREW_OPTIONS;
   readonly groupOptions = TOPOGRAPHY_GROUP_OPTIONS;
 
   activosSeleccionados: string[] = [];
   activosTouched = false;
   numerosSerie: Record<string, string> = {};
+  cantidades: Record<string, number> = {};
 
   constructor(
     private fb: FormBuilder,
@@ -46,6 +58,40 @@ export class LoanRequestComponent {
     });
   }
 
+  ngOnInit(): void {
+    this.assetService
+      .obtenerActivos()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((activos) => {
+        this.equipmentAssets = activos.length > 0
+          ? activos
+          : LoanRequestComponent.defaultAssets;
+      });
+  }
+
+  getAsset(nombre: string): Asset | undefined {
+    return this.equipmentAssets.find((a) => a.nombre === nombre);
+  }
+
+  esCuantitativo(equipo: string): boolean {
+    return this.getAsset(equipo)?.esCuantitativo ?? false;
+  }
+
+  getCantidad(equipo: string): number {
+    return this.cantidades[equipo] ?? 1;
+  }
+
+  incrementarCantidad(equipo: string): void {
+    this.cantidades[equipo] = this.getCantidad(equipo) + 1;
+  }
+
+  decrementarCantidad(equipo: string): void {
+    const actual = this.getCantidad(equipo);
+    if (actual > 1) {
+      this.cantidades[equipo] = actual - 1;
+    }
+  }
+
   get activosInvalid(): boolean {
     return this.activosTouched && this.activosSeleccionados.length === 0;
   }
@@ -58,9 +104,13 @@ export class LoanRequestComponent {
     const checked = (event.target as HTMLInputElement).checked;
     if (checked) {
       this.activosSeleccionados.push(equipo);
+      if (this.esCuantitativo(equipo)) {
+        this.cantidades[equipo] = 1;
+      }
     } else {
       this.activosSeleccionados = this.activosSeleccionados.filter(a => a !== equipo);
       delete this.numerosSerie[equipo];
+      delete this.cantidades[equipo];
     }
     this.activosTouched = true;
   }
@@ -129,6 +179,7 @@ export class LoanRequestComponent {
     try {
       const promesas = this.activosSeleccionados.map(activo => {
         const serie = this.numerosSerie[activo]?.trim() || '';
+        const cantidad = this.esCuantitativo(activo) ? this.getCantidad(activo) : undefined;
         const prestamo = {
           ...this.loanForm.value,
           activo,
@@ -140,6 +191,7 @@ export class LoanRequestComponent {
           grupoPrestamoId: grupoId,
           activosGrupo: [...this.activosSeleccionados],
           ...(serie ? { numeroSerie: serie } : {}),
+          ...(cantidad != null ? { cantidad } : {}),
         };
         return this.loanService.crearPrestamo(prestamo);
       });
@@ -152,6 +204,7 @@ export class LoanRequestComponent {
       this.activosSeleccionados = [];
       this.activosTouched = false;
       this.numerosSerie = {};
+      this.cantidades = {};
       await this.esperar(900);
 
       const rutaMisPrestamos = this.router.url.startsWith('/admin')
@@ -189,7 +242,12 @@ export class LoanRequestComponent {
     }
 
     const count = this.activosSeleccionados.length;
-    const activos = this.activosSeleccionados.join(', ');
+    const activos = this.activosSeleccionados
+      .map(a => {
+        const cant = this.esCuantitativo(a) ? this.getCantidad(a) : 0;
+        return cant > 1 ? `${a} (x${cant})` : a;
+      })
+      .join(', ');
     return `¿Desea registrar el préstamo de ${count} activo${count > 1 ? 's' : ''}? (${activos})`;
   }
 
@@ -216,5 +274,6 @@ export class LoanRequestComponent {
     this.activosSeleccionados = [];
     this.activosTouched = false;
     this.numerosSerie = {};
+    this.cantidades = {};
   }
 }

@@ -146,6 +146,62 @@
   user-select: none;
 }
 
+.quantity-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 4px 2px 30px;
+}
+
+.quantity-label {
+  color: #a8b0be;
+  font-size: 12px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.quantity-btn {
+  width: 30px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: #f8fafc;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 120ms ease;
+}
+
+.quantity-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.quantity-btn:disabled {
+  color: #4a5568;
+  cursor: not-allowed;
+}
+
+.quantity-value {
+  min-width: 32px;
+  text-align: center;
+  color: #f8fafc;
+  font-size: 14px;
+  font-weight: 500;
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 4px 0;
+}
+
 .serial-field {
   padding: 4px 4px 4px 30px;
 }

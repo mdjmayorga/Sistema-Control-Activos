@@ -1,0 +1,84 @@
+<app-page-layout title="Gestión de Activos" description="Agregue o elimine activos disponibles para préstamo">
+  <div class="asset-wrapper">
+    <div class="form-panel">
+      <h3 class="section-title">Agregar nuevo activo</h3>
+
+      <div class="add-form">
+        <div class="field">
+          <label>NOMBRE DEL ACTIVO</label>
+          <input
+            type="text"
+            [(ngModel)]="nuevoNombre"
+            placeholder="Ej: Nivel Automático"
+            (keydown.enter)="agregarActivo()"
+          />
+        </div>
+
+        <div class="checkbox-field">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              [(ngModel)]="esCuantitativo"
+            />
+            <span>Es cuantitativo</span>
+          </label>
+          <small class="help-text">
+            Los activos cuantitativos permiten seleccionar una cantidad al solicitar un préstamo.
+          </small>
+        </div>
+
+        <small class="error" *ngIf="errorMensaje">{{ errorMensaje }}</small>
+
+        <button
+          class="btn btn-add"
+          (click)="agregarActivo()"
+          [disabled]="guardando"
+        >
+          {{ guardando ? 'Agregando...' : 'Agregar activo' }}
+        </button>
+      </div>
+
+      <div class="divider"></div>
+
+      <h3 class="section-title">Activos registrados</h3>
+
+      @if (cargando) {
+        <p class="empty-message">Cargando activos...</p>
+      } @else if (activos.length === 0) {
+        <p class="empty-message">No hay activos registrados.</p>
+      } @else {
+        <div class="asset-list">
+          @for (activo of activos; track activo.id) {
+            <div class="asset-item">
+              <div class="asset-info">
+                <span class="asset-name">{{ activo.nombre }}</span>
+                @if (activo.esCuantitativo) {
+                  <span class="badge badge-cuantitativo">Cuantitativo</span>
+                }
+              </div>
+              <button
+                class="btn-delete"
+                (click)="solicitarEliminar(activo)"
+                aria-label="Eliminar activo"
+              >
+                Eliminar
+              </button>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+
+  <app-confirm-modal
+    [abierto]="modalEliminarAbierto"
+    titulo="Eliminar activo"
+    [mensaje]="'¿Está seguro de eliminar el activo \'' + (activoAEliminar?.nombre ?? '') + '\'? Esta acción no se puede deshacer.'"
+    textoConfirmar="Eliminar"
+    textoCancelar="Cancelar"
+    [cargando]="eliminando"
+    [deshabilitado]="eliminando"
+    (cerrar)="cancelarEliminar()"
+    (confirmar)="confirmarEliminar()"
+  ></app-confirm-modal>
+</app-page-layout>

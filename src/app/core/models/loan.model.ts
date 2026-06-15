@@ -13,4 +13,5 @@ export interface Loan {
   usuarioNombre: string;
   grupoPrestamoId?: string;
   activosGrupo?: string[];
+  cantidad?: number;
 }

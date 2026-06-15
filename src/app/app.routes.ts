@@ -10,6 +10,7 @@ import { HistorialPage } from './features/history/components/historial-page/hist
 import { ConfiguracionesPage } from './features/settings/components/configuraciones-page/configuraciones-page';
 import { AuthenticatedLayout } from './layout/components/authenticated-layout/authenticated-layout';
 import { DamagedLoansPage } from './features/loans/components/damaged-loans/damaged-loans';
+import { AssetManagementPage } from './features/admin/components/asset-management/asset-management';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -69,6 +70,7 @@ export const routes: Routes = [
       { path: 'mi-historial', component: UserLoanHistoryPage },
       { path: 'prestamos-danados', component: DamagedLoansPage },
       { path: 'historial', component: HistorialPage },
+      { path: 'gestion-activos', component: AssetManagementPage },
       { path: 'configuraciones', component: ConfiguracionesPage },
     ],
   },

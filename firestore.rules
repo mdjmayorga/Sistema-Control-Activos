@@ -50,10 +50,10 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // Activos/equipos — solo lectura para usuarios institucionales
+    // Activos/equipos — lectura para usuarios institucionales, escritura solo admin
     match /activos/{activoId} {
       allow read:   if isAuthenticated() && hasInstitutionalEmail();
-      allow write:  if false; // Gestión reservada al Admin SDK
+      allow create, update, delete: if isAdmin();
     }
   }
 }

@@ -1,6 +1,6 @@
 <article class="prestamo-item">
 	<div class="prestamo-item__left">
-		<h3>{{ loan.activo }}</h3>
+		<h3>{{ loan.activo }}{{ loan.cantidad ? '(x' + loan.cantidad + ')' : '' }}</h3>
 		<p class="prestamo-item__subtitle">Usuario: {{ loan.usuarioNombre }}</p>
 
 		<div class="prestamo-item__dates">

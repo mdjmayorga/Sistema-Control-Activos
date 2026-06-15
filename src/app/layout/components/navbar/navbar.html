@@ -81,6 +81,16 @@
         </span>
         <span class="nav-label nav-label--short">PD</span>
       </a>
+      <a routerLink="/admin/gestion-activos" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Gestión de Activos" (click)="mobileCloseRequested.emit()">
+        <span class="nav-content nav-label--full">
+          <img class="nav-icon" src="/admin-loans-icon.svg" alt="" aria-hidden="true" />
+          <span class="nav-label">Gestión Activos</span>
+        </span>
+        <span class="nav-icon-only" aria-hidden="true">
+          <img class="nav-icon" src="/admin-loans-icon.svg" alt="" />
+        </span>
+        <span class="nav-label nav-label--short">GA</span>
+      </a>
       <a routerLink="/admin/historial" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Historial" (click)="mobileCloseRequested.emit()">
         <span class="nav-content nav-label--full">
           <img class="nav-icon" src="/admin-historial-icon.svg" alt="" aria-hidden="true" />

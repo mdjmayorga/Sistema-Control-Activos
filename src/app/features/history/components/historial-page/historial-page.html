@@ -51,7 +51,7 @@
               @for (loan of paginatedLoans(); track loan.id) {
                 <tr>
                   <td data-label="Estudiante">{{ loan.usuarioNombre }}</td>
-                  <td data-label="Activo">{{ loan.activo }}</td>
+                  <td data-label="Activo">{{ loan.activo }}{{ loan.cantidad ? '(x' + loan.cantidad + ')' : '' }}</td>
                   <td data-label="Grupo Topo">{{ loan.grupoTopografia }}</td>
                   <td data-label="Cuadrilla">{{ loan.cuadrilla }}</td>
                   <td data-label="Razón">{{ loan.razonPrestamo }}</td>

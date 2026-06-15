@@ -1,5 +1,4 @@
 export const EQUIPMENT_OPTIONS = [
-  'Trípode de Aluminio',
   'Nivel Automático',
   'Estación total: Trimble 1',
   'Estación total: Trimble 2',

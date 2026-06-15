@@ -62,27 +62,46 @@
             Seleccione los activos e ingrese el número de serie si aplica
           </small>
           <div class="checkbox-list" [class.error-border]="activosInvalid">
-            @for (equipo of equipmentOptions; track equipo) {
-              <div class="checkbox-group" [class.selected]="isActivoSelected(equipo)">
+            @for (asset of equipmentAssets; track asset.id) {
+              <div class="checkbox-group" [class.selected]="isActivoSelected(asset.nombre)">
                 <label class="checkbox-item">
                   <input
                     type="checkbox"
-                    [value]="equipo"
-                    [checked]="isActivoSelected(equipo)"
-                    (change)="toggleActivo(equipo, $event)" />
-                  <span>{{ equipo }}</span>
+                    [value]="asset.nombre"
+                    [checked]="isActivoSelected(asset.nombre)"
+                    (change)="toggleActivo(asset.nombre, $event)" />
+                  <span>{{ asset.nombre }}</span>
                 </label>
 
-                @if (isActivoSelected(equipo)) {
+                @if (isActivoSelected(asset.nombre)) {
+                  @if (asset.esCuantitativo) {
+                    <div class="quantity-field">
+                      <span class="quantity-label">Cantidad:</span>
+                      <div class="quantity-controls">
+                        <button
+                          type="button"
+                          class="quantity-btn"
+                          (click)="decrementarCantidad(asset.nombre)"
+                          [disabled]="getCantidad(asset.nombre) <= 1"
+                        >−</button>
+                        <span class="quantity-value">{{ getCantidad(asset.nombre) }}</span>
+                        <button
+                          type="button"
+                          class="quantity-btn"
+                          (click)="incrementarCantidad(asset.nombre)"
+                        >+</button>
+                      </div>
+                    </div>
+                  }
                   <div class="serial-field">
                     <input
                       type="text"
                       class="serial-input"
                       [placeholder]="'N° serie (opcional)'"
-                      [value]="getNumeroSerie(equipo)"
-                      (input)="setNumeroSerie(equipo, $event)"
-                      [class.serial-error]="hasSerialError(equipo)" />
-                    @if (hasSerialError(equipo)) {
+                      [value]="getNumeroSerie(asset.nombre)"
+                      (input)="setNumeroSerie(asset.nombre, $event)"
+                      [class.serial-error]="hasSerialError(asset.nombre)" />
+                    @if (hasSerialError(asset.nombre)) {
                       <small class="error">Formato no válido (solo letras, números y guiones)</small>
                     }
                   </div>
