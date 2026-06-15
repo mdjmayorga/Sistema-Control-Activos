@@ -41,7 +41,6 @@ export class AssetManagementPage implements OnInit {
         if (activos.length === 0 && !this.seedDone) {
           this.seedDone = true;
           void this.seedDefaults();
-          return;
         }
         this.activos = activos;
         this.cargando = false;
@@ -49,8 +48,12 @@ export class AssetManagementPage implements OnInit {
   }
 
   private async seedDefaults(): Promise<void> {
-    for (const nombre of EQUIPMENT_OPTIONS) {
-      await this.assetService.agregarActivo({ nombre, esCuantitativo: false });
+    try {
+      for (const nombre of EQUIPMENT_OPTIONS) {
+        await this.assetService.agregarActivo({ nombre, esCuantitativo: false });
+      }
+    } catch {
+      this.errorMensaje = 'Error al cargar los activos por defecto.';
     }
   }
 
