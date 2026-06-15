@@ -66,10 +66,15 @@ export class LoanRequestComponent implements OnInit {
         map((assets) => assets.sort((a, b) => a.nombre.localeCompare(b.nombre))),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe((activos) => {
-        this.equipmentAssets = activos.length > 0
-          ? activos
-          : LoanRequestComponent.defaultAssets;
+      .subscribe({
+        next: (activos) => {
+          this.equipmentAssets = activos.length > 0
+            ? activos
+            : LoanRequestComponent.defaultAssets;
+        },
+        error: () => {
+          this.equipmentAssets = LoanRequestComponent.defaultAssets;
+        },
       });
   }
 

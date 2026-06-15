@@ -37,13 +37,19 @@ export class AssetManagementPage implements OnInit {
     this.assetService
       .obtenerActivos()
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((activos) => {
-        if (activos.length === 0 && !this.seedDone) {
-          this.seedDone = true;
-          void this.seedDefaults();
-        }
-        this.activos = activos;
-        this.cargando = false;
+      .subscribe({
+        next: (activos) => {
+          if (activos.length === 0 && !this.seedDone) {
+            this.seedDone = true;
+            void this.seedDefaults();
+          }
+          this.activos = activos;
+          this.cargando = false;
+        },
+        error: () => {
+          this.cargando = false;
+          this.errorMensaje = 'Error al cargar los activos. Verifique permisos.';
+        },
       });
   }
 
