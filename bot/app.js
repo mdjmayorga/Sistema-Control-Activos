@@ -1,10 +1,8 @@
 import 'dotenv/config';
 import admin from 'firebase-admin';
 import express from 'express';
-import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync, createWriteStream } from 'fs';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { ZipArchive } from 'archiver';
+import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync, readdirSync } from 'fs';
+import { resolve } from 'path';
 import sharp from 'sharp';
 import unzipper from 'unzipper';
 
@@ -69,66 +67,102 @@ const sessions = {};
 // BACKUP / RESTORE DE SESIÓN A FIREBASE STORAGE
 // ═══════════════════════════════════════════════════════════════════
 const AUTH_DIR = resolve('./baileys_auth');
-const FIREBASE_AUTH_PATH = 'whatsapp-sessions/baileys-auth.zip';
+const FIRESTORE_FILES_COL = 'bot-sessions/whatsapp-auth/files';
+const STORAGE_LEGACY_ZIP  = 'whatsapp-sessions/baileys-auth.zip';
+const sanitizeDocId       = (name) => name.replace(/[.\/=@]/g, '_');
 
-async function backupAuthToFirebase() {
+async function backupAuthToFirestore() {
     if (!existsSync(AUTH_DIR)) {
-        console.log('⚠️ backupAuthToFirebase: No existe el directorio de autenticación.');
+        console.log('⚠️ backupAuthToFirestore: directorio de auth no existe.');
         return;
     }
-    const zipPath = resolve('./baileys-auth-temp.zip');
     try {
-        const output = createWriteStream(zipPath);
-        const archive = new ZipArchive({ zlib: { level: 9 } });
-        archive.pipe(output);
-        archive.directory(AUTH_DIR, false);
-        await archive.finalize();
-        await new Promise((resolve, reject) => {
-            output.on('close', resolve);
-            output.on('error', reject);
-        });
-        await bucket.upload(zipPath, {
-            destination: FIREBASE_AUTH_PATH,
-            metadata: { contentType: 'application/zip' }
-        });
-        console.log('☁️ Sesión respaldada en Firebase Storage.');
+        const files = readdirSync(AUTH_DIR);
+        if (files.length === 0) {
+            console.log('⚠️ backupAuthToFirestore: directorio vacío, nada que respaldar.');
+            return;
+        }
+        const batch = db.batch();
+        for (const filename of files) {
+            // Leemos como string crudo — NO parseamos JSON.
+            // Los archivos de Baileys usan BufferJSON.replacer; parsearlo
+            // corrompería los objetos Buffer al restaurar.
+            const content = readFileSync(resolve(AUTH_DIR, filename), 'utf8');
+            const docRef = db.collection(FIRESTORE_FILES_COL).doc(sanitizeDocId(filename));
+            batch.set(docRef, {
+                content,
+                originalName: filename,
+                updatedAt: admin.firestore.FieldValue.serverTimestamp()
+            });
+        }
+        await batch.commit();
+        console.log(`☁️ Sesión respaldada en Firestore (${files.length} archivos).`);
     } catch (e) {
-        console.warn('⚠️ Error al respaldar sesión:', e.message);
-    } finally {
-        if (existsSync(zipPath)) unlinkSync(zipPath);
+        console.warn('⚠️ Error al respaldar sesión en Firestore:', e.message);
     }
 }
 
-async function restoreAuthFromFirebase() {
+async function restoreAuth() {
     if (!existsSync(AUTH_DIR)) {
         mkdirSync(AUTH_DIR, { recursive: true });
         console.log('📁 Directorio de autenticación creado:', AUTH_DIR);
     }
-    // Only restore from Firebase if no local creds exist.
-    // Firebase backup may be stale (last uploaded 5min ago → missing fresh pairing state),
-    // so local creds always take precedence.
+
+    // ── Capa 1: credenciales locales (siempre las más frescas) ──────
     if (existsSync(resolve(AUTH_DIR, 'creds.json'))) {
-        console.log('📂 Usando credenciales locales (más recientes que backup).');
+        console.log('📂 Usando credenciales locales.');
         return true;
     }
-    const file = bucket.file(FIREBASE_AUTH_PATH);
-    const [exists] = await file.exists();
-    if (!exists) {
-        console.log('ℹ️ No hay sesión previa en Firebase Storage. Se necesita vincular.');
-        return false;
-    }
-    const zipPath = resolve('./baileys-auth-temp.zip');
+
+    // ── Capa 2: Firestore (camino normal post-migración) ─────────────
     try {
-        await file.download({ destination: zipPath });
+        const snapshot = await db.collection(FIRESTORE_FILES_COL).get();
+        if (!snapshot.empty) {
+            for (const doc of snapshot.docs) {
+                const { content, originalName } = doc.data();
+                if (!originalName) {
+                    // Nunca debería ocurrir con código nuevo; si pasa, abortar.
+                    throw new Error(`Doc ${doc.id} sin campo originalName — sesión corrupta.`);
+                }
+                writeFileSync(resolve(AUTH_DIR, originalName), content, 'utf8');
+            }
+            console.log(`📥 Sesión restaurada desde Firestore (${snapshot.size} archivos).`);
+            return true;
+        }
+        console.log('ℹ️ Firestore no tiene sesión previa. Buscando en Storage...');
+    } catch (e) {
+        console.warn('⚠️ Error al leer Firestore:', e.message);
+        // No retornamos false — intentamos la Capa 3 como último recurso.
+    }
+
+    // ── Capa 3: migración única desde Storage ────────────────────────
+    try {
+        const legacyFile = bucket.file(STORAGE_LEGACY_ZIP);
+        const [exists] = await legacyFile.exists();
+        if (!exists) {
+            console.log('ℹ️ No hay sesión en Firestore ni en Storage. Se necesita vincular.');
+            return false;
+        }
+        console.log('🔄 Migrando sesión desde Storage a Firestore (única vez)...');
+        const zipPath = resolve('./baileys-auth-temp.zip');
+        await legacyFile.download({ destination: zipPath });
         const directory = await unzipper.Open.file(zipPath);
         await directory.extract({ path: AUTH_DIR });
-        console.log('📥 Sesión restaurada desde Firebase Storage.');
+        if (existsSync(zipPath)) unlinkSync(zipPath);
+        // Subir inmediatamente a Firestore para no depender más de Storage.
+        await backupAuthToFirestore();
+        // Eliminar ZIP legacy de Storage para dejar de generar costo.
+        try {
+            await legacyFile.delete();
+            console.log('🗑️ ZIP legacy eliminado de Storage.');
+        } catch (delErr) {
+            console.warn('⚠️ No se pudo eliminar ZIP de Storage (no crítico):', delErr.message);
+        }
+        console.log('✅ Migración a Firestore completada.');
         return true;
     } catch (e) {
-        console.warn('⚠️ Error al restaurar sesión:', e.message);
+        console.warn('⚠️ Error en migración desde Storage:', e.message);
         return false;
-    } finally {
-        if (existsSync(zipPath)) unlinkSync(zipPath);
     }
 }
 
@@ -176,7 +210,7 @@ async function startBot() {
     console.log(`🚀 Iniciando bot de WhatsApp (Baileys) — intento #${reconnectAttempt + 1}...`);
 
     try {
-        const restored = await restoreAuthFromFirebase();
+        const restored = await restoreAuth();
         if (restored) {
             console.log('✅ Sesión restaurada exitosamente.');
         } else {
@@ -238,8 +272,8 @@ async function startBot() {
                 isConnected = true;
                 isInitializing = false;
                 reconnectAttempt = 0;
-                console.log('☁️ Respaldando sesión inicial en Firebase Storage...');
-                await backupAuthToFirebase();
+                console.log('☁️ Respaldando sesión inicial en Firestore...');
+                await backupAuthToFirestore();
             }
 
             if (connection === 'close') {
@@ -346,7 +380,7 @@ async function startBot() {
         setInterval(async () => {
             if (isConnected) {
                 console.log('⏲️ Respaldo periódico de sesión...');
-                await backupAuthToFirebase();
+                await backupAuthToFirestore();
             }
         }, 5 * 60 * 1000);
 

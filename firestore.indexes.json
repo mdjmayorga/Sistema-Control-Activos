@@ -26,5 +26,11 @@
       ]
     }
   ],
-  "fieldOverrides": []
+  "fieldOverrides": [
+    {
+      "collectionGroup": "files",
+      "fieldPath": "content",
+      "indexes": []
+    }
+  ]
 }

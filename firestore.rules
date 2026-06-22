@@ -55,5 +55,10 @@ service cloud.firestore {
       allow read:   if isAuthenticated() && hasInstitutionalEmail();
       allow create, update, delete: if isAdmin();
     }
+
+    // Bot session — escritura exclusiva via Admin SDK (no accesible desde cliente)
+    match /bot-sessions/{document=**} {
+      allow read, write: if false;
+    }
   }
 }
